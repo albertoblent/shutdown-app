@@ -93,13 +93,15 @@ gh issue develop ISSUE_NUMBER --checkout
 
 ### 3. Development Workflow
 
-#### Working on an Issue:
+#### Working on an Issue
+
 1. **Start work**: Update issue status in project board
 2. **Regular commits**: Make atomic commits for each logical change
 3. **Update progress**: Check off subtasks in issue as completed
 4. **Document blockers**: Comment on issue if stuck
 
-#### Commit Guidelines:
+#### Commit Guidelines
+
 ```bash
 # Atomic commits with issue reference
 git commit -m "feat(typescript): configure strict mode settings (#1)"
@@ -139,6 +141,7 @@ gh pr ready PR_NUMBER
 ### 6. Code Review (Self-Review)
 
 Before marking PR as ready:
+
 1. Review your own changes: `gh pr diff`
 2. Run quality checks: `npm run lint && npm run build`
 3. Test functionality manually
@@ -334,6 +337,7 @@ gh issue list --label "Phase 1" --state closed
 ## Quick Command Reference
 
 ### Daily Commands
+
 ```bash
 # Start of day
 gh issue list --assignee @me --state open  # Your open issues
@@ -355,7 +359,9 @@ gh issue list --label "Phase 1" --state open --json number,title,labels
 ```
 
 ### Useful Aliases
+
 Add to your shell profile:
+
 ```bash
 alias ghi='gh issue'
 alias ghpr='gh pr'
