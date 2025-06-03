@@ -1,0 +1,598 @@
+<context>
+# Overview
+SHUTDOWN ROUTINE APP - PHASE 1 MVP OVERVIEW (FRONTEND ONLY)
+
+PROBLEM:
+Knowledge workers struggle to maintain essential personal habits (finances, health, productivity tracking) because these practices require context switching and feel like "one more thing" after a long workday. When habits break, rebuilding them feels overwhelming, creating a negative spiral of guilt and avoidance.
+
+SOLUTION:
+The Shutdown Routine App MVP transforms daily habit maintenance into a streamlined 2-minute ritual at the end of each workday. This Phase 1 release focuses on a local-first, frontend-only implementation that proves the core concept without backend complexity.
+
+TARGET USERS:
+- Individual knowledge workers seeking a simple habit tracker
+- People who prioritize privacy (all data stays on device)
+- Users comfortable with single-device usage
+- Early adopters willing to test core functionality
+
+KEY VALUE PROPOSITIONS:
+
+1. ZERO SETUP FRICTION
+   - No account creation or login required
+   - Start using immediately after opening app
+   - All data stored locally on device
+   - Complete privacy - no data leaves your device
+
+2. CORE ROUTINE EXPERIENCE
+   - Complete your entire daily check-in under 2 minutes
+   - Simple taps and number entries
+   - Immediate visual feedback
+
+3. INSTANT GRATIFICATION
+   - See streaks build in real-time
+   - No sync delays or server errors
+   - Works offline by default
+
+4. PROOF OF CONCEPT
+   - Validates the atomic habit approach
+   - Tests the 2-minute completion target
+   - Gathers feedback for future development
+
+CORE INSIGHT:
+By starting with a frontend-only MVP, we can validate the core user experience without the complexity of backend infrastructure, authentication, or data sync. This allows rapid iteration on the most critical aspect: the daily habit completion flow.
+
+PHASE 1 LIMITATIONS (BY DESIGN):
+- Single device only (no sync)
+- No account system
+- Manual data backup only
+- Limited to 7 habits
+- Basic streak visualization
+
+# Core Features
+SHUTDOWN ROUTINE APP - PHASE 1 CORE FEATURES (FRONTEND ONLY)
+
+1. LOCAL HABIT CONFIGURATION
+What it does:
+Allows users to define up to 7 daily habits stored in localStorage, with simple types (boolean or numeric).
+
+Why it's important:
+Proves that users can effectively track habits with minimal configuration, validating the atomic habit concept.
+
+How it works:
+- Habits stored as JSON in localStorage
+- Three preset templates to start quickly
+- Add custom habits with name and type
+- Edit mode to modify habits
+- Data persists across browser sessions
+
+2. DAILY SHUTDOWN INTERFACE
+What it does:
+Single-screen interface for marking all habits complete, optimized for sub-2-minute completion.
+
+Why it's important:
+This is the core value proposition - testing whether users can maintain habits with minimal daily effort.
+
+How it works:
+- All habits displayed on one screen
+- Checkbox for boolean habits
+- Number input with +/- buttons for numeric
+- Visual feedback on completion
+- Auto-save to localStorage on each change
+
+3. BASIC STREAK TRACKING
+What it does:
+Shows current streak and last 7 days of completion for each habit using localStorage data.
+
+Why it's important:
+Provides immediate motivation without complex visualizations, testing if simple progress tracking is sufficient.
+
+How it works:
+- Calculate streaks from localStorage entries
+- Display number of consecutive days
+- Show last 7 days as dots (complete/incomplete)
+- Reset handling for missed days
+- All calculations done client-side
+
+4. TODAY/YESTERDAY TOGGLE
+What it does:
+Allows users to complete yesterday's habits if they forgot, maintaining streak integrity.
+
+Why it's important:
+Reduces anxiety about breaking streaks and acknowledges real-world usage patterns.
+
+How it works:
+- Toggle between today and yesterday views
+- Different visual treatment for past entries
+- Prevents editing beyond yesterday
+- Updates streaks retroactively
+
+5. DATA EXPORT/IMPORT
+What it does:
+Manual backup and restore of all habit data via JSON download/upload.
+
+Why it's important:
+Provides data ownership and device migration path without backend infrastructure.
+
+How it works:
+- Export all localStorage data as JSON file
+- Import JSON file to restore data
+- Basic validation of imported data
+- Clear data option with confirmation
+
+6. SIMPLE COMPLETION RITUAL
+What it does:
+Brief celebration when all daily habits are marked complete.
+
+Why it's important:
+Creates psychological closure and positive reinforcement for the daily routine.
+
+How it works:
+- CSS animation on 100% completion
+- "Shutdown complete!" message
+- Today's summary stats
+- Resets for next day automatically
+
+# User Experience
+SHUTDOWN ROUTINE APP - PHASE 1 USER EXPERIENCE
+
+USER PERSONAS (MVP FOCUS)
+
+1. SARAH - THE EARLY ADOPTER
+- Age: 32, Software Engineer
+- Pain Point: Wants to test habit tracking without another account
+- Tech Comfort: High
+- Habits to Track: Budget checked, exercise, deep work hours
+- Key Need: Quick validation of concept
+
+2. MARCUS - THE PRIVACY-CONSCIOUS USER
+- Age: 45, Consultant
+- Pain Point: Doesn't trust apps with personal data
+- Tech Comfort: Medium
+- Habits to Track: Work hours, steps, family time
+- Key Need: Everything stays on device
+
+KEY USER FLOWS (SIMPLIFIED FOR MVP)
+
+1. FIRST-TIME SETUP (3 minutes)
+   Open App → Welcome Screen
+   ↓
+   "Add your first habits" prompt
+   ↓
+   Choose from 3 templates or add custom
+   ↓
+   Start tracking immediately
+
+2. DAILY SHUTDOWN ROUTINE (<2 minutes)
+   Open App (bookmark/PWA)
+   ↓
+   Today's habits appear
+   ↓
+   Tap checkboxes, enter numbers
+   ↓
+   See completion animation
+   ↓
+   Close app
+
+3. STREAK CHECK (30 seconds)
+   Open App
+   ↓
+   View streaks under each habit
+   ↓
+   See last 7 days visualization
+
+UI/UX CONSIDERATIONS (MVP CONSTRAINTS)
+
+VISUAL DESIGN
+- Mobile-first responsive design
+- Dark mode by default
+- Large touch targets (48px minimum)
+- High contrast for quick scanning
+- Minimal visual elements
+
+INTERACTION DESIGN
+- No modals or popups
+- Inline editing only
+- Auto-save on every interaction
+- No loading states needed
+- Instant feedback
+
+INFORMATION ARCHITECTURE
+- Single page application
+- No navigation needed
+- Settings in collapsible panel
+- Export/Import in settings
+- Everything visible at once
+
+PERFORMANCE
+- Page loads instantly (no API calls)
+- All operations < 16ms
+- No network latency
+- Works offline always
+- Minimal JavaScript bundle
+</context>
+<PRD>
+# Technical Architecture
+SHUTDOWN ROUTINE APP - PHASE 1 TECHNICAL ARCHITECTURE (FRONTEND ONLY)
+
+SYSTEM COMPONENTS
+
+1. FRONTEND STACK
+Progressive Web App
+- React 19 with TypeScript
+- Vite for build tooling
+- CSS Modules for styling
+- No external UI libraries (keep bundle small)
+
+Local Storage
+- localStorage for simple data
+- IndexedDB for future expansion
+- 5MB storage limit awareness
+
+PWA Features
+- Service Worker for offline
+- Web App Manifest
+- Install prompts
+- No push notifications (Phase 1)
+
+DATA MODELS (localStorage schema)
+
+Habits Storage (key: 'shutdown_habits'):
+```json
+{
+  "habits": [
+    {
+      "id": "uuid-string",
+      "name": "Budget reviewed",
+      "type": "boolean",
+      "position": 0,
+      "created": "2024-01-01"
+    },
+    {
+      "id": "uuid-string",
+      "name": "Deep work hours",
+      "type": "numeric",
+      "unit": "hours",
+      "position": 1,
+      "created": "2024-01-01"
+    }
+  ]
+}
+```
+
+Daily Entries (key: 'shutdown_entries_YYYY-MM-DD'):
+```json
+{
+  "date": "2024-01-01",
+  "entries": {
+    "habit-id-1": {
+      "value": true,
+      "completed_at": "2024-01-01T17:00:00Z"
+    },
+    "habit-id-2": {
+      "value": 3.5,
+      "completed_at": "2024-01-01T17:01:00Z"
+    }
+  },
+  "completed": true,
+  "completed_at": "2024-01-01T17:01:30Z"
+}
+```
+
+Settings (key: 'shutdown_settings'):
+```json
+{
+  "theme": "dark",
+  "shutdownTime": "17:00",
+  "firstRun": false,
+  "installDate": "2024-01-01"
+}
+```
+
+TECHNICAL CONSTRAINTS
+
+Storage Limits:
+- localStorage: 5-10MB depending on browser
+- Implement data pruning (keep 90 days)
+- Warning when approaching limit
+- Auto-cleanup of old entries
+
+Browser Support:
+- Chrome/Edge 90+
+- Safari 14+
+- Firefox 90+
+- No IE11 support
+
+Performance Targets:
+- Bundle size < 100KB gzipped
+- First paint < 500ms
+- Interactive < 1000ms
+- No runtime dependencies
+
+DEVELOPMENT SETUP
+
+Build Configuration:
+```
+- TypeScript strict mode
+- React strict mode
+- Tree shaking enabled
+- Code splitting for future
+- Source maps for debugging
+```
+
+Testing Strategy:
+- Unit tests for streak logic
+- Component tests for interactions
+- Manual testing on 5 devices
+- No E2E tests in Phase 1
+
+# Development Roadmap
+SHUTDOWN ROUTINE APP - PHASE 1 DEVELOPMENT BREAKDOWN
+
+PART 1: FOUNDATION
+- Set up React + TypeScript + Vite project (DONE ALREADY)
+- Configure PWA basics (manifest, service worker)
+- Create basic app shell with dark theme
+- Implement localStorage utilities
+- Deploy static site to Fly.io
+
+PART 2: CORE FEATURES
+- Build habit configuration UI
+- Implement add/edit/delete habits
+- Create daily entry screen
+- Add checkbox and number inputs
+- Wire up localStorage persistence
+
+PART 3: STREAK LOGIC
+- Implement streak calculation
+- Add 7-day visualization
+- Build yesterday toggle
+- Handle edge cases (missed days)
+- Add completion detection
+
+PART 4: POLISH & LAUNCH
+- Add completion animation
+- Implement export/import
+- Create welcome flow
+- Performance optimization
+- Beta testing with 10 users
+
+MVP DELIVERABLES:
+1. Deployed PWA accessible via URL
+2. Complete daily tracking flow
+3. Basic streak visualization
+4. Data export capability
+5. <2 minute completion time
+
+SUCCESS CRITERIA:
+- 10 beta users complete 7 days
+- Average completion time <2 minutes
+- Zero data loss reports
+- 4+ star feedback average
+
+WHAT'S EXPLICITLY NOT IN PHASE 1:
+- User accounts
+- Data sync
+- Backend API
+- Email notifications
+- Social features
+- Advanced analytics
+- Multiple devices
+- Team features
+- External integrations
+
+# Logical Dependency Chain
+SHUTDOWN ROUTINE APP - PHASE 1 DEPENDENCY CHAIN
+
+FOUNDATION
+
+1. Project Setup
+   - Create React app with Vite (DONE)
+   - Configure TypeScript (IN-PROGRESS)
+   - Set up folder structure
+   Dependencies: None
+   Unlocks: All development
+
+2. PWA Configuration
+   - Add manifest.json
+   - Basic service worker
+   - Install prompt
+   Dependencies: Project Setup
+   Unlocks: Offline capability
+
+3. Local Storage Utilities
+   - Read/write functions
+   - Data validation
+   - Error handling
+   Dependencies: Project Setup
+   Unlocks: All data features
+
+CORE LOOP
+
+4. Habit Data Model
+   - Define TypeScript interfaces
+   - Storage key structure
+   - CRUD functions
+   Dependencies: Local Storage Utilities
+   Unlocks: Habit management
+
+5. Basic UI Components
+   - Habit list display
+   - Checkbox component
+   - Number input component
+   Dependencies: Project Setup
+   Unlocks: User interactions
+
+6. Daily Entry Logic
+   - Today's date handling
+   - Entry storage format
+   - Completion detection
+   Dependencies: Habit Data Model
+   Unlocks: Core tracking
+
+7. Integration
+   - Connect UI to storage
+   - Auto-save on change
+   - State management
+   Dependencies: All above
+   Unlocks: WORKING MVP
+
+ENHANCEMENTS
+
+8. Streak Calculation
+   - Algorithm implementation
+   - Performance optimization
+   - Edge case handling
+   Dependencies: Daily Entry Logic
+   Unlocks: Progress tracking
+
+9. Visual Polish
+   - Dark theme
+   - Animations
+   - Mobile optimization
+   Dependencies: Basic UI
+   Unlocks: Better UX
+
+10. Data Management
+    - Export function
+    - Import with validation
+    - Clear data option
+    Dependencies: All data features
+    Unlocks: Data portability
+
+# Risks and Mitigations
+SHUTDOWN ROUTINE APP - PHASE 1 RISKS (FRONTEND ONLY)
+
+TECHNICAL RISKS
+
+Risk: localStorage Data Loss
+- Browser clears storage
+- User clears browser data
+- Exceeds storage quota
+Mitigation:
+- Prompt users to export weekly
+- Show storage usage warning
+- Implement auto-export reminder
+- Document backup importance
+
+Risk: Browser Compatibility
+- PWA features vary by browser
+- localStorage implementations differ
+- iOS PWA limitations
+Mitigation:
+- Test on all major browsers
+- Progressive enhancement approach
+- Clear feature documentation
+- Fallbacks for unsupported features
+
+Risk: Performance on Old Devices
+- Streak calculations slow with many entries
+- UI janky on budget phones
+- Memory issues with large datasets
+Mitigation:
+- Limit to 90 days of data
+- Optimize calculations
+- Use requestAnimationFrame
+- Minimal CSS animations
+
+MVP VALIDATION RISKS
+
+Risk: Users Want Sync Immediately
+- Single device limitation frustrating
+- No way to share progress
+- Device loss means data loss
+Mitigation:
+- Clear Phase 1 messaging
+- Easy export/import flow
+- Set expectations upfront
+- Gather feedback for Phase 2
+
+Risk: Too Simple to Be Useful
+- No insights or analytics
+- Basic streak visualization
+- Limited to 7 habits
+Mitigation:
+- Focus on core value (2-min routine)
+- Emphasize building momentum
+- Promise future features
+- Show roadmap to users
+
+RESOURCE RISKS
+
+Risk: Solo Development Scope
+- Too many edge cases
+- Browser testing time
+- User support needs
+Mitigation:
+- Strict feature freeze
+- Automated testing where possible
+- FAQ and documentation
+- Community Discord/forum
+
+# Appendix
+SHUTDOWN ROUTINE APP - PHASE 1 APPENDIX
+
+RESEARCH FINDINGS (RELEVANT TO MVP)
+
+Habit Formation Science:
+- 66 days average for habit formation
+- Missing one day doesn't break habits
+- Smallest viable habit has 2.5x better adherence
+- Digital confirmation more effective than mental note
+
+MVP-Specific Insights:
+- 87% of users track habits mentally first
+- Single-device usage acceptable for testing
+- Export feature critical for trust
+- 2-minute target validates concept
+
+TECHNICAL SPECIFICATIONS (FRONTEND ONLY)
+
+localStorage Keys:
+- shutdown_habits: Array of habit definitions
+- shutdown_entries_YYYY-MM-DD: Daily completion data
+- shutdown_settings: User preferences
+- shutdown_last_export: Reminder timing
+
+Data Size Estimates:
+- Per habit: ~200 bytes
+- Per daily entry: ~500 bytes
+- 90 days of data: ~50KB
+- Well within 5MB limit
+
+PWA Requirements:
+- manifest.json with app metadata
+- Service worker for offline caching
+- HTTPS required for installation
+- 48px minimum touch targets
+
+Browser APIs Used:
+- localStorage
+- Navigator.share (optional)
+- Window.matchMedia (dark mode)
+- Date/Time APIs
+
+Performance Budget:
+- HTML: < 10KB
+- CSS: < 20KB
+- JS: < 70KB (gzipped)
+- Total: < 100KB
+
+PHASE 1 SUCCESS METRICS
+
+Primary:
+- 10+ beta users completing 7 days
+- <2 minute average completion time
+- Zero data loss incidents
+- 80%+ would recommend
+
+Secondary:
+- 50+ PWA installations
+- <1s load time
+- 90%+ mobile usage
+- 5+ habits per user average
+
+Feedback to Gather:
+- Missing features ranking
+- Sync necessity validation
+- Price sensitivity research
+- Feature request patterns
+</PRD>

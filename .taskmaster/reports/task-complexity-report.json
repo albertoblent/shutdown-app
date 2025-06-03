@@ -1,0 +1,93 @@
+{
+  "meta": {
+    "generatedAt": "2025-06-03T15:45:34.473Z",
+    "tasksAnalyzed": 10,
+    "totalTasks": 10,
+    "analysisCount": 10,
+    "thresholdScore": 5,
+    "projectName": "Taskmaster",
+    "usedResearch": true
+  },
+  "complexityAnalysis": [
+    {
+      "taskId": 1,
+      "taskTitle": "Complete TypeScript Configuration and Project Foundation",
+      "complexityScore": 7,
+      "recommendedSubtasks": 6,
+      "expansionPrompt": "Break down the TypeScript configuration and project foundation into subtasks such as: finalizing tsconfig.json with strict mode, establishing folder structure, configuring Vite with TypeScript and code splitting, setting up CSS Modules, installing and configuring dev dependencies, and validating bundle size and build performance.",
+      "reasoning": "This task involves multiple configuration layers (TypeScript, Vite, CSS Modules), dependency management, and performance validation. Each step requires careful setup and verification, making it moderately complex and suitable for at least six focused subtasks."
+    },
+    {
+      "taskId": 2,
+      "taskTitle": "Implement PWA Configuration and Service Worker",
+      "complexityScore": 8,
+      "recommendedSubtasks": 7,
+      "expansionPrompt": "Expand into subtasks: create manifest.json, implement service worker with Workbox, configure Vite PWA plugin, handle install prompt, document HTTPS requirement, configure touch targets, and test PWA installation/offline functionality.",
+      "reasoning": "PWA setup requires coordination between manifest, service worker, build tooling, and UI/UX requirements. Testing across browsers and devices adds complexity, warranting a detailed breakdown into at least seven subtasks."
+    },
+    {
+      "taskId": 3,
+      "taskTitle": "Create localStorage Utilities and Data Models",
+      "complexityScore": 8,
+      "recommendedSubtasks": 7,
+      "expansionPrompt": "Divide into subtasks: define TypeScript interfaces for models, implement localStorage utility functions, integrate Zod for validation, create storage key constants, add data size monitoring, implement data pruning, and add UUID generation.",
+      "reasoning": "This task combines data modeling, runtime validation, storage management, and edge-case handling (pruning, size limits), each requiring careful implementation and testing, justifying at least seven subtasks."
+    },
+    {
+      "taskId": 4,
+      "taskTitle": "Build Core UI Components and Dark Theme",
+      "complexityScore": 7,
+      "recommendedSubtasks": 6,
+      "expansionPrompt": "Break down into subtasks: implement CSS Modules with dark theme, create HabitCheckbox, build NumberInput, develop HabitList container, ensure responsive design and touch targets, and perform accessibility testing.",
+      "reasoning": "Building reusable, accessible, and responsive UI components with custom theming and no external libraries is moderately complex, requiring at least six focused subtasks."
+    },
+    {
+      "taskId": 5,
+      "taskTitle": "Implement Habit Management System",
+      "complexityScore": 9,
+      "recommendedSubtasks": 8,
+      "expansionPrompt": "Expand into subtasks: implement add/edit/delete/reorder functions, enforce habit limit, create preset templates, add inline editing with auto-save, implement drag-and-drop, store habit positions, validate habit types, and test all features.",
+      "reasoning": "This task involves complex state management, UI interactions (drag-and-drop, inline editing), validation, and template logic, making it one of the most intricate tasks and deserving at least eight subtasks."
+    },
+    {
+      "taskId": 6,
+      "taskTitle": "Build Daily Entry Interface and Auto-save",
+      "complexityScore": 8,
+      "recommendedSubtasks": 7,
+      "expansionPrompt": "Break down into subtasks: design daily entry UI, implement auto-save with debounce, manage entry state, add visual feedback for completion, store entries with timestamps, handle optimistic UI updates, and address edge cases.",
+      "reasoning": "Real-time UI updates, debounced persistence, and robust state management with edge-case handling make this a complex task, best managed with at least seven subtasks."
+    },
+    {
+      "taskId": 7,
+      "taskTitle": "Implement Today/Yesterday Toggle and Date Navigation",
+      "complexityScore": 7,
+      "recommendedSubtasks": 6,
+      "expansionPrompt": "Expand into subtasks: build date navigation component, implement date validation, add visual differentiation for past entries, update URL state, handle timezone edge cases, and implement confirmation dialogs.",
+      "reasoning": "Date navigation with validation, UI state management, and timezone handling introduces moderate complexity, requiring at least six subtasks for clarity and testability."
+    },
+    {
+      "taskId": 8,
+      "taskTitle": "Build Streak Calculation and Visualization",
+      "complexityScore": 7,
+      "recommendedSubtasks": 6,
+      "expansionPrompt": "Break down into subtasks: implement streak calculation algorithm, build 7-day visualization, optimize with memoization, handle edge cases, create streak display component, and cache calculations.",
+      "reasoning": "Algorithmic logic, performance optimization, and edge-case handling make this moderately complex, best split into at least six subtasks."
+    },
+    {
+      "taskId": 9,
+      "taskTitle": "Add Completion Animation and Shutdown Ritual",
+      "complexityScore": 6,
+      "recommendedSubtasks": 5,
+      "expansionPrompt": "Expand into subtasks: implement completion detection, create CSS animation, display completion message with stats, add sound effect option, and implement daily reset logic.",
+      "reasoning": "While visually important, this task is less complex technically but still involves animation, sound, and state management, warranting at least five subtasks."
+    },
+    {
+      "taskId": 10,
+      "taskTitle": "Implement Data Export/Import and Backup System",
+      "complexityScore": 8,
+      "recommendedSubtasks": 7,
+      "expansionPrompt": "Break down into subtasks: implement export to JSON, build file download, create import with validation, add data merge strategy, implement clear data option, create backup reminder, and add metadata to exports.",
+      "reasoning": "Data serialization, validation, file handling, and backup logic introduce significant complexity and risk, requiring at least seven subtasks for robust implementation."
+    }
+  ]
+}

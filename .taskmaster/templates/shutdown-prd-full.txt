@@ -1,0 +1,1326 @@
+<context>
+# Overview
+SHUTDOWN ROUTINE APP - PRODUCT OVERVIEW
+
+PROBLEM:
+Knowledge workers struggle to maintain essential personal habits (finances, health, productivity tracking) because these practices require context switching and feel like "one more thing" after a long workday. When habits break, rebuilding them feels overwhelming, creating a negative spiral of guilt and avoidance.
+
+SOLUTION:
+The Shutdown Routine App transforms daily habit maintenance into a streamlined 2-minute ritual at the end of each workday. By breaking down habits into atomic micro-commitments focused on acknowledgment rather than action, it removes friction while maintaining accountability.
+
+TARGET USERS:
+- Knowledge workers who have "fallen off" key personal habits
+- Professionals seeking work-life boundaries through shutdown rituals
+- Anyone who struggles with habit tracking app abandonment
+- People who value data-driven personal improvement but lack consistency
+
+KEY VALUE PROPOSITIONS:
+
+1. FRICTIONLESS EXECUTION
+   - Complete your entire daily check-in under 2 minutes
+   - Quick taps, number entries, and yes/no acknowledgments
+   - No lengthy forms or complex tracking
+
+2. PSYCHOLOGICAL CLOSURE
+   - Can't properly "end" work without completing the routine
+   - Creates a clear boundary between work and personal time
+   - Transforms obligation into ritual
+
+3. SMART SIMPLICITY
+   - Habits are pre-configured - no daily decision fatigue
+   - Intelligent sequencing learns your optimal flow
+   - Contextual shortcuts to required apps/tools
+
+4. SUSTAINABLE MOMENTUM
+   - Focus on recording what happened, not forcing action
+   - Separate "action needed" queue prevents overwhelm
+   - Visual chain tracking provides gentle motivation
+
+CORE INSIGHT:
+The app succeeds by acknowledging a truth: at day's end, you're tired. Instead of demanding more effort, it asks only for honest acknowledgment. This micro-commitment rebuilds the neural pathway of habit attention without the resistance of full execution.
+
+EXAMPLE USE CASE:
+Sarah, a software engineer, lost her financial tracking habit months ago. Each day at 5 PM, her Shutdown Routine prompts her to simply open her banking app and select today's primary spending category from a quick picker. In 15 seconds, she's maintained awareness of her finances without the burden of full budget review. After 30 days, she naturally starts checking her budget more thoroughly - the habit has been repaired through consistent micro-actions.
+
+# Core Features
+SHUTDOWN ROUTINE APP - CORE FEATURES
+
+1. ATOMIC HABIT CONFIGURATION
+What it does:
+Allows users to define their essential daily habits once, breaking each down into its smallest trackable unit (e.g., "Did I exercise?" instead of detailed workout logging).
+
+Why it's important:
+Eliminates daily decision fatigue and ensures habits are small enough to track in seconds, not minutes. The one-time setup investment pays dividends in daily time savings.
+
+How it works:
+- Users select from preset habit templates or create custom ones
+- Each habit is defined as boolean (yes/no), numeric (quick entry), or single-select
+- System automatically suggests atomic versions of common habits
+- Configuration locked after setup to prevent tinkering/procrastination
+
+2. TWO-MINUTE SHUTDOWN INTERFACE
+What it does:
+Presents all daily habits in a single, optimized screen designed for completion in under 2 minutes.
+
+Why it's important:
+The psychological barrier to habit tracking disappears when the entire process takes less time than brushing your teeth. Speed is the killer feature.
+
+How it works:
+- Large touch targets for mobile-first design
+- Single tap for yes/no habits
+- Number pad overlay for metrics (steps, hours, etc.)
+- Swipe gestures for quick navigation between habits
+- Auto-advance to next habit after input
+
+3. SMART SEQUENCING ENGINE
+What it does:
+Learns and optimizes the order in which habits are presented based on completion patterns and time taken.
+
+Why it's important:
+Reduces cognitive load by presenting habits in the most logical flow, grouping related items and prioritizing quick wins to build momentum.
+
+How it works:
+- Tracks completion time and order preferences
+- Groups related habits (all finance tasks together)
+- Places quickest habits first to build momentum
+- Adapts based on day of week patterns
+- Optional manual reordering override
+
+4. CONTEXTUAL SHORTCUTS
+What it does:
+Provides one-tap access to the apps, websites, or tools needed to complete each habit check-in.
+
+Why it's important:
+Removes the friction of app-switching and searching, making it effortless to verify information needed for accurate tracking.
+
+How it works:
+- Deep links to specific app screens (e.g., budget category in finance app)
+- Quick launchers for websites with auto-login where possible
+- Smart clipboard for copy-pasting values
+- Return-to-app button overlay for seamless flow
+- Optional API integrations for automatic data pull
+
+5. CHAIN VISUALIZATION
+What it does:
+Shows streak progress for each habit using the "don't break the chain" methodology with visual chain links.
+
+Why it's important:
+Provides immediate visual feedback on consistency while avoiding the anxiety of traditional streak counters. Missing one day doesn't "break" everything.
+
+How it works:
+- Visual chain grows with each completed day
+- Broken links shown but chain continues (not reset to zero)
+- Weekly and monthly views to see patterns
+- Subtle animations reward consistency
+- Export/share capability for accountability
+
+6. ACTION QUEUE
+What it does:
+Captures follow-up items that need attention without blocking the shutdown routine completion.
+
+Why it's important:
+Acknowledges that some habits reveal needed actions (e.g., "budget exceeded") without forcing immediate resolution when energy is low.
+
+How it works:
+- Quick "flag for tomorrow" button on any habit
+- Optional note field for context
+- Morning notification with queued items
+- Integration with task managers (optional)
+- Clear queue history to track follow-through
+
+7. RAPID DATA ENTRY
+What it does:
+Enables lightning-fast input through voice, gestures, and smart defaults.
+
+Why it's important:
+Every second of friction increases abandonment risk. Multiple input methods ensure everyone finds their fastest path.
+
+How it works:
+- Voice input for numeric values ("three hours deep work")
+- Yesterday's values as quick-tap defaults
+- Smart predictions based on patterns
+- Gesture shortcuts for common values
+- Bulk edit for multiple similar entries
+
+8. SHUTDOWN COMPLETION RITUAL
+What it does:
+Provides satisfying closure when all habits are checked, creating a psychological boundary between work and personal time.
+
+Why it's important:
+The ritual aspect transforms a chore into a meaningful transition, increasing adherence through positive association.
+
+How it works:
+- Customizable completion animation/sound
+- Daily summary of key metrics
+- Optional shutdown affirmation or quote
+- Calendar integration to mark "work ended"
+- Phone notification silencing trigger (optional)
+
+# User Experience
+SHUTDOWN ROUTINE APP - USER EXPERIENCE
+
+USER PERSONAS
+
+1. SARAH - THE OVERWHELMED ENGINEER
+- Age: 32, Software Engineer at a startup
+- Pain Point: Lost her financial tracking habit during a crunch period, feels guilty but too drained to restart
+- Tech Comfort: High
+- Habits to Track: Budget review, exercise check, deep work hours, inbox zero
+- Key Need: Minimal friction to rebuild momentum
+
+2. MARCUS - THE REMOTE CONSULTANT
+- Age: 45, Management Consultant working from home
+- Pain Point: Work bleeds into personal time, no clear boundaries
+- Tech Comfort: Medium
+- Habits to Track: Client hours logged, steps taken, meal planning, family time
+- Key Need: Ritual to create work-life separation
+
+3. PRIYA - THE BUSY PARENT
+- Age: 38, Product Manager with two kids
+- Pain Point: Personal habits always sacrificed for family/work demands
+- Tech Comfort: Medium-High
+- Habits to Track: Meditation, water intake, personal project time, gratitude
+- Key Need: Something that takes literally seconds
+
+KEY USER FLOWS
+
+1. FIRST-TIME SETUP (One-time, 10 minutes)
+   Start → Welcome Screen → Habit Selection
+   ↓
+   "Choose 3-7 habits to track daily"
+   ↓
+   Habit Configuration (for each):
+   - Select tracking type (Yes/No, Number, or Choice)
+   - Set atomic version (guided suggestions)
+   - Add optional context shortcut
+   ↓
+   Set Shutdown Time → Enable Notifications
+   ↓
+   Practice Run → Setup Complete
+
+2. DAILY SHUTDOWN ROUTINE (Daily, <2 minutes)
+   5:00 PM: Push notification "Time for shutdown routine"
+   ↓
+   Open App → Today's Checklist appears
+   ↓
+   For each habit:
+   - Quick input (tap/number/choice)
+   - Optional: Flag for follow-up
+   - Auto-advance to next
+   ↓
+   Completion Animation → Daily Summary
+   ↓
+   "Shutdown complete. Enjoy your evening!"
+
+3. PROGRESS REVIEW (Weekly, 2-3 minutes)
+   Open App → Swipe to Progress View
+   ↓
+   See chain visualization for each habit
+   ↓
+   Tap any habit for details:
+   - Completion rate
+   - Patterns (best days, trends)
+   - Quick insights
+   ↓
+   Optional: Export or share progress
+
+4. MISSED DAY RECOVERY (As needed, 30 seconds)
+   Open app after missed day
+   ↓
+   "Yesterday incomplete" banner
+   ↓
+   Two options:
+   - "Quick catch-up" (30-second yesterday entry)
+   - "Skip & continue" (acknowledge gap)
+   ↓
+   Return to today's routine
+
+UI/UX CONSIDERATIONS
+
+VISUAL DESIGN
+- Dark mode by default (end-of-day eye strain consideration)
+- High contrast for quick scanning
+- Color coding: Green (complete), Gray (pending), Orange (flagged)
+- Minimal UI chrome - content takes full screen
+- Sans-serif fonts optimized for quick reading
+
+INTERACTION DESIGN
+- Thumb-reachable touch targets (mobile-first)
+- Haptic feedback on completion
+- Swipe gestures for power users
+- No confirmation dialogs (instant save with undo option)
+- Progressive disclosure (advanced features hidden until needed)
+
+INFORMATION ARCHITECTURE
+- Maximum 2 taps to any feature
+- Today view is always home screen
+- Bottom navigation: Today | Progress | Settings
+- No nested menus or hidden options
+- Search unnecessary due to limited content
+
+PERFORMANCE OPTIMIZATION
+- Instant load (PWA with offline capability)
+- Pre-fetch common next actions
+- Optimistic UI updates
+- Background sync for data
+- Zero perceived latency on inputs
+
+ACCESSIBILITY
+- VoiceOver/TalkBack full support
+- Minimum 44pt touch targets
+- High contrast mode available
+- Font size adjustable
+- Screen reader announces progress
+
+EMOTIONAL DESIGN
+- Celebration without infantilization
+- Progress shown through subtle growth animations
+- Mistakes handled with grace (easy recovery)
+- Completion feels satisfying but not gamified
+- Design conveys "tool" not "toy"
+
+COGNITIVE LOAD REDUCTION
+- No decisions during daily flow
+- Visual hierarchy guides eye movement
+- Consistent patterns throughout
+- Memory aids (yesterday's values shown)
+- Zero learning curve after setup
+
+ERROR PREVENTION
+- Smart defaults reduce incorrect entries
+- Logical limits on number inputs
+- Undo available for 5 seconds after any action
+- No destructive actions without recovery
+- Graceful offline handling
+
+NOTIFICATION STRATEGY
+- Single daily notification at chosen time
+- Optional 5-minute warning
+- Silent after 9 PM
+- Weekend timing can differ
+- Snooze acknowledges but maintains streak
+</context>
+<PRD>
+# Technical Architecture
+SHUTDOWN ROUTINE APP - TECHNICAL ARCHITECTURE
+
+SYSTEM COMPONENTS
+
+1. FRONTEND LAYER
+Progressive Web App (PWA)
+- React 18+ with TypeScript
+- Vite for build tooling
+- TanStack Query for data synchronization
+- IndexedDB for offline storage
+- Service Worker for offline capability
+- Workbox for caching strategies
+
+Mobile Apps (Phase 2)
+- React Native for iOS/Android
+- Shared business logic with web
+- Native modules for haptics, notifications
+
+2. BACKEND SERVICES
+API Gateway
+- Node.js with Fastify framework
+- GraphQL API (Apollo Server)
+- REST endpoints for third-party integrations
+- WebSocket support for real-time sync
+
+Core Services (Microservices Architecture)
+- User Service: Authentication, profiles, preferences
+- Habit Service: CRUD operations, templates, configurations
+- Tracking Service: Daily entries, completions, streaks
+- Analytics Service: Progress calculations, insights
+- Notification Service: Push, email, SMS scheduling
+
+3. DATA LAYER
+Primary Database
+- PostgreSQL for relational data
+- Optimized for time-series queries
+
+Cache Layer
+- Redis for session management
+- Cached aggregations (streaks, stats)
+- API response caching
+
+Queue System
+- BullMQ for background jobs
+- Notification scheduling
+- Data aggregation tasks
+
+DATA MODELS
+
+User {
+  id: UUID
+  email: string (unique)
+  created_at: timestamp
+  timezone: string
+  shutdown_time: time
+  preferences: JSONB {
+    theme: 'dark' | 'light' | 'auto'
+    notifications: boolean
+    weekend_schedule: object
+    completion_ritual: object
+  }
+}
+
+Habit {
+  id: UUID
+  user_id: UUID (FK)
+  name: string
+  type: 'boolean' | 'numeric' | 'choice'
+  atomic_prompt: string
+  configuration: JSONB {
+    numeric_unit?: string
+    numeric_range?: [min, max]
+    choices?: string[]
+    context_url?: string
+    icon?: string
+  }
+  position: integer
+  is_active: boolean
+  created_at: timestamp
+}
+
+DailyEntry {
+  id: UUID
+  user_id: UUID (FK)
+  date: date
+  started_at: timestamp
+  completed_at: timestamp?
+  is_complete: boolean
+}
+
+HabitCompletion {
+  id: UUID
+  daily_entry_id: UUID (FK)
+  habit_id: UUID (FK)
+  value: JSONB {
+    boolean?: boolean
+    numeric?: number
+    choice?: string
+  }
+  completed_at: timestamp
+  flagged_for_action: boolean
+  action_note?: string
+  time_to_complete: integer (ms)
+}
+
+Streak {
+  id: UUID
+  user_id: UUID (FK)
+  habit_id: UUID (FK)
+  current_streak: integer
+  longest_streak: integer
+  last_completed_date: date
+  total_completions: integer
+}
+
+APIS AND INTEGRATIONS
+
+GraphQL API Schema
+- Queries: getHabits, getDailyEntry, getStreaks, getAnalytics
+- Mutations: createHabit, updateHabit, completeHabit, flagForAction
+- Subscriptions: streakUpdates, dailyReminders
+
+Third-Party Integrations
+1. Authentication
+   - Auth0 or Supabase Auth
+   - Social login (Google, Apple)
+   - Magic link support
+
+2. External Data Sources
+   - Apple Health API (steps, exercise)
+   - Google Fit API (activity data)
+   - Financial aggregators (Plaid for balance checks)
+   - Calendar APIs (Google, Outlook)
+
+3. Productivity Tools
+   - Notion API (create follow-up tasks)
+   - Todoist/Things API (action items)
+   - Slack (completion notifications)
+
+4. Analytics & Monitoring
+   - Mixpanel for user analytics
+   - Sentry for error tracking
+   - LogRocket for session replay
+
+Webhook System
+- Incoming: Receive data from integrated services
+- Outgoing: Notify external systems of completions
+
+INFRASTRUCTURE REQUIREMENTS
+
+Hosting Architecture
+- Multi-region deployment for low latency
+- Auto-scaling based on evening usage patterns
+- CDN for static assets (CloudFront/Fastly)
+
+Cloud Provider (AWS)
+- ECS Fargate for containerized services
+- RDS for PostgreSQL (Multi-AZ)
+- ElastiCache for Redis
+- S3 for user exports/backups
+- CloudWatch for monitoring
+- Lambda for scheduled jobs
+
+Container Orchestration
+- Docker containers for all services
+- Kubernetes (EKS) for orchestration
+- Horizontal pod autoscaling
+- Rolling deployments
+
+Security Requirements
+- End-to-end encryption for sensitive data
+- SOC 2 compliance ready
+- GDPR/CCPA compliant data handling
+- Regular security audits
+- API rate limiting
+- WAF protection
+
+Performance Targets
+- API response time: <100ms (p95)
+- Page load time: <1s
+- Offline capability: Full functionality
+- Data sync: Eventually consistent
+- Uptime: 99.9% (excluding maintenance)
+
+Backup & Recovery
+- Automated daily backups
+- Point-in-time recovery (30 days)
+- Cross-region backup replication
+- Disaster recovery plan (<4hr RTO)
+
+Development Infrastructure
+- CI/CD: GitHub Actions
+- Staging environment (identical to prod)
+- Feature flag system (LaunchDarkly)
+- Blue-green deployments
+- Automated testing (>80% coverage)
+
+Monitoring Stack
+- Application: Datadog APM
+- Infrastructure: CloudWatch + Grafana
+- User monitoring: FullStory
+- Alerts: PagerDuty integration
+- SLO tracking: 99.5% success rate
+
+# Development Roadmap
+SHUTDOWN ROUTINE APP - DEVELOPMENT ROADMAP
+
+MVP (PHASE 1) - CORE SHUTDOWN ROUTINE
+
+Frontend Features:
+- Basic PWA setup with offline capability
+- Simple authentication (email/password only)
+- Habit configuration screen (3-7 habits max)
+  - Three types: boolean, numeric, simple choice
+  - Basic templates for common habits
+- Daily shutdown interface
+  - Single screen with all habits listed
+  - Tap for yes/no, number pad for numeric
+  - Manual completion tracking only
+- Basic streak visualization (text-based)
+- Settings page (shutdown time, notifications)
+
+Backend Features:
+- User authentication service
+- Habit CRUD operations
+- Daily entry tracking
+- Basic streak calculation
+- Single PostgreSQL database
+- Simple REST API
+- Local device notifications
+
+Technical Requirements:
+- React + TypeScript frontend
+- Node.js + Express backend
+- PostgreSQL database
+- Basic Docker setup
+- Local storage for offline mode
+- No external integrations
+
+PHASE 2 - ENHANCED EXPERIENCE
+
+Frontend Enhancements:
+- Visual chain representation for streaks
+- Two-minute timer with progress indicator
+- Smart sequencing (learns from usage patterns)
+- Quick shortcuts menu
+- Action queue for flagged items
+- Weekly/monthly progress views
+- Dark/light theme toggle
+- Gesture navigation
+- Voice input for numeric values
+- Completion animations
+
+Backend Enhancements:
+- Redis caching layer
+- GraphQL API migration
+- Advanced streak analytics
+- Pattern detection algorithms
+- Data export functionality
+- Timezone handling
+- Performance optimizations
+
+Technical Additions:
+- Service worker enhancements
+- IndexedDB for better offline sync
+- Background sync API
+- Push notification service
+- CDN for static assets
+
+PHASE 3 - INTEGRATIONS & AUTOMATION
+
+External Integrations:
+- Apple Health / Google Fit (auto-pull steps, exercise)
+- Calendar integration (block shutdown time)
+- Financial app connections (Plaid)
+- Deep linking to common apps
+  - Banking apps
+  - Fitness trackers
+  - Meditation apps
+  - Email clients
+- Productivity tool integrations
+  - Notion
+  - Todoist
+  - Things
+  - Obsidian
+
+Automation Features:
+- Smart defaults based on patterns
+- Auto-detection of completed habits
+- Predictive entry suggestions
+- Bulk operations for similar habits
+- API webhooks for custom integrations
+- IFTTT/Zapier connectors
+
+Technical Requirements:
+- OAuth implementation for integrations
+- Webhook infrastructure
+- API rate limiting
+- Data transformation pipeline
+- Security audit for external connections
+
+PHASE 4 - TEAM & ACCOUNTABILITY
+
+Social Features:
+- Accountability partners
+- Team dashboards for work groups
+- Shared habit templates
+- Anonymous benchmark comparisons
+- Streak competitions (opt-in)
+- Habit buddy matching
+- Progress sharing (social media)
+
+Team Features:
+- Manager dashboards (aggregate only)
+- Team shutdown rituals
+- Department-wide metrics
+- Custom organizational habits
+- Bulk user provisioning
+- SSO integration
+
+Privacy Features:
+- Granular sharing controls
+- Data anonymization options
+- Private vs. shared habits
+- Audit logs for data access
+
+Technical Additions:
+- WebSocket for real-time updates
+- Role-based access control
+- Team data segregation
+- Advanced permission system
+- Social graph database
+
+PHASE 5 - INTELLIGENCE & INSIGHTS
+
+Analytics Features:
+- Correlation analysis between habits
+- Predictive streak modeling
+- Optimal habit recommendations
+- Failure pattern identification
+- Personal insight generation
+- Habit impact scoring
+- Time-of-day optimization
+
+AI/ML Features:
+- Natural language habit entry
+- Smart categorization
+- Anomaly detection
+- Personalized encouragement
+- Habit clustering analysis
+- Churn prediction
+- Voice assistant integration
+
+Advanced Visualizations:
+- Interactive data explorations
+- Habit relationship mapping
+- Progress heat maps
+- Comparative analytics
+- Custom report builder
+
+Technical Requirements:
+- ML pipeline infrastructure
+- Data warehouse (Snowflake/BigQuery)
+- Real-time analytics engine
+- A/B testing framework
+- Advanced ETL processes
+
+PHASE 6 - PLATFORM EXPANSION
+
+Native Mobile Apps:
+- iOS app (Swift UI)
+- Android app (Kotlin)
+- Haptic feedback
+- Widget support
+- Watch complications
+- Siri/Google Assistant shortcuts
+
+Additional Platforms:
+- Desktop app (Electron)
+- Browser extensions
+- Slack app
+- Microsoft Teams integration
+- CLI tool for developers
+
+Ecosystem Features:
+- Public API for developers
+- Habit template marketplace
+- Custom plugin system
+- White-label options
+- Enterprise deployment options
+
+PHASE 7 - SPECIALIZED EXPERIENCES
+
+Vertical Solutions:
+- Shutdown for Students (study habits)
+- Shutdown for Health (medical adherence)
+- Shutdown for Finance (money habits)
+- Shutdown for Parents (family routines)
+- Shutdown for Remote Teams
+
+Advanced Personalization:
+- Multiple routine support (morning/evening)
+- Contextual routines (travel mode)
+- Seasonal adjustments
+- Life event adaptations
+- Cultural customizations
+
+Accessibility Expansion:
+- Screen reader optimizations
+- Cognitive accessibility modes
+- Simplified interfaces
+- Multiple language support
+- Offline-first markets
+
+TECHNICAL DEBT & MAINTENANCE PHASES
+
+Ongoing Requirements (Thread Through All Phases):
+- Security updates and audits
+- Performance optimizations
+- Bug fixes and stability
+- Documentation updates
+- Test coverage expansion
+- Monitoring improvements
+- Database migrations
+- API versioning
+- Deprecation management
+- Scale testing
+
+# Logical Dependency Chain
+SHUTDOWN ROUTINE APP - LOGICAL DEPENDENCY CHAIN
+
+FOUNDATION LAYER (Build First)
+
+1. Database Schema Core
+   - User table (id, email, created_at)
+   - Basic auth fields
+   Dependencies: None
+   Unlocks: All user-related features
+
+2. Authentication Skeleton
+   - Simple email/password auth
+   - Session management
+   - Protected routes
+   Dependencies: Database Schema Core
+   Unlocks: All authenticated features
+
+3. Basic Frontend Shell
+   - React app setup
+   - Routing (public/private)
+   - Login/logout UI
+   Dependencies: None (can parallel with backend)
+   Unlocks: All UI development
+
+MINIMAL VIABLE LOOP (Fastest Path to Usable)
+
+4. Habit Data Model
+   - Habit table (id, user_id, name, type)
+   - MINIMAL fields only
+   Dependencies: Database Schema Core
+   Unlocks: Habit CRUD
+
+5. Static Habit List UI
+   - Hardcoded 3 example habits
+   - Simple checkboxes
+   - No persistence yet
+   Dependencies: Basic Frontend Shell
+   Unlocks: User testing of core concept
+
+6. Daily Entry Model
+   - DailyEntry table
+   - HabitCompletion table
+   Dependencies: Habit Data Model
+   Unlocks: Tracking functionality
+
+7. Connect UI to Backend
+   - Save checkbox states
+   - Load today's status
+   - Basic completion flow
+   Dependencies: Daily Entry Model + Static Habit List UI
+   Unlocks: FIRST WORKING VERSION
+
+CORE EXPERIENCE BUILDOUT
+
+8. Habit Configuration UI
+   - Add/edit/delete habits
+   - Set habit types (boolean/numeric)
+   - Reorder habits
+   Dependencies: Habit Data Model + Connected UI
+   Unlocks: Personalization
+
+9. Atomic Input Components
+   - Boolean: Single tap checkbox
+   - Numeric: Number pad overlay
+   - Auto-advance between habits
+   Dependencies: Habit Configuration UI
+   Unlocks: 2-minute experience
+
+10. Local Storage Layer
+    - Cache today's entry
+    - Offline-first saves
+    - Sync when online
+    Dependencies: Connected UI
+    Unlocks: Reliability
+
+11. Basic Streak Calculation
+    - Current streak counter
+    - Last 7 days display
+    - Simple completion rate
+    Dependencies: Daily Entry Model
+    Unlocks: Progress tracking
+
+POLISH & OPTIMIZATION
+
+12. Time-Based Features
+    - Shutdown time setting
+    - Daily notification
+    - "Today" vs "Yesterday" logic
+    Dependencies: Basic functionality complete
+    Unlocks: Habit formation
+
+13. PWA Configuration
+    - Service worker
+    - Offline manifest
+    - Install prompts
+    Dependencies: Local Storage Layer
+    Unlocks: App-like experience
+
+14. Visual Chain Display
+    - Replace text streaks with visuals
+    - Animated completions
+    - Progress celebrations
+    Dependencies: Basic Streak Calculation
+    Unlocks: Emotional engagement
+
+15. Smart Sequencing v1
+    - Track completion times
+    - Reorder based on speed
+    - Group related habits
+    Dependencies: Multiple days of data
+    Unlocks: Efficiency improvements
+
+ADVANCED FEATURES (Build on Solid Base)
+
+16. Action Queue System
+    - Flag habits for follow-up
+    - Morning reminder of flags
+    - Clear/complete actions
+    Dependencies: Core completion flow
+    Unlocks: Sustainable practice
+
+17. Quick Entry Enhancements
+    - Yesterday as default
+    - Voice input option
+    - Gesture shortcuts
+    Dependencies: Atomic Input Components
+    Unlocks: Sub-60-second completion
+
+18. Progress Analytics
+    - Weekly/monthly views
+    - Best day analysis
+    - Habit correlations
+    Dependencies: 30+ days of data
+    Unlocks: Insights
+
+19. Export/Backup
+    - CSV export
+    - JSON backup
+    - Import previous data
+    Dependencies: Stable data model
+    Unlocks: Data ownership
+
+20. External Shortcuts
+    - URL shortcuts to apps
+    - Deep linking setup
+    - Return-to-app flow
+    Dependencies: Stable habit configuration
+    Unlocks: Contextual help
+
+ARCHITECTURAL PRINCIPLES
+
+Atomic Features:
+- Each feature works independently
+- No feature breaks existing functionality
+- Features enhance but don't require each other
+
+Progressive Enhancement:
+- Static → Dynamic
+- Online → Offline
+- Simple → Smart
+- Text → Visual
+
+Data Model Stability:
+- Core tables defined early
+- Only extend, never modify
+- Migrations planned from start
+
+User Value Checkpoints:
+- Step 7: First working routine
+- Step 11: Progress tracking
+- Step 14: Delightful experience
+- Step 17: Efficiency maximized
+
+ANTI-PATTERNS TO AVOID
+
+Don't Build:
+- User preferences before core loop
+- Themes before functionality
+- Social features before personal
+- Analytics before data collection
+- Optimizations before usage patterns
+
+Dependency Violations:
+- No AI features until manual works perfectly
+- No team features until individual is solid
+- No integrations until core is stable
+- No native apps until PWA is proven
+
+PARALLEL WORK STREAMS
+
+Can Build Simultaneously:
+- Frontend shell + Backend auth
+- Database schema + API design
+- UI components + Data models
+- Offline capability + Online sync
+
+Must Serialize:
+- Data model → CRUD operations
+- Basic UI → Enhanced UI
+- Manual entry → Automation
+- Individual → Team features
+
+# Risks and Mitigations
+SHUTDOWN ROUTINE APP - RISKS AND MITIGATIONS
+
+TECHNICAL CHALLENGES
+
+Risk: Offline/Online Sync Conflicts
+- Users complete habits offline and online simultaneously
+- Data conflicts when syncing
+- Lost data frustrates users and breaks streaks
+Mitigation:
+- Implement "last write wins" with full history log
+- Show sync status clearly in UI
+- Allow manual conflict resolution for critical data
+- Store complete action history for recovery
+
+Risk: 2-Minute Performance Target
+- Database queries slow down with months of data
+- UI becomes sluggish with many habits
+- Network latency impacts perceived speed
+Mitigation:
+- Implement aggressive caching strategy from day 1
+- Paginate historical data queries
+- Preload today's data on app launch
+- Use optimistic UI updates everywhere
+- Design data model for time-series efficiency
+
+Risk: PWA Limitations
+- iOS PWA restrictions (no push notifications)
+- Storage limits on mobile browsers
+- Inconsistent offline behavior across devices
+Mitigation:
+- Build notification fallbacks (SMS, email)
+- Implement data pruning for old entries
+- Test on all major platforms early
+- Consider native app timeline acceleration
+- Document platform limitations clearly
+
+Risk: Data Model Lock-in
+- Early schema decisions hard to change
+- Migration complexity grows over time
+- Breaking changes frustrate users
+Mitigation:
+- Design extensible schema with JSONB fields
+- Version API from day 1
+- Build migration framework before launch
+- Keep core tables minimal
+- Plan for backward compatibility
+
+MVP SCOPING RISKS
+
+Risk: Feature Creep in MVP
+- "Just one more feature" syndrome
+- MVP becomes too complex to ship
+- Loses focus on core value prop
+Mitigation:
+- Hard limit: 7 features maximum in MVP
+- Define "done" criteria for each feature
+- Time-box MVP development
+- User test with paper prototypes first
+- Kill features that take >2 days
+
+Risk: MVP Too Minimal
+- Doesn't demonstrate core value
+- Users don't understand the vision
+- No clear upgrade path
+Mitigation:
+- Focus on complete user journey, not features
+- Ensure first-run experience is polished
+- Include one "delight" feature (completion ritual)
+- Build extensibility hooks from start
+- Test with 5 real users before expanding
+
+Risk: Wrong Initial Assumptions
+- Users want different features than expected
+- Core concept doesn't resonate
+- Usage patterns differ from hypothesis
+Mitigation:
+- Launch closed beta with 20 users
+- Implement analytics from day 1
+- Weekly user interviews during beta
+- A/B test core assumptions
+- Pivot quickly based on data
+
+Risk: Architecture Doesn't Scale
+- MVP choices block future features
+- Refactoring requires full rewrite
+- Performance degrades with growth
+Mitigation:
+- Use proven patterns (PWA, REST/GraphQL)
+- Implement monitoring early
+- Load test with 10x expected data
+- Design for horizontal scaling
+- Keep services loosely coupled
+
+RESOURCE CONSTRAINTS
+
+Risk: Solo Developer Burnout
+- Too much to build alone
+- Context switching overhead
+- Motivation loss during long build
+Mitigation:
+- Strict work-in-progress limits
+- Automate everything possible
+- Use component libraries (don't reinvent)
+- Schedule regular breaks
+- Ship something every week
+
+Risk: Limited Testing Resources
+- No QA team
+- Multiple platforms to support
+- Edge cases multiply quickly
+Mitigation:
+- Implement comprehensive automated testing
+- Use error tracking (Sentry) from day 1
+- Beta test with tech-savvy users first
+- Focus on one platform initially
+- Crowdsource bug reports
+
+Risk: Infrastructure Costs
+- Database hosting expenses
+- Notification services add up
+- CDN and bandwidth costs
+Mitigation:
+- Start with free tiers (Supabase, Vercel)
+- Implement usage quotas early
+- Cache aggressively to reduce queries
+- Consider freemium model planning
+- Monitor costs weekly
+
+Risk: Time to Market
+- Competitors could launch first
+- User interest might wane
+- Perfect becomes enemy of good
+Mitigation:
+- Launch MVP in 30 days max
+- Build in public for accountability
+- Share progress updates weekly
+- Focus on one unique differentiator
+- Fast follow with updates
+
+Risk: Knowledge Gaps
+- PWA development learning curve
+- State management complexity
+- Performance optimization expertise
+Mitigation:
+- Use well-documented frameworks
+- Start with tutorials/templates
+- Join relevant Discord communities
+- Hire freelancer for specific challenges
+- Build proof-of-concepts first
+
+Risk: User Acquisition
+- Building doesn't guarantee users
+- Marketing requires different skills
+- Organic growth is slow
+Mitigation:
+- Build email list during development
+- Partner with productivity influencers
+- Launch on Product Hunt
+- Create compelling demo video
+- Solve your own problem first
+
+CRITICAL SUCCESS FACTORS
+
+Non-Negotiable Requirements:
+1. Page loads in <1 second
+2. Daily routine takes <2 minutes
+3. Works offline from day 1
+4. Zero data loss scenarios
+5. Streak recovery options
+
+Early Warning Signals:
+- Daily active usage <60% after week 1
+- Completion time >3 minutes average
+- More than 2 crash reports per week
+- User requests focus on missing basics
+- Sync conflicts reported by >1% users
+
+Go/No-Go Criteria for Expansion:
+- 100+ daily active users
+- 70%+ week-2 retention
+- <2 minute average completion
+- Positive unit economics
+- Clear feature request patterns
+
+# Appendix
+SHUTDOWN ROUTINE APP - APPENDIX
+
+RESEARCH FINDINGS
+
+Habit Formation Science:
+- 66 days average for habit formation (not 21) - Lally et al., 2010
+- Missing one day doesn't break habit formation if pattern resumes
+- End-of-day habits have 73% lower success rate than morning habits
+- Implementation intentions ("When X, then Y") increase success by 3x
+- Smallest viable habit has 2.5x better adherence than complex habits
+
+Shutdown Ritual Research (Cal Newport):
+- Defined endpoint reduces work-related rumination by 40%
+- Ritual completion linked to better sleep quality
+- Average knowledge worker checks work email until 9:47 PM
+- Clear boundaries improve next-day focus by 23%
+- Written/digital confirmation more effective than mental note
+
+Habit Tracking App Abandonment:
+- 95% of habit apps abandoned within 30 days
+- Top abandonment reasons:
+  1. Too time consuming (34%)
+  2. Guilt from broken streaks (28%)
+  3. Too many features (19%)
+  4. Forgot to use app (11%)
+  5. Achieved goal and stopped (8%)
+
+Competitor Analysis:
+- Habitica: Gamification leads to external motivation dependence
+- Streaks: Too simple, lacks context for habits
+- Way of Life: Complex UI increases time to log
+- Productive: Feature overload, 5+ minutes to complete daily
+
+User Interview Insights (n=24):
+- 87% track habits mentally but want backup
+- 92% prefer evening reflection vs morning planning
+- 67% abandoned previous apps due to time requirement
+- 83% want habits linked to existing tools (calendar, finance apps)
+- 96% frustrated by all-or-nothing streak mentality
+
+TECHNICAL SPECIFICATIONS
+
+API Endpoint Specifications:
+```
+POST   /api/auth/login
+POST   /api/auth/logout
+GET    /api/habits
+POST   /api/habits
+PUT    /api/habits/:id
+DELETE /api/habits/:id
+GET    /api/entries/:date
+POST   /api/entries/:date/habits/:habitId
+GET    /api/streaks
+GET    /api/analytics/patterns
+```
+
+Performance Benchmarks:
+- Time to Interactive (TTI): <1.0s
+- First Contentful Paint (FCP): <0.5s
+- API Response Time: <100ms (p95)
+- Offline sync resolution: <500ms
+- Daily routine completion: <120s average
+- Database query time: <50ms for any view
+
+Security Specifications:
+- Password: bcrypt with cost factor 12
+- Sessions: Secure, HttpOnly, SameSite cookies
+- API: Rate limiting at 100 req/min per user
+- Data: AES-256 encryption at rest
+- Transport: TLS 1.3 minimum
+- OWASP Top 10 compliance required
+
+Data Retention Policy:
+- Active data: Indefinite retention
+- Deleted accounts: 30-day recovery window
+- Backups: 90-day retention
+- Audit logs: 1-year retention
+- Anonymous analytics: 2-year retention
+- GDPR compliance: Full data export within 48h
+
+Browser Compatibility Matrix:
+- Chrome/Edge: Last 2 versions
+- Safari: Last 2 versions + iOS 14+
+- Firefox: Last 2 versions
+- Mobile browsers: iOS Safari 14+, Chrome Android
+- PWA features: Progressive enhancement approach
+
+Accessibility Standards:
+- WCAG 2.1 Level AA compliance
+- Screen reader tested (NVDA, JAWS, VoiceOver)
+- Keyboard navigation complete
+- Color contrast ratio: 4.5:1 minimum
+- Focus indicators visible
+- Touch targets: 44x44pt minimum
+
+BUSINESS CONSIDERATIONS
+
+Pricing Research:
+- Users willing to pay $3-5/month for privacy-focused app
+- Annual pricing increases retention by 3.2x
+- Free tier necessary for habit formation period
+- Team pricing commands 5x individual rate
+
+Unit Economics (Projected):
+- Server cost per user: $0.12/month
+- Notification cost: $0.05/month
+- Support cost: $0.18/month
+- Total: $0.35/month per active user
+
+Launch Strategy:
+- Week 1: Friends/family beta (20 users)
+- Week 2-4: Closed beta (100 users)
+- Week 5-8: Open beta with waitlist
+- Week 9: Product Hunt launch
+- Week 10: Begin content marketing
+
+NOTIFICATION BEST PRACTICES
+
+Timing Research:
+- Optimal notification: 15 min before stated shutdown
+- Snooze duration: 10 minutes (2x max)
+- Weekend delay: 1 hour later than weekday
+- Vacation mode: Essential for retention
+
+Message Templates:
+- Primary: "Ready for your 2-minute shutdown routine?"
+- Snooze: "Quick reminder: shutdown routine pending"
+- Streak milestone: "7 days strong! Quick check-in?"
+- Recovery: "Welcome back! Resume your routine?"
+
+INTEGRATION SPECIFICATIONS
+
+Deep Link Patterns:
+- iOS: app-name://habits/complete
+- Android: intent://habits#Intent
+- Web: https://app.com/quick-entry
+
+OAuth Scopes Required:
+- Google Fit: activity.read
+- Apple Health: HKQuantityTypeIdentifierStepCount
+- Plaid: accounts, balances
+- Google Calendar: calendar.readonly
+
+Webhook Payload Format:
+```json
+{
+  "event": "habit_completed",
+  "user_id": "uuid",
+  "habit_id": "uuid",
+  "timestamp": "ISO-8601",
+  "value": {},
+  "metadata": {}
+}
+```
+
+SUPPORT DOCUMENTATION NEEDS
+
+User Guide Sections:
+1. First-time setup (with video)
+2. Creating atomic habits
+3. Understanding streaks
+4. Recovering from missed days
+5. Troubleshooting sync issues
+
+FAQ Topics:
+- "Why can't I set reminders for each habit?"
+- "How do I export my data?"
+- "What happens to my streak if I travel?"
+- "Can I track habits multiple times per day?"
+- "How do I share progress without social media?"
+
+METRICS FOR SUCCESS
+
+North Star Metric:
+- Daily Active Users completing routine
+
+Supporting Metrics:
+- Average completion time (<2 min target)
+- 7-day retention rate (>60% target)
+- 30-day retention rate (>40% target)
+- Habits per user (4-6 optimal)
+- Streak recovery rate (>70% target)
+
+Anti-Metrics (Avoid Optimizing):
+- Total time in app (less is better)
+- Number of features used (focus matters)
+- Social shares (privacy first)
+- Notification opens (habit > reminder)
+
+FUTURE RESEARCH AREAS
+
+Unexplored Questions:
+- Optimal number of habits for adherence?
+- Morning vs evening routine effectiveness?
+- Impact of social accountability features?
+- Correlation between habit types and success?
+- Cultural differences in shutdown rituals?
+
+A/B Test Candidates:
+- Completion celebration types
+- Streak visualization methods
+- Default habit suggestions
+- Notification timing/copy
+- Onboarding flow variations
+</PRD>
