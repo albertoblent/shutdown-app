@@ -1,0 +1,41 @@
+SHUTDOWN ROUTINE APP - PRODUCT OVERVIEW
+
+PROBLEM:
+Knowledge workers struggle to maintain essential personal habits (finances, health, productivity tracking) because these practices require context switching and feel like "one more thing" after a long workday. When habits break, rebuilding them feels overwhelming, creating a negative spiral of guilt and avoidance.
+
+SOLUTION:
+The Shutdown Routine App transforms daily habit maintenance into a streamlined 2-minute ritual at the end of each workday. By breaking down habits into atomic micro-commitments focused on acknowledgment rather than action, it removes friction while maintaining accountability.
+
+TARGET USERS:
+- Knowledge workers who have "fallen off" key personal habits
+- Professionals seeking work-life boundaries through shutdown rituals
+- Anyone who struggles with habit tracking app abandonment
+- People who value data-driven personal improvement but lack consistency
+
+KEY VALUE PROPOSITIONS:
+
+1. FRICTIONLESS EXECUTION
+   - Complete your entire daily check-in under 2 minutes
+   - Quick taps, number entries, and yes/no acknowledgments
+   - No lengthy forms or complex tracking
+
+2. PSYCHOLOGICAL CLOSURE
+   - Can't properly "end" work without completing the routine
+   - Creates a clear boundary between work and personal time
+   - Transforms obligation into ritual
+
+3. SMART SIMPLICITY
+   - Habits are pre-configured - no daily decision fatigue
+   - Intelligent sequencing learns your optimal flow
+   - Contextual shortcuts to required apps/tools
+
+4. SUSTAINABLE MOMENTUM
+   - Focus on recording what happened, not forcing action
+   - Separate "action needed" queue prevents overwhelm
+   - Visual chain tracking provides gentle motivation
+
+CORE INSIGHT:
+The app succeeds by acknowledging a truth: at day's end, you're tired. Instead of demanding more effort, it asks only for honest acknowledgment. This micro-commitment rebuilds the neural pathway of habit attention without the resistance of full execution.
+
+EXAMPLE USE CASE:
+Sarah, a software engineer, lost her financial tracking habit months ago. Each day at 5 PM, her Shutdown Routine prompts her to simply open her banking app and select today's primary spending category from a quick picker. In 15 seconds, she's maintained awareness of her finances without the burden of full budget review. After 30 days, she naturally starts checking her budget more thoroughly - the habit has been repaired through consistent micro-actions.

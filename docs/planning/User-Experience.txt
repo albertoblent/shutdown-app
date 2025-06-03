@@ -1,0 +1,142 @@
+SHUTDOWN ROUTINE APP - USER EXPERIENCE
+
+USER PERSONAS
+
+1. SARAH - THE OVERWHELMED ENGINEER
+- Age: 32, Software Engineer at a startup
+- Pain Point: Lost her financial tracking habit during a crunch period, feels guilty but too drained to restart
+- Tech Comfort: High
+- Habits to Track: Budget review, exercise check, deep work hours, inbox zero
+- Key Need: Minimal friction to rebuild momentum
+
+2. MARCUS - THE REMOTE CONSULTANT
+- Age: 45, Management Consultant working from home
+- Pain Point: Work bleeds into personal time, no clear boundaries
+- Tech Comfort: Medium
+- Habits to Track: Client hours logged, steps taken, meal planning, family time
+- Key Need: Ritual to create work-life separation
+
+3. PRIYA - THE BUSY PARENT
+- Age: 38, Product Manager with two kids
+- Pain Point: Personal habits always sacrificed for family/work demands
+- Tech Comfort: Medium-High
+- Habits to Track: Meditation, water intake, personal project time, gratitude
+- Key Need: Something that takes literally seconds
+
+KEY USER FLOWS
+
+1. FIRST-TIME SETUP (One-time, 10 minutes)
+   Start → Welcome Screen → Habit Selection
+   ↓
+   "Choose 3-7 habits to track daily"
+   ↓
+   Habit Configuration (for each):
+   - Select tracking type (Yes/No, Number, or Choice)
+   - Set atomic version (guided suggestions)
+   - Add optional context shortcut
+   ↓
+   Set Shutdown Time → Enable Notifications
+   ↓
+   Practice Run → Setup Complete
+
+2. DAILY SHUTDOWN ROUTINE (Daily, <2 minutes)
+   5:00 PM: Push notification "Time for shutdown routine"
+   ↓
+   Open App → Today's Checklist appears
+   ↓
+   For each habit:
+   - Quick input (tap/number/choice)
+   - Optional: Flag for follow-up
+   - Auto-advance to next
+   ↓
+   Completion Animation → Daily Summary
+   ↓
+   "Shutdown complete. Enjoy your evening!"
+
+3. PROGRESS REVIEW (Weekly, 2-3 minutes)
+   Open App → Swipe to Progress View
+   ↓
+   See chain visualization for each habit
+   ↓
+   Tap any habit for details:
+   - Completion rate
+   - Patterns (best days, trends)
+   - Quick insights
+   ↓
+   Optional: Export or share progress
+
+4. MISSED DAY RECOVERY (As needed, 30 seconds)
+   Open app after missed day
+   ↓
+   "Yesterday incomplete" banner
+   ↓
+   Two options:
+   - "Quick catch-up" (30-second yesterday entry)
+   - "Skip & continue" (acknowledge gap)
+   ↓
+   Return to today's routine
+
+UI/UX CONSIDERATIONS
+
+VISUAL DESIGN
+- Dark mode by default (end-of-day eye strain consideration)
+- High contrast for quick scanning
+- Color coding: Green (complete), Gray (pending), Orange (flagged)
+- Minimal UI chrome - content takes full screen
+- Sans-serif fonts optimized for quick reading
+
+INTERACTION DESIGN
+- Thumb-reachable touch targets (mobile-first)
+- Haptic feedback on completion
+- Swipe gestures for power users
+- No confirmation dialogs (instant save with undo option)
+- Progressive disclosure (advanced features hidden until needed)
+
+INFORMATION ARCHITECTURE
+- Maximum 2 taps to any feature
+- Today view is always home screen
+- Bottom navigation: Today | Progress | Settings
+- No nested menus or hidden options
+- Search unnecessary due to limited content
+
+PERFORMANCE OPTIMIZATION
+- Instant load (PWA with offline capability)
+- Pre-fetch common next actions
+- Optimistic UI updates
+- Background sync for data
+- Zero perceived latency on inputs
+
+ACCESSIBILITY
+- VoiceOver/TalkBack full support
+- Minimum 44pt touch targets
+- High contrast mode available
+- Font size adjustable
+- Screen reader announces progress
+
+EMOTIONAL DESIGN
+- Celebration without infantilization
+- Progress shown through subtle growth animations
+- Mistakes handled with grace (easy recovery)
+- Completion feels satisfying but not gamified
+- Design conveys "tool" not "toy"
+
+COGNITIVE LOAD REDUCTION
+- No decisions during daily flow
+- Visual hierarchy guides eye movement
+- Consistent patterns throughout
+- Memory aids (yesterday's values shown)
+- Zero learning curve after setup
+
+ERROR PREVENTION
+- Smart defaults reduce incorrect entries
+- Logical limits on number inputs
+- Undo available for 5 seconds after any action
+- No destructive actions without recovery
+- Graceful offline handling
+
+NOTIFICATION STRATEGY
+- Single daily notification at chosen time
+- Optional 5-minute warning
+- Silent after 9 PM
+- Weekend timing can differ
+- Snooze acknowledges but maintains streak

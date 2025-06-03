@@ -1,0 +1,112 @@
+SHUTDOWN ROUTINE APP - CORE FEATURES
+
+1. ATOMIC HABIT CONFIGURATION
+What it does:
+Allows users to define their essential daily habits once, breaking each down into its smallest trackable unit (e.g., "Did I exercise?" instead of detailed workout logging).
+
+Why it's important:
+Eliminates daily decision fatigue and ensures habits are small enough to track in seconds, not minutes. The one-time setup investment pays dividends in daily time savings.
+
+How it works:
+- Users select from preset habit templates or create custom ones
+- Each habit is defined as boolean (yes/no), numeric (quick entry), or single-select
+- System automatically suggests atomic versions of common habits
+- Configuration locked after setup to prevent tinkering/procrastination
+
+2. TWO-MINUTE SHUTDOWN INTERFACE
+What it does:
+Presents all daily habits in a single, optimized screen designed for completion in under 2 minutes.
+
+Why it's important:
+The psychological barrier to habit tracking disappears when the entire process takes less time than brushing your teeth. Speed is the killer feature.
+
+How it works:
+- Large touch targets for mobile-first design
+- Single tap for yes/no habits
+- Number pad overlay for metrics (steps, hours, etc.)
+- Swipe gestures for quick navigation between habits
+- Auto-advance to next habit after input
+
+3. SMART SEQUENCING ENGINE
+What it does:
+Learns and optimizes the order in which habits are presented based on completion patterns and time taken.
+
+Why it's important:
+Reduces cognitive load by presenting habits in the most logical flow, grouping related items and prioritizing quick wins to build momentum.
+
+How it works:
+- Tracks completion time and order preferences
+- Groups related habits (all finance tasks together)
+- Places quickest habits first to build momentum
+- Adapts based on day of week patterns
+- Optional manual reordering override
+
+4. CONTEXTUAL SHORTCUTS
+What it does:
+Provides one-tap access to the apps, websites, or tools needed to complete each habit check-in.
+
+Why it's important:
+Removes the friction of app-switching and searching, making it effortless to verify information needed for accurate tracking.
+
+How it works:
+- Deep links to specific app screens (e.g., budget category in finance app)
+- Quick launchers for websites with auto-login where possible
+- Smart clipboard for copy-pasting values
+- Return-to-app button overlay for seamless flow
+- Optional API integrations for automatic data pull
+
+5. CHAIN VISUALIZATION
+What it does:
+Shows streak progress for each habit using the "don't break the chain" methodology with visual chain links.
+
+Why it's important:
+Provides immediate visual feedback on consistency while avoiding the anxiety of traditional streak counters. Missing one day doesn't "break" everything.
+
+How it works:
+- Visual chain grows with each completed day
+- Broken links shown but chain continues (not reset to zero)
+- Weekly and monthly views to see patterns
+- Subtle animations reward consistency
+- Export/share capability for accountability
+
+6. ACTION QUEUE
+What it does:
+Captures follow-up items that need attention without blocking the shutdown routine completion.
+
+Why it's important:
+Acknowledges that some habits reveal needed actions (e.g., "budget exceeded") without forcing immediate resolution when energy is low.
+
+How it works:
+- Quick "flag for tomorrow" button on any habit
+- Optional note field for context
+- Morning notification with queued items
+- Integration with task managers (optional)
+- Clear queue history to track follow-through
+
+7. RAPID DATA ENTRY
+What it does:
+Enables lightning-fast input through voice, gestures, and smart defaults.
+
+Why it's important:
+Every second of friction increases abandonment risk. Multiple input methods ensure everyone finds their fastest path.
+
+How it works:
+- Voice input for numeric values ("three hours deep work")
+- Yesterday's values as quick-tap defaults
+- Smart predictions based on patterns
+- Gesture shortcuts for common values
+- Bulk edit for multiple similar entries
+
+8. SHUTDOWN COMPLETION RITUAL
+What it does:
+Provides satisfying closure when all habits are checked, creating a psychological boundary between work and personal time.
+
+Why it's important:
+The ritual aspect transforms a chore into a meaningful transition, increasing adherence through positive association.
+
+How it works:
+- Customizable completion animation/sound
+- Daily summary of key metrics
+- Optional shutdown affirmation or quote
+- Calendar integration to mark "work ended"
+- Phone notification silencing trigger (optional)

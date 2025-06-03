@@ -1,0 +1,201 @@
+SHUTDOWN ROUTINE APP - LOGICAL DEPENDENCY CHAIN
+
+FOUNDATION LAYER (Build First)
+
+1. Database Schema Core
+   - User table (id, email, created_at)
+   - Basic auth fields
+   Dependencies: None
+   Unlocks: All user-related features
+
+2. Authentication Skeleton
+   - Simple email/password auth
+   - Session management
+   - Protected routes
+   Dependencies: Database Schema Core
+   Unlocks: All authenticated features
+
+3. Basic Frontend Shell
+   - React app setup
+   - Routing (public/private)
+   - Login/logout UI
+   Dependencies: None (can parallel with backend)
+   Unlocks: All UI development
+
+MINIMAL VIABLE LOOP (Fastest Path to Usable)
+
+4. Habit Data Model
+   - Habit table (id, user_id, name, type)
+   - MINIMAL fields only
+   Dependencies: Database Schema Core
+   Unlocks: Habit CRUD
+
+5. Static Habit List UI
+   - Hardcoded 3 example habits
+   - Simple checkboxes
+   - No persistence yet
+   Dependencies: Basic Frontend Shell
+   Unlocks: User testing of core concept
+
+6. Daily Entry Model
+   - DailyEntry table
+   - HabitCompletion table
+   Dependencies: Habit Data Model
+   Unlocks: Tracking functionality
+
+7. Connect UI to Backend
+   - Save checkbox states
+   - Load today's status
+   - Basic completion flow
+   Dependencies: Daily Entry Model + Static Habit List UI
+   Unlocks: FIRST WORKING VERSION
+
+CORE EXPERIENCE BUILDOUT
+
+8. Habit Configuration UI
+   - Add/edit/delete habits
+   - Set habit types (boolean/numeric)
+   - Reorder habits
+   Dependencies: Habit Data Model + Connected UI
+   Unlocks: Personalization
+
+9. Atomic Input Components
+   - Boolean: Single tap checkbox
+   - Numeric: Number pad overlay
+   - Auto-advance between habits
+   Dependencies: Habit Configuration UI
+   Unlocks: 2-minute experience
+
+10. Local Storage Layer
+    - Cache today's entry
+    - Offline-first saves
+    - Sync when online
+    Dependencies: Connected UI
+    Unlocks: Reliability
+
+11. Basic Streak Calculation
+    - Current streak counter
+    - Last 7 days display
+    - Simple completion rate
+    Dependencies: Daily Entry Model
+    Unlocks: Progress tracking
+
+POLISH & OPTIMIZATION
+
+12. Time-Based Features
+    - Shutdown time setting
+    - Daily notification
+    - "Today" vs "Yesterday" logic
+    Dependencies: Basic functionality complete
+    Unlocks: Habit formation
+
+13. PWA Configuration
+    - Service worker
+    - Offline manifest
+    - Install prompts
+    Dependencies: Local Storage Layer
+    Unlocks: App-like experience
+
+14. Visual Chain Display
+    - Replace text streaks with visuals
+    - Animated completions
+    - Progress celebrations
+    Dependencies: Basic Streak Calculation
+    Unlocks: Emotional engagement
+
+15. Smart Sequencing v1
+    - Track completion times
+    - Reorder based on speed
+    - Group related habits
+    Dependencies: Multiple days of data
+    Unlocks: Efficiency improvements
+
+ADVANCED FEATURES (Build on Solid Base)
+
+16. Action Queue System
+    - Flag habits for follow-up
+    - Morning reminder of flags
+    - Clear/complete actions
+    Dependencies: Core completion flow
+    Unlocks: Sustainable practice
+
+17. Quick Entry Enhancements
+    - Yesterday as default
+    - Voice input option
+    - Gesture shortcuts
+    Dependencies: Atomic Input Components
+    Unlocks: Sub-60-second completion
+
+18. Progress Analytics
+    - Weekly/monthly views
+    - Best day analysis
+    - Habit correlations
+    Dependencies: 30+ days of data
+    Unlocks: Insights
+
+19. Export/Backup
+    - CSV export
+    - JSON backup
+    - Import previous data
+    Dependencies: Stable data model
+    Unlocks: Data ownership
+
+20. External Shortcuts
+    - URL shortcuts to apps
+    - Deep linking setup
+    - Return-to-app flow
+    Dependencies: Stable habit configuration
+    Unlocks: Contextual help
+
+ARCHITECTURAL PRINCIPLES
+
+Atomic Features:
+- Each feature works independently
+- No feature breaks existing functionality
+- Features enhance but don't require each other
+
+Progressive Enhancement:
+- Static → Dynamic
+- Online → Offline
+- Simple → Smart
+- Text → Visual
+
+Data Model Stability:
+- Core tables defined early
+- Only extend, never modify
+- Migrations planned from start
+
+User Value Checkpoints:
+- Step 7: First working routine
+- Step 11: Progress tracking
+- Step 14: Delightful experience
+- Step 17: Efficiency maximized
+
+ANTI-PATTERNS TO AVOID
+
+Don't Build:
+- User preferences before core loop
+- Themes before functionality  
+- Social features before personal
+- Analytics before data collection
+- Optimizations before usage patterns
+
+Dependency Violations:
+- No AI features until manual works perfectly
+- No team features until individual is solid
+- No integrations until core is stable
+- No native apps until PWA is proven
+
+PARALLEL WORK STREAMS
+
+Can Build Simultaneously:
+- Frontend shell + Backend auth
+- Database schema + API design
+- UI components + Data models
+- Offline capability + Online sync
+
+Must Serialize:
+- Data model → CRUD operations
+- Basic UI → Enhanced UI
+- Manual entry → Automation
+- Individual → Team features

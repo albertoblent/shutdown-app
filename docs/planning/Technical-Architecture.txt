@@ -1,0 +1,203 @@
+SHUTDOWN ROUTINE APP - TECHNICAL ARCHITECTURE
+
+SYSTEM COMPONENTS
+
+1. FRONTEND LAYER
+Progressive Web App (PWA)
+- React 18+ with TypeScript
+- Vite for build tooling
+- TanStack Query for data synchronization
+- IndexedDB for offline storage
+- Service Worker for offline capability
+- Workbox for caching strategies
+
+Mobile Apps (Phase 2)
+- React Native for iOS/Android
+- Shared business logic with web
+- Native modules for haptics, notifications
+
+2. BACKEND SERVICES
+API Gateway
+- Node.js with Fastify framework
+- GraphQL API (Apollo Server)
+- REST endpoints for third-party integrations
+- WebSocket support for real-time sync
+
+Core Services (Microservices Architecture)
+- User Service: Authentication, profiles, preferences
+- Habit Service: CRUD operations, templates, configurations  
+- Tracking Service: Daily entries, completions, streaks
+- Analytics Service: Progress calculations, insights
+- Notification Service: Push, email, SMS scheduling
+
+3. DATA LAYER
+Primary Database
+- PostgreSQL for relational data
+- Optimized for time-series queries
+
+Cache Layer
+- Redis for session management
+- Cached aggregations (streaks, stats)
+- API response caching
+
+Queue System
+- BullMQ for background jobs
+- Notification scheduling
+- Data aggregation tasks
+
+DATA MODELS
+
+User {
+  id: UUID
+  email: string (unique)
+  created_at: timestamp
+  timezone: string
+  shutdown_time: time
+  preferences: JSONB {
+    theme: 'dark' | 'light' | 'auto'
+    notifications: boolean
+    weekend_schedule: object
+    completion_ritual: object
+  }
+}
+
+Habit {
+  id: UUID
+  user_id: UUID (FK)
+  name: string
+  type: 'boolean' | 'numeric' | 'choice'
+  atomic_prompt: string
+  configuration: JSONB {
+    numeric_unit?: string
+    numeric_range?: [min, max]
+    choices?: string[]
+    context_url?: string
+    icon?: string
+  }
+  position: integer
+  is_active: boolean
+  created_at: timestamp
+}
+
+DailyEntry {
+  id: UUID
+  user_id: UUID (FK)
+  date: date
+  started_at: timestamp
+  completed_at: timestamp?
+  is_complete: boolean
+}
+
+HabitCompletion {
+  id: UUID
+  daily_entry_id: UUID (FK)
+  habit_id: UUID (FK)
+  value: JSONB {
+    boolean?: boolean
+    numeric?: number
+    choice?: string
+  }
+  completed_at: timestamp
+  flagged_for_action: boolean
+  action_note?: string
+  time_to_complete: integer (ms)
+}
+
+Streak {
+  id: UUID
+  user_id: UUID (FK)
+  habit_id: UUID (FK)
+  current_streak: integer
+  longest_streak: integer
+  last_completed_date: date
+  total_completions: integer
+}
+
+APIS AND INTEGRATIONS
+
+GraphQL API Schema
+- Queries: getHabits, getDailyEntry, getStreaks, getAnalytics
+- Mutations: createHabit, updateHabit, completeHabit, flagForAction
+- Subscriptions: streakUpdates, dailyReminders
+
+Third-Party Integrations
+1. Authentication
+   - Auth0 or Supabase Auth
+   - Social login (Google, Apple)
+   - Magic link support
+
+2. External Data Sources
+   - Apple Health API (steps, exercise)
+   - Google Fit API (activity data)
+   - Financial aggregators (Plaid for balance checks)
+   - Calendar APIs (Google, Outlook)
+
+3. Productivity Tools
+   - Notion API (create follow-up tasks)
+   - Todoist/Things API (action items)
+   - Slack (completion notifications)
+
+4. Analytics & Monitoring
+   - Mixpanel for user analytics
+   - Sentry for error tracking
+   - LogRocket for session replay
+
+Webhook System
+- Incoming: Receive data from integrated services
+- Outgoing: Notify external systems of completions
+
+INFRASTRUCTURE REQUIREMENTS
+
+Hosting Architecture
+- Multi-region deployment for low latency
+- Auto-scaling based on evening usage patterns
+- CDN for static assets (CloudFront/Fastly)
+
+Cloud Provider (AWS)
+- ECS Fargate for containerized services
+- RDS for PostgreSQL (Multi-AZ)
+- ElastiCache for Redis
+- S3 for user exports/backups
+- CloudWatch for monitoring
+- Lambda for scheduled jobs
+
+Container Orchestration
+- Docker containers for all services
+- Kubernetes (EKS) for orchestration
+- Horizontal pod autoscaling
+- Rolling deployments
+
+Security Requirements
+- End-to-end encryption for sensitive data
+- SOC 2 compliance ready
+- GDPR/CCPA compliant data handling
+- Regular security audits
+- API rate limiting
+- WAF protection
+
+Performance Targets
+- API response time: <100ms (p95)
+- Page load time: <1s
+- Offline capability: Full functionality
+- Data sync: Eventually consistent
+- Uptime: 99.9% (excluding maintenance)
+
+Backup & Recovery
+- Automated daily backups
+- Point-in-time recovery (30 days)
+- Cross-region backup replication
+- Disaster recovery plan (<4hr RTO)
+
+Development Infrastructure
+- CI/CD: GitHub Actions
+- Staging environment (identical to prod)
+- Feature flag system (LaunchDarkly)
+- Blue-green deployments
+- Automated testing (>80% coverage)
+
+Monitoring Stack
+- Application: Datadog APM
+- Infrastructure: CloudWatch + Grafana
+- User monitoring: FullStory
+- Alerts: PagerDuty integration
+- SLO tracking: 99.5% success rate

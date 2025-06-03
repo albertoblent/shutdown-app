@@ -1,0 +1,32 @@
+name: Fly Deploy Frontend
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'frontend/**'
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+    paths:
+      - 'frontend/**'
+
+jobs:
+  deploy:
+    name: Deploy Frontend App
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+    concurrency: deploy-frontend-group
+    defaults:
+      run:
+        working-directory: .frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Deploy Frontend App
+        # run: flyctl deploy --app rl-training-manager
+        run: echo "Placeholder for frontend deployment workflow"
+        # env:
+        #   FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
