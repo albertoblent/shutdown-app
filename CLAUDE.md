@@ -368,3 +368,7 @@ alias ghpr='gh pr'
 alias ghil='gh issue list --assignee @me'
 alias ghprl='gh pr list --author @me'
 ```
+
+## Memory Reminder
+
+- If working on a github issues, always remember to update the status accordingly
