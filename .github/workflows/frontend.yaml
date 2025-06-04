@@ -1,4 +1,4 @@
-name: Fly Deploy Frontend
+name: Frontend CI/CD
 
 on:
   push:
@@ -7,26 +7,64 @@ on:
     paths:
       - 'frontend/**'
   pull_request:
-    types: [closed]
     branches:
       - main
     paths:
       - 'frontend/**'
 
 jobs:
-  deploy:
-    name: Deploy Frontend App
+  test:
+    name: Test Frontend
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true
+    defaults:
+      run:
+        working-directory: ./frontend
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run lint
+        run: npm run lint
+      
+      - name: Run build
+        run: npm run build
+      
+      - name: Check bundle size
+        run: |
+          BUILD_SIZE=$(du -sb dist | cut -f1)
+          GZIP_SIZE=$(find dist -name "*.js" -o -name "*.css" | xargs gzip -c | wc -c)
+          echo "Build size: $BUILD_SIZE bytes"
+          echo "Gzipped JS/CSS: $GZIP_SIZE bytes"
+          # Ensure gzipped size is under 100KB (102400 bytes)
+          if [ "$GZIP_SIZE" -gt 102400 ]; then
+            echo "Bundle size exceeds 100KB limit"
+            exit 1
+          fi
+
+  deploy:
+    name: Deploy to Fly.io
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     concurrency: deploy-frontend-group
     defaults:
       run:
         working-directory: ./frontend
     steps:
       - uses: actions/checkout@v4
+      
       - uses: superfly/flyctl-actions/setup-flyctl@master
-      - name: Deploy Frontend App
-        # run: flyctl deploy --app rl-training-manager
-        run: echo "Placeholder for frontend deployment workflow"
-        # env:
-        #   FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+      
+      - name: Deploy to Fly.io
+        run: flyctl deploy --app frontend-autumn-brook-1037
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
