@@ -21,7 +21,7 @@ jobs:
     concurrency: deploy-frontend-group
     defaults:
       run:
-        working-directory: .frontend
+        working-directory: ./frontend
     steps:
       - uses: actions/checkout@v4
       - uses: superfly/flyctl-actions/setup-flyctl@master
