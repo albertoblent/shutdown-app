@@ -24,7 +24,7 @@ export default defineConfig({
           }
         ]
       },
-      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
+      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'icon-192.png', 'icon-512.png', 'shutdown.svg'],
       manifest: {
         name: 'Shutdown Routine',
         short_name: 'Shutdown',
@@ -36,6 +36,24 @@ export default defineConfig({
         scope: '/',
         start_url: '/',
         icons: [
+          {
+            src: 'icon-192.png',
+            sizes: '192x192',
+            type: 'image/png',
+            purpose: 'any'
+          },
+          {
+            src: 'icon-512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'any'
+          },
+          {
+            src: 'apple-touch-icon.png',
+            sizes: '180x180',
+            type: 'image/png',
+            purpose: 'any'
+          },
           {
             src: 'shutdown.svg',
             sizes: 'any',
