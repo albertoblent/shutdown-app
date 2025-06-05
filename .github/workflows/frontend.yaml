@@ -54,7 +54,7 @@ jobs:
     name: Deploy to Fly.io
     runs-on: ubuntu-latest
     needs: test
-    if: (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feature/issue-15-fly-deployment') && github.event_name == 'push'
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push' || github.ref == 'refs/heads/feature/issue-15-fly-deployment'
     concurrency: deploy-frontend-group
     defaults:
       run:
