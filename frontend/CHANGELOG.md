@@ -9,25 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- **Testing Framework**: Comprehensive Vitest setup with 66 unit tests achieving 92%+ coverage
-- **Test Configuration**: Coverage thresholds, proper file exclusions, and CI integration
-- **Version Management**: Semantic versioning with npm scripts and git tags
-- **Changelog Process**: Structured changelog following Keep a Changelog format
-- **CI/CD Testing**: GitHub Actions integration with test coverage enforcement
-- **Frontend Guidelines**: Complete development workflow documentation in CLAUDE.md
+- **Coverage Reporting**: Codecov integration setup documentation and instructions
 
 ### Infrastructure
 
-- **Coverage Enforcement**: 80%+ thresholds for functions/lines/statements, 70% for branches
-- **Quality Pipeline**: Pre-commit checks with lint + test + build verification
-- **Git Tags**: Version tracking with `v0.1.0` baseline tag established
-- **Test Exclusions**: Proper coverage configuration excluding App.tsx, main.tsx, vite-env.d.ts
-
-### Developer Experience
-
-- **TDD Workflow**: Test-driven development practices established
-- **Helper Scripts**: `npm run version:patch/minor/major` for version bumps
-- **Documentation**: Clear separation between changelog (retrospective) and issues (planning)
+- **Coverage Monitoring**: Documentation for Codecov dashboard and PR integration
 
 ## [0.1.0] - 2025-06-05
 
