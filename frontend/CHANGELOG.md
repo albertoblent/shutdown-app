@@ -7,13 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] - 2025-06-05
+
 ### Added
 
 - **Coverage Reporting**: Codecov integration setup documentation and instructions
+- **Documentation**: README badge displaying test coverage percentage
 
 ### Infrastructure
 
 - **Coverage Monitoring**: Documentation for Codecov dashboard and PR integration
+- **Badge Integration**: Codecov coverage badge for repository visibility
 
 ## [0.1.0] - 2025-06-05
 
