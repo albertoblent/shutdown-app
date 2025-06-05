@@ -34,16 +34,30 @@ footer (optional)
 - PR title should follow commit message format
 - Include description of changes and testing performed
 - Link related issues with "Closes #XX"
-- Ensure all checks pass (lint, build, tests when added)
+- Ensure all checks pass (lint, tests, build)
+- Update CHANGELOG.md with changes (add to [Unreleased] section)
 - Self-review changes before merging
 - Document any deviations from original plan
 
 ## Code Quality Standards
 
 - Run `npm run lint` before committing
+- Run `npm test` to ensure all tests pass
 - Ensure `npm run build` succeeds
 - No console.logs in production code
 - Follow existing TypeScript and React patterns
+
+## Testing Standards
+
+- Follow Test-Driven Development (TDD) approach
+- Write tests before implementing new features when possible
+- All data layer functions must have comprehensive unit tests
+- Test commands:
+  - `npm test` - Run all tests
+  - `npm run test:ui` - Run tests with UI interface
+  - `npm run test:coverage` - Run tests with coverage report
+- Minimum test coverage: 80% for utility functions, 60% for components
+- Test files should be co-located with source files using `.test.ts` or `.spec.ts` extension
 
 ## Protected Files
 
@@ -60,6 +74,14 @@ footer (optional)
 5. Create PR when feature is complete
 6. Address review feedback promptly
 7. Delete branch after merge
+
+## Release Process
+
+1. Update CHANGELOG.md with new version section
+2. Bump version in package.json and manifest.json
+3. Commit version changes: `git commit -m "chore: bump version to 0.X.0"`
+4. Create git tag: `git tag v0.X.0`
+5. Push changes and tags: `git push origin main --tags`
 
 ## Solo Development Workflow
 

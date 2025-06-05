@@ -1,6 +1,7 @@
 {
   "name": "Shutdown Routine",
   "short_name": "Shutdown",
+  "version": "0.1.0",
   "description": "Progressive Web App for daily shutdown routines and habit tracking",
   "theme_color": "#000000",
   "background_color": "#000000",
