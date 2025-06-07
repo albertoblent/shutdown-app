@@ -155,8 +155,8 @@ describe('Modal', () => {
       
       // Tab from last element should wrap to first  
       await user.tab();
-      // Focus should wrap back to first focusable element
-      expect(document.activeElement).toEqual(expect.any(HTMLElement));
+      // Focus should wrap back to first focusable element (close button)
+      expect(closeButton).toHaveFocus();
     });
 
     it('should trap focus backwards with Shift+Tab', async () => {
@@ -166,18 +166,22 @@ describe('Modal', () => {
         <Modal {...defaultProps} title="Test Modal">
           <button>First Button</button>
           <button>Second Button</button>
+          <input placeholder="Input field" />
         </Modal>
       );
 
       const firstButton = screen.getByText('First Button');
+      const secondButton = screen.getByText('Second Button');
+      const input = screen.getByPlaceholderText('Input field');
+      const closeButton = screen.getByLabelText('Close modal');
 
       // Focus first element then shift+tab should wrap to last
       firstButton.focus();
       expect(firstButton).toHaveFocus();
       
       await user.keyboard('{Shift>}{Tab}{/Shift}');
-      // Focus should move backwards through the tab order
-      expect(document.activeElement).toEqual(expect.any(HTMLElement));
+      // Focus should move backwards (to close button in this case)
+      expect(closeButton).toHaveFocus();
     });
   });
 
