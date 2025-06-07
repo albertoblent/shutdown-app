@@ -279,9 +279,6 @@ describe('HabitManager', () => {
       success: true,
     });
 
-    // Mock window.confirm
-    const confirmSpy = vi.spyOn(window, 'confirm').mockReturnValue(true);
-
     render(<HabitManager />);
     
     await waitFor(() => {
@@ -290,10 +287,16 @@ describe('HabitManager', () => {
     
     await user.click(screen.getByText('Delete'));
     
-    expect(confirmSpy).toHaveBeenCalledWith('Are you sure you want to delete this habit?');
-    expect(mockHabitStorage.deleteHabit).toHaveBeenCalledWith('1');
+    // Verify the confirmation modal appears
+    expect(screen.getByText('Delete Habit')).toBeInTheDocument();
+    expect(screen.getByText('Are you sure you want to delete "Test Habit"? This action cannot be undone.')).toBeInTheDocument();
     
-    confirmSpy.mockRestore();
+    // Click the confirm button in the modal
+    const confirmButtons = screen.getAllByRole('button', { name: 'Delete' });
+    // The modal confirm button should be the last one
+    await user.click(confirmButtons[confirmButtons.length - 1]);
+    
+    expect(mockHabitStorage.deleteHabit).toHaveBeenCalledWith('1');
   });
 
   it('should load template when template button is clicked', async () => {
