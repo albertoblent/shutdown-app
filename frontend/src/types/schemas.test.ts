@@ -157,12 +157,12 @@ describe('Schema validation', () => {
       expect(() => validateHabitCompletion(invalid)).toThrow()
     })
 
-    it('should reject completion with no values', () => {
-      const invalid = {
+    it('should accept completion with no values (incomplete habit)', () => {
+      const incomplete = {
         ...validCompletion,
         value: {},
       }
-      expect(() => validateHabitCompletion(invalid)).toThrow()
+      expect(() => validateHabitCompletion(incomplete)).not.toThrow()
     })
   })
 
