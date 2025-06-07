@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import type { Habit } from '../types/data';
+import type { Habit } from '../../../types/data';
 import {
   addHabit,
   editHabit,
@@ -13,11 +13,11 @@ import {
   clearAllHabits,
   getHabitsSorted,
   validateHabitLimit,
-} from '../utils/habitStorage';
+} from '../api/storage';
 import {
   loadHabitTemplate,
   HABIT_TEMPLATES,
-} from '../utils/habitTemplates';
+} from '../api/templates';
 import styles from './HabitManager.module.css';
 
 interface HabitManagerProps {

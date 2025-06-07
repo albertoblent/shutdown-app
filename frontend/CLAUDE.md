@@ -16,17 +16,83 @@ This document provides specific guidelines for frontend development of the Shutd
 
 ## Directory Structure
 
+We follow a **feature-based architecture** that promotes separation of concerns, modularity, and maintainability:
+
 ```
 src/
-├── components/          # React components
-├── hooks/              # Custom React hooks
-├── pages/              # Page-level components
-├── types/              # TypeScript types and Zod schemas
-├── utils/              # Utility functions and business logic
+├── features/           # Feature-specific modules (domain-driven)
+│   └── habits/         # Habit management feature
+│       ├── api/        # Business logic and data operations
+│       │   ├── storage.ts      # CRUD operations
+│       │   ├── templates.ts    # Template system
+│       │   └── index.ts        # API barrel export
+│       ├── components/ # Feature-specific React components
+│       │   ├── HabitManager.tsx
+│       │   └── index.ts        # Component barrel export
+│       ├── __tests__/  # Feature-specific tests
+│       │   ├── storage.test.ts
+│       │   ├── templates.test.ts
+│       │   └── HabitManager.test.tsx
+│       └── index.ts    # Feature barrel export
+├── shared/             # Shared utilities across features
+│   ├── api/            # Core data operations
+│   │   ├── storage.ts  # Base localStorage utilities
+│   │   └── index.ts    # Shared API barrel export
+│   ├── components/     # Reusable UI components
+│   ├── hooks/          # Shared custom React hooks
+│   └── utils/          # Pure utility functions only
+├── types/              # Global TypeScript types and Zod schemas
+│   ├── data.ts         # Core data models
+│   ├── schemas.ts      # Zod validation schemas
+│   └── *.test.ts       # Type and schema tests
 ├── test/               # Test setup and global test utilities
 ├── App.tsx             # Main app component
 ├── App.module.css      # App-level styles
 └── main.tsx            # Application entry point
+```
+
+### Feature-Based Architecture Principles
+
+**✅ DO - Follow these patterns:**
+- **Domain Separation**: Each feature owns its business logic, components, and tests
+- **Barrel Exports**: Use `index.ts` files to provide clean public APIs
+- **Shared vs Feature**: Put code in `shared/` only if used by multiple features
+- **Self-Contained**: Features should be largely independent modules
+- **Test Co-location**: Keep tests close to the code they test
+
+**❌ DON'T - Avoid these anti-patterns:**
+- **Utils Dumping Ground**: Don't put domain-specific code in `shared/utils/`
+- **Circular Dependencies**: Features shouldn't depend on each other directly
+- **Leaky Abstractions**: Keep feature internals private, expose through barrel exports
+- **Mixed Concerns**: Don't mix business logic with pure utilities
+
+### Adding New Features
+
+When adding a new feature, follow this structure:
+
+```bash
+# 1. Create feature directory
+mkdir -p src/features/newfeature/{api,components,__tests__}
+
+# 2. Create barrel exports for clean APIs
+touch src/features/newfeature/{index.ts,api/index.ts,components/index.ts}
+
+# 3. Add feature-specific business logic
+touch src/features/newfeature/api/operations.ts
+
+# 4. Add React components
+touch src/features/newfeature/components/FeatureComponent.tsx
+
+# 5. Add comprehensive tests
+touch src/features/newfeature/__tests__/{operations.test.ts,FeatureComponent.test.tsx}
+```
+
+**Example barrel export structure:**
+```typescript
+// src/features/newfeature/index.ts
+export * from './api'
+export * from './components'
+export type { FeatureType } from '../../types/data'
 ```
 
 ## Test-Driven Development (TDD)
@@ -63,21 +129,34 @@ npm run test:coverage # Generate coverage report (single run, no watch)
 
 ### Test File Organization
 
-- **Co-location**: Test files should be adjacent to source files
+Follow the feature-based architecture for test organization:
+
+- **Feature Tests**: Place in `features/{feature}/__tests__/` directory
+- **Shared Tests**: Co-locate with shared utilities
+- **Global Types**: Keep type tests adjacent to type definitions
 - **Naming**: Use `.test.ts` or `.spec.ts` extensions
-- **Structure**: Group tests by functionality, not by test type
 
 ```
 src/
-├── types/
-│   ├── data.ts
-│   ├── data.test.ts
-│   ├── schemas.ts
-│   └── schemas.test.ts
-└── utils/
-    ├── storage.ts
-    └── storage.test.ts
+├── features/
+│   └── habits/
+│       └── __tests__/           # Feature-specific tests
+│           ├── storage.test.ts  # Business logic tests
+│           ├── templates.test.ts
+│           └── HabitManager.test.tsx  # Component tests
+├── shared/
+│   └── api/
+│       └── storage.test.ts      # Shared utility tests
+└── types/
+    ├── data.test.ts             # Global type tests
+    └── schemas.test.ts          # Validation tests
 ```
+
+**Test Organization Principles:**
+- **Feature Isolation**: Each feature's tests live within that feature directory
+- **Shared Test Utilities**: Global test helpers go in `src/test/`
+- **Mock Co-location**: Feature-specific mocks stay within feature tests
+- **Integration Tests**: Cross-feature tests can go in top-level `__tests__/` if needed
 
 ### Test Patterns and Best Practices
 
@@ -286,12 +365,23 @@ describe('HabitCard', () => {
 
 ### Component Guidelines
 
+Follow feature-based component organization and design principles:
+
+#### Component Placement Rules
+- **Feature Components**: Place in `features/{feature}/components/` if specific to one feature
+- **Shared Components**: Place in `shared/components/` only if used by multiple features
+- **Page Components**: Place in top-level for routing and layout
+- **Barrel Exports**: Expose components through feature `index.ts` files
+
+#### Component Design Principles
 - **Semantic HTML**: Use proper semantic elements
 - **Props Interface**: Define clear TypeScript interfaces for props
 - **Single Responsibility**: Components should have one clear purpose
 - **Composition**: Prefer composition over inheritance
+- **Feature Coupling**: Keep feature-specific logic within feature boundaries
 
 ```typescript
+// src/features/habits/components/HabitCard.tsx
 interface HabitCardProps {
   habit: Habit
   onComplete: (habitId: string) => void
@@ -309,7 +399,25 @@ export function HabitCard({ habit, onComplete, isCompleted }: HabitCardProps) {
     </article>
   )
 }
+
+// src/features/habits/components/index.ts - Barrel export
+export { HabitCard } from './HabitCard'
+export { HabitManager } from './HabitManager'
+
+// Usage in other files
+import { HabitCard } from '../features/habits'  // Clean import via barrel
 ```
+
+#### When to Create Shared Components
+Only move components to `shared/` when they meet **ALL** these criteria:
+- Used by 2+ different features
+- No feature-specific business logic
+- Purely presentational or basic interaction
+- Unlikely to diverge between features
+
+**Examples:**
+- ✅ Shared: `Button`, `Modal`, `Card`, `Input` (generic UI components)
+- ❌ Not Shared: `HabitCard`, `TimerDisplay` (feature-specific components)
 
 ## Performance Guidelines
 
@@ -495,6 +603,50 @@ interface ImportMetaEnv {
   readonly VITE_APP_VERSION: string
 }
 ```
+
+## Architectural Decision Records
+
+### Feature-Based Architecture Migration (Issue #5)
+
+**Decision**: Migrated from utils-based to feature-based architecture  
+**Date**: January 2025  
+**Status**: Implemented  
+
+**Context**: 
+The original architecture placed all business logic in `src/utils/`, creating a dumping ground for domain-specific code. This violated separation of concerns and made the codebase harder to maintain as features grew.
+
+**Decision**:
+Implemented feature-based architecture with the following structure:
+- `src/features/{feature}/{api,components,__tests__}/` - Domain-specific modules
+- `src/shared/{api,components,utils}/` - Truly shared utilities only
+- Barrel exports (`index.ts`) for clean public APIs
+
+**Benefits Realized**:
+- ✅ Clear separation between domain logic and shared utilities
+- ✅ Self-contained features with their own business logic and tests
+- ✅ Easier to locate and modify feature-specific code
+- ✅ Scalable pattern for adding new features
+- ✅ Reduced coupling between different domains
+
+**Guidelines for Future Development**:
+1. **Always ask**: "Is this code specific to one feature or truly shared?"
+2. **Default to feature-specific**: Only put code in `shared/` if used by 2+ features
+3. **Use barrel exports**: Maintain clean public APIs for each feature
+4. **Keep features independent**: Avoid direct dependencies between features
+
+**Example Migration Pattern**:
+```typescript
+// ❌ Before: Mixed concerns in utils
+src/utils/storage.ts           // Contains habits + general storage
+src/utils/habitManagement.ts  // Domain-specific code in utils
+
+// ✅ After: Proper separation
+src/features/habits/api/storage.ts     // Habit-specific operations
+src/features/habits/api/templates.ts   // Habit templates
+src/shared/api/storage.ts              // Core storage utilities only
+```
+
+**Lesson Learned**: Establish architectural boundaries early and enforce them consistently. The `utils/` directory should only contain pure utility functions, not domain-specific business logic.
 
 ---
 

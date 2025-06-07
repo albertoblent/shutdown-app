@@ -11,7 +11,7 @@ import {
   getTodaysEntry,
   StorageError,
 } from './storage'
-import type { Habit, DailyEntry, Settings } from '../types/data'
+import type { Habit, DailyEntry, Settings } from '../../types/data'
 
 describe('Storage utilities', () => {
   beforeEach(() => {

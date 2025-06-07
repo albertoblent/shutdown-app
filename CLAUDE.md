@@ -46,6 +46,15 @@ footer (optional)
 - Ensure `npm run build` succeeds
 - No console.logs in production code
 - Follow existing TypeScript and React patterns
+- **Follow feature-based architecture**: See `frontend/CLAUDE.md` for detailed architectural guidelines
+
+## Architectural Principles
+
+- **Separation of Concerns**: Each feature owns its business logic, components, and tests
+- **Feature-Based Structure**: Use `src/features/{feature}/{api,components,__tests__}/` for domain-specific code
+- **Shared vs Feature**: Only put code in `shared/` if truly used by multiple features
+- **Clean APIs**: Use barrel exports (`index.ts`) to expose feature functionality
+- **Avoid Utils Dumping Ground**: Don't put domain-specific code in `utils/` directories
 
 ## Testing Standards
 

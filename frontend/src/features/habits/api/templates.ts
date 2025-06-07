@@ -3,10 +3,10 @@
  * Provides preset habit collections for quick setup
  */
 
-import type { Habit } from '../types/data';
-import { generateId } from '../types/data';
-import { validateHabit } from '../types/schemas';
-import { getHabits, saveHabits, type StorageResult, StorageError } from './storage';
+import type { Habit } from '../../../types/data';
+import { generateId } from '../../../types/data';
+import { validateHabit } from '../../../types/schemas';
+import { getHabits, saveHabits, type StorageResult, StorageError } from '../../../shared/api/storage';
 
 // Preset habit templates
 export interface HabitTemplate {

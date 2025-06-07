@@ -12,7 +12,7 @@ import {
   getHabitsSorted,
   validateHabitLimit,
   clearAllHabits,
-} from './habitStorage';
+} from '../api/storage';
 
 describe('Habit Management CRUD Operations', () => {
   beforeEach(() => {

@@ -3,14 +3,14 @@
  * Provides CRUD operations for all data models with Zod validation
  */
 
-import type { Habit, DailyEntry, Settings } from '../types/data';
+import type { Habit, DailyEntry, Settings } from '../../types/data';
 import {
   STORAGE_KEYS,
   getEntryKey,
   parseDateFromEntryKey,
   formatDate,
   createDefaultSettings,
-} from '../types/data';
+} from '../../types/data';
 import {
   validateDailyEntry,
   validateSettings,
@@ -18,7 +18,7 @@ import {
   safeValidateDailyEntry,
   safeValidateSettings,
   safeValidateHabitsArray,
-} from '../types/schemas';
+} from '../../types/schemas';
 
 // Storage operation results
 export interface StorageResult<T> {

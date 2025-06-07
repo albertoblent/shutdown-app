@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Habit Management System**: Complete CRUD operations for habits with 7-habit limit enforcement
+- **Habit Templates**: 3 preset templates (Productivity Focus, Health & Wellness, Work-Life Balance)
+- **Habit Manager Component**: React component with inline editing, drag-and-drop reordering, and template loading
+- **Comprehensive Testing**: 98 total tests with feature-specific test organization
+
+### Changed
+
+- **Architecture**: Migrated from utils-based to feature-based architecture for better separation of concerns
+- **File Organization**: Implemented `src/features/{feature}/{api,components,__tests__}/` structure
+- **Import Structure**: Added barrel exports for clean public APIs
+
+### Infrastructure
+
+- **Documentation**: Updated CLAUDE.md files with feature-based architecture guidelines
+- **Architectural Decision Records**: Documented migration rationale and future development patterns
+
 ## [0.1.1] - 2025-06-05
 
 ### Added

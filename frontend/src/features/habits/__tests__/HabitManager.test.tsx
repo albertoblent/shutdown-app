@@ -6,12 +6,12 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { HabitManager } from './HabitManager';
-import * as habitStorage from '../utils/habitStorage';
-import * as habitTemplates from '../utils/habitTemplates';
+import { HabitManager } from '../components/HabitManager';
+import * as habitStorage from '../api/storage';
+import * as habitTemplates from '../api/templates';
 
 // Mock the storage modules
-vi.mock('../utils/habitStorage', () => ({
+vi.mock('../api/storage', () => ({
   getHabitsSorted: vi.fn(),
   addHabit: vi.fn(),
   editHabit: vi.fn(),
@@ -21,7 +21,7 @@ vi.mock('../utils/habitStorage', () => ({
   validateHabitLimit: vi.fn(),
 }));
 
-vi.mock('../utils/habitTemplates', () => ({
+vi.mock('../api/templates', () => ({
   loadHabitTemplate: vi.fn(),
   HABIT_TEMPLATES: [
     {

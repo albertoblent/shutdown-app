@@ -3,10 +3,10 @@
  * Handles CRUD operations for habits with validation and limits
  */
 
-import type { Habit } from '../types/data';
-import { STORAGE_KEYS, generateId } from '../types/data';
-import { validateHabit } from '../types/schemas';
-import { getHabits, saveHabits, type StorageResult, StorageError } from './storage';
+import type { Habit } from '../../../types/data';
+import { STORAGE_KEYS, generateId } from '../../../types/data';
+import { validateHabit } from '../../../types/schemas';
+import { getHabits, saveHabits, type StorageResult, StorageError } from '../../../shared/api/storage';
 
 // Habit CRUD operations
 export const addHabit = (habit: Omit<Habit, 'id' | 'created_at' | 'position'>): StorageResult<Habit> => {

@@ -4,11 +4,11 @@
  */
 
 import { describe, it, expect, beforeEach } from 'vitest';
-import { addHabit, getHabitsSorted } from './habitStorage';
+import { addHabit, getHabitsSorted } from '../api/storage';
 import {
   loadHabitTemplate,
   HABIT_TEMPLATES,
-} from './habitTemplates';
+} from '../api/templates';
 
 describe('Habit Templates', () => {
   beforeEach(() => {
