@@ -69,19 +69,7 @@ export function HabitManager({ onHabitsChange }: HabitManagerProps) {
   // Load habits on mount
   useEffect(() => {
     loadHabits();
-    
-    // Auto-clear for testing, then load productivity template
-    setTimeout(() => {
-      const result = clearAllHabits();
-      if (result.success) {
-        loadHabits().then(() => {
-          setTimeout(() => {
-            handleLoadTemplate('Productivity Focus');
-          }, 500);
-        });
-      }
-    }, 1000);
-  }, [loadHabits, handleLoadTemplate]);
+  }, [loadHabits]);
 
   // Notify parent when habits change
   useEffect(() => {
