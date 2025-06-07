@@ -1,3 +1,4 @@
+import { HabitManager } from './features/habits'
 import styles from './App.module.css'
 
 function App() {
@@ -26,9 +27,10 @@ function App() {
             Build healthy habits and end your day with intention. 
             Track your progress and create a meaningful routine.
           </p>
-          <button className={styles.getStartedButton}>
-            Start Your Routine
-          </button>
+        </section>
+
+        <section className={styles.habitSection}>
+          <HabitManager />
         </section>
       </main>
     </div>

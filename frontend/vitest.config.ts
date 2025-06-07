@@ -20,6 +20,7 @@ export default defineConfig({
         'src/main.tsx',
         'src/App.tsx',
         'src/utils/pwa.ts',
+        'src/**/index.ts', // Exclude barrel export files
       ],
       thresholds: {
         functions: 80,

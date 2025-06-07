@@ -3,24 +3,22 @@
  * Provides CRUD operations for all data models with Zod validation
  */
 
-import type { Habit, DailyEntry, Settings } from '../types/data';
+import type { Habit, DailyEntry, Settings } from '../../types/data';
 import {
   STORAGE_KEYS,
   getEntryKey,
   parseDateFromEntryKey,
-  generateId,
   formatDate,
   createDefaultSettings,
-} from '../types/data';
+} from '../../types/data';
 import {
-  validateHabit,
   validateDailyEntry,
   validateSettings,
   validateHabitsArray,
   safeValidateDailyEntry,
   safeValidateSettings,
   safeValidateHabitsArray,
-} from '../types/schemas';
+} from '../../types/schemas';
 
 // Storage operation results
 export interface StorageResult<T> {
@@ -117,37 +115,6 @@ export const saveHabits = (habits: Habit[]): StorageResult<void> => {
   }
 };
 
-export const addHabit = (habit: Omit<Habit, 'id' | 'created_at' | 'position'>): StorageResult<Habit> => {
-  try {
-    const habitsResult = getHabits();
-    if (!habitsResult.success) {
-      throw new StorageError(habitsResult.error || 'Failed to get existing habits', 'addHabit');
-    }
-
-    const habits = habitsResult.data || [];
-    const newHabit: Habit = {
-      ...habit,
-      id: generateId(),
-      created_at: new Date().toISOString(),
-      position: habits.length,
-    };
-
-    validateHabit(newHabit);
-    habits.push(newHabit);
-
-    const saveResult = saveHabits(habits);
-    if (!saveResult.success) {
-      throw new StorageError(saveResult.error || 'Failed to save habit', 'addHabit');
-    }
-
-    return { success: true, data: newHabit };
-  } catch (error) {
-    return {
-      success: false,
-      error: error instanceof Error ? error.message : 'Unknown error adding habit',
-    };
-  }
-};
 
 // Daily Entry operations
 export const getDailyEntry = (date: string): StorageResult<DailyEntry | null> => {

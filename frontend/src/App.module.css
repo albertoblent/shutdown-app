@@ -91,6 +91,12 @@
   outline-offset: 2px;
 }
 
+.habitSection {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid #333;
+}
+
 /* Mobile-first responsive design */
 @media (max-width: 640px) {
   .header {
