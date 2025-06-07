@@ -5,11 +5,13 @@ This guide provides step-by-step testing instructions for the habit management s
 ## Prerequisites
 
 1. **Start the Development Server**
+
    ```bash
    cd frontend
    npm run dev
    ```
-   Open http://localhost:5173 in your browser
+
+   Open <http://localhost:5173> in your browser
 
 2. **Clear Previous Data** (for fresh testing)
    - Open browser DevTools (F12)
@@ -23,13 +25,14 @@ This guide provides step-by-step testing instructions for the habit management s
 **Expected Behavior**: When no habits exist, user should see template options and empty state
 
 **Steps:**
+
 1. Load the application
 2. Verify you see "Habit Management" header with "0/7 habits" counter
 3. Confirm "No habits yet" message appears
 4. Verify "Get started by adding a habit or loading a template" text is visible
 5. Check that three template cards are displayed:
    - **Productivity Focus**: "Deep work, financial awareness, and physical health"
-   - **Health & Wellness**: "Physical health tracking and wellness metrics"  
+   - **Health & Wellness**: "Physical health tracking and wellness metrics"
    - **Work-Life Balance**: "Personal relationships, growth, and mindfulness"
 
 **✅ Pass Criteria**: Empty state displays correctly with template options
@@ -39,6 +42,7 @@ This guide provides step-by-step testing instructions for the habit management s
 **Expected Behavior**: Loading a template should add 3 habits with proper validation
 
 **Steps:**
+
 1. Click "Load Template" button on **Productivity Focus** card
 2. Verify confirmation dialog appears (if you already have habits)
 3. Confirm the action
@@ -56,6 +60,7 @@ This guide provides step-by-step testing instructions for the habit management s
 **Expected Behavior**: Template should load additional habits without replacing existing ones
 
 **Steps:**
+
 1. Click "Load Template" on **Health & Wellness** card
 2. Accept the confirmation dialog about adding to existing habits
 3. Verify 3 additional habits are added:
@@ -72,6 +77,7 @@ This guide provides step-by-step testing instructions for the habit management s
 **Expected Behavior**: System should prevent adding more than 7 habits total
 
 **Steps:**
+
 1. With 6 habits already loaded, try to load **Work-Life Balance** template
 2. Verify error message appears: "Cannot load template: would exceed 7 habit limit (9 total)"
 3. Confirm no new habits are added
@@ -92,6 +98,7 @@ This guide provides step-by-step testing instructions for the habit management s
 **Expected Behavior**: Users can create custom boolean habits
 
 **Steps:**
+
 1. Clear all habits first: Click "Clear All" → Confirm deletion
 2. Click "Add New Habit" button
 3. Fill out the form:
@@ -112,6 +119,7 @@ This guide provides step-by-step testing instructions for the habit management s
 **Expected Behavior**: Users can create custom numeric habits with units and ranges
 
 **Steps:**
+
 1. Click "Add New Habit"
 2. Fill out the form:
    - **Habit Name**: "Reading Time"
@@ -132,6 +140,7 @@ This guide provides step-by-step testing instructions for the habit management s
 **Expected Behavior**: Users can edit habits inline with auto-save on blur and keyboard shortcuts
 
 **Steps:**
+
 1. Click "Edit" button on any habit
 2. Verify inline editing form appears with:
    - Name input field (focused)
@@ -163,6 +172,7 @@ This guide provides step-by-step testing instructions for the habit management s
 **Expected Behavior**: Users can reorder habits using drag and drop
 
 **Steps:**
+
 1. Ensure you have at least 3 habits in the list
 2. Note the current order of habits
 3. **Desktop Testing**:
@@ -184,6 +194,7 @@ This guide provides step-by-step testing instructions for the habit management s
 **Expected Behavior**: Users can delete habits with safety confirmation
 
 **Steps:**
+
 1. Click "Delete" button on any habit
 2. Verify browser confirmation dialog appears: "Are you sure you want to delete this habit?"
 3. Click "Cancel" and verify habit remains
@@ -199,6 +210,7 @@ This guide provides step-by-step testing instructions for the habit management s
 **Expected Behavior**: Users can clear all habits with strong confirmation
 
 **Steps:**
+
 1. Ensure you have multiple habits
 2. Click "Clear All" button
 3. Verify confirmation dialog: "Are you sure you want to delete ALL habits? This cannot be undone."
@@ -216,6 +228,7 @@ This guide provides step-by-step testing instructions for the habit management s
 **Expected Behavior**: System should handle invalid inputs gracefully
 
 **Steps:**
+
 1. Click "Add New Habit"
 2. Try to submit empty form - verify form validation prevents submission
 3. Enter only a name (no prompt) - verify validation fails
@@ -231,6 +244,7 @@ This guide provides step-by-step testing instructions for the habit management s
 **Expected Behavior**: Data should persist across browser sessions
 
 **Steps:**
+
 1. Create several habits with different types
 2. Refresh the page (F5 or Ctrl+R)
 3. Verify all habits are still present with correct:
@@ -248,6 +262,7 @@ This guide provides step-by-step testing instructions for the habit management s
 **Expected Behavior**: App should work well on different screen sizes
 
 **Steps:**
+
 1. **Desktop Testing** (1200px+ width):
    - Verify layout uses available space efficiently
    - Check that touch targets are appropriate
@@ -269,6 +284,7 @@ This guide provides step-by-step testing instructions for the habit management s
 **Expected Behavior**: App should provide feedback during operations
 
 **Steps:**
+
 1. Observe loading states when app first loads
 2. Verify "Loading habits..." message appears briefly
 3. Check that operations like template loading show immediate feedback
@@ -283,7 +299,7 @@ This guide provides step-by-step testing instructions for the habit management s
 Record your test results:
 
 - [ ] **Initial State Display**: Empty state shows correctly
-- [ ] **Template Loading**: All 3 templates load properly  
+- [ ] **Template Loading**: All 3 templates load properly
 - [ ] **Habit Limit**: 7-habit limit enforced correctly
 - [ ] **Manual Creation**: Boolean and numeric habits create successfully
 - [ ] **Inline Editing**: Auto-save on blur and keyboard shortcuts work correctly
@@ -300,7 +316,7 @@ Record your test results:
 Test on these browsers to ensure broad compatibility:
 
 - [ ] **Chrome** (latest)
-- [ ] **Firefox** (latest)  
+- [ ] **Firefox** (latest)
 - [ ] **Safari** (if on Mac)
 - [ ] **Edge** (latest)
 - [ ] **Mobile Safari** (iOS)
@@ -327,7 +343,7 @@ If you find issues during testing:
 
 ## Testing Complete
 
-✅ **All tests passing**: Habit management system is ready for production use  
+✅ **All tests passing**: Habit management system is ready for production use
 ❌ **Issues found**: Document bugs and retest after fixes
 
 ---
