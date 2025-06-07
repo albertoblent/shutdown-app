@@ -3,7 +3,7 @@
  * Provides CRUD operations for habits with templates and drag-and-drop reordering
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import type { Habit } from '../../../types/data';
 import {
   addHabit,
@@ -32,29 +32,7 @@ export function HabitManager({ onHabitsChange }: HabitManagerProps) {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
 
-  // Load habits on mount
-  useEffect(() => {
-    loadHabits();
-    
-    // Auto-clear for testing, then load productivity template
-    setTimeout(() => {
-      const result = clearAllHabits();
-      if (result.success) {
-        loadHabits().then(() => {
-          setTimeout(() => {
-            handleLoadTemplate('Productivity Focus');
-          }, 500);
-        });
-      }
-    }, 1000);
-  }, []);
-
-  // Notify parent when habits change
-  useEffect(() => {
-    onHabitsChange?.(habits);
-  }, [habits, onHabitsChange]);
-
-  const loadHabits = async () => {
+  const loadHabits = useCallback(async () => {
     setIsLoading(true);
     setError(null);
     
@@ -70,7 +48,45 @@ export function HabitManager({ onHabitsChange }: HabitManagerProps) {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
+
+  const handleLoadTemplate = useCallback(async (templateName: string) => {
+    if (habits.length > 0 && !confirm('This will add template habits to your existing habits. Continue?')) {
+      return;
+    }
+
+    setError(null);
+    
+    const result = loadHabitTemplate(templateName);
+    
+    if (result.success) {
+      await loadHabits();
+    } else {
+      setError(result.error || 'Failed to load template');
+    }
+  }, [habits.length, loadHabits]);
+
+  // Load habits on mount
+  useEffect(() => {
+    loadHabits();
+    
+    // Auto-clear for testing, then load productivity template
+    setTimeout(() => {
+      const result = clearAllHabits();
+      if (result.success) {
+        loadHabits().then(() => {
+          setTimeout(() => {
+            handleLoadTemplate('Productivity Focus');
+          }, 500);
+        });
+      }
+    }, 1000);
+  }, [loadHabits, handleLoadTemplate]);
+
+  // Notify parent when habits change
+  useEffect(() => {
+    onHabitsChange?.(habits);
+  }, [habits, onHabitsChange]);
 
   const handleAddHabit = async (habitData: Omit<Habit, 'id' | 'created_at' | 'position'>) => {
     setError(null);
@@ -110,23 +126,6 @@ export function HabitManager({ onHabitsChange }: HabitManagerProps) {
       setError(result.error || 'Failed to delete habit');
     }
   };
-
-  const handleLoadTemplate = async (templateName: string) => {
-    if (habits.length > 0 && !confirm('This will add template habits to your existing habits. Continue?')) {
-      return;
-    }
-
-    setError(null);
-    
-    const result = loadHabitTemplate(templateName);
-    
-    if (result.success) {
-      await loadHabits();
-    } else {
-      setError(result.error || 'Failed to load template');
-    }
-  };
-
 
   const handleClearAll = async () => {
     if (!confirm('Are you sure you want to delete ALL habits? This cannot be undone.')) {
@@ -308,6 +307,13 @@ function HabitItem({
     });
   };
 
+  const handleBlur = () => {
+    // Auto-save on blur if both fields have valid content
+    if (editName.trim() && editPrompt.trim()) {
+      handleSave();
+    }
+  };
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
       handleSave();
@@ -334,6 +340,7 @@ function HabitItem({
               value={editName}
               onChange={(e) => setEditName(e.target.value)}
               onKeyDown={handleKeyDown}
+              onBlur={handleBlur}
               className={styles.editInput}
               placeholder="Habit name"
               autoFocus
@@ -342,6 +349,7 @@ function HabitItem({
               value={editPrompt}
               onChange={(e) => setEditPrompt(e.target.value)}
               onKeyDown={handleKeyDown}
+              onBlur={handleBlur}
               className={styles.editTextarea}
               placeholder="Atomic prompt"
               rows={2}
