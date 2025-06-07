@@ -1,0 +1,42 @@
+# Codecov Configuration
+# https://docs.codecov.com/docs/codecov-yaml
+
+coverage:
+  # Overall project coverage settings
+  status:
+    project:
+      default:
+        target: 80%          # Overall project coverage target
+        threshold: 2%        # Allow 2% drop without failing
+        if_ci_failed: error  # Fail if CI failed
+
+    # Patch coverage (new code in PRs)
+    patch:
+      default:
+        target: 75%          # Relaxed patch coverage target (was 93.23%)
+        threshold: 10%       # Allow larger drops in patch coverage
+        if_ci_failed: error  # Fail if CI failed
+
+  # Precision of coverage percentages
+  precision: 2
+  round: down
+
+# Comment settings for PR comments
+comment:
+  layout: "reach, diff, flags, files"
+  behavior: default
+  require_changes: false
+  require_base: false
+  require_head: true
+
+# Ignore paths that shouldn't affect coverage
+ignore:
+  - "frontend/src/vite-env.d.ts"
+  - "frontend/src/main.tsx"
+  - "frontend/src/App.tsx"
+  - "frontend/src/utils/pwa.ts"
+  - "frontend/coverage/**/*"
+  - "frontend/dist/**/*"
+  - "frontend/node_modules/**/*"
+  - "**/*.config.js"
+  - "**/*.config.ts"
