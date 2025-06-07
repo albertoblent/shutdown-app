@@ -1,6 +1,6 @@
 /* App Shell Layout */
 .app {
-  min-height: 100vh;
+  min-height: 100%;
   display: flex;
   flex-direction: column;
   background-color: #000;
@@ -44,14 +44,19 @@
 .main {
   flex: 1;
   padding: 2rem 1rem;
-  max-width: 800px;
-  margin: 0 auto;
   width: 100%;
+}
+
+@media (min-width: 768px) {
+  .main {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
 }
 
 .welcomeSection {
   text-align: center;
-  padding: 2rem 0;
 }
 
 .welcomeTitle {
@@ -102,16 +107,8 @@
   .header {
     padding: 0.75rem 1rem;
   }
-  
-  .main {
-    padding: 1.5rem 1rem;
-  }
-  
+
   .welcomeTitle {
     font-size: 1.75rem;
-  }
-  
-  .welcomeSubtitle {
-    font-size: 1rem;
   }
 }
