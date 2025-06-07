@@ -35,6 +35,18 @@ export function HabitManager({ onHabitsChange }: HabitManagerProps) {
   // Load habits on mount
   useEffect(() => {
     loadHabits();
+    
+    // Auto-clear for testing, then load productivity template
+    setTimeout(() => {
+      const result = clearAllHabits();
+      if (result.success) {
+        loadHabits().then(() => {
+          setTimeout(() => {
+            handleLoadTemplate('Productivity Focus');
+          }, 500);
+        });
+      }
+    }, 1000);
   }, []);
 
   // Notify parent when habits change
@@ -107,12 +119,14 @@ export function HabitManager({ onHabitsChange }: HabitManagerProps) {
     setError(null);
     
     const result = loadHabitTemplate(templateName);
+    
     if (result.success) {
       await loadHabits();
     } else {
       setError(result.error || 'Failed to load template');
     }
   };
+
 
   const handleClearAll = async () => {
     if (!confirm('Are you sure you want to delete ALL habits? This cannot be undone.')) {
@@ -222,6 +236,7 @@ export function HabitManager({ onHabitsChange }: HabitManagerProps) {
             Add New Habit
           </button>
         )}
+
 
         {habits.length > 0 && (
           <button
