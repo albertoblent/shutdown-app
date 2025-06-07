@@ -1,0 +1,492 @@
+/* Habit Manager Styles - Mobile-first with dark theme */
+
+.container {
+  padding: 1rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-color, #333);
+}
+
+.header h2 {
+  margin: 0;
+  color: var(--text-primary, #e0e0e0);
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.habitCount {
+  background: var(--accent-color, #4a90e2);
+  color: var(--text-on-accent, #ffffff);
+  padding: 0.375rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.loading {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-secondary, #b0b0b0);
+}
+
+.error {
+  background: var(--error-bg, #4a1a1a);
+  color: var(--error-text, #ff6b6b);
+  border: 1px solid var(--error-border, #ff6b6b);
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--text-secondary, #b0b0b0);
+}
+
+.emptyState h3 {
+  margin: 0 0 0.5rem 0;
+  color: var(--text-primary, #e0e0e0);
+  font-size: 1.25rem;
+}
+
+.emptyState p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+/* Habit List */
+.habitList {
+  margin-bottom: 1.5rem;
+}
+
+.habitItem {
+  display: flex;
+  align-items: stretch;
+  background: var(--card-bg, #1a1a1a);
+  border: 1px solid var(--border-color, #333);
+  border-radius: 0.5rem;
+  margin-bottom: 0.75rem;
+  transition: all 0.2s ease;
+  min-height: 48px; /* Accessibility: minimum touch target */
+}
+
+.habitItem:hover {
+  border-color: var(--accent-color, #4a90e2);
+  box-shadow: 0 2px 4px rgba(74, 144, 226, 0.1);
+}
+
+.habitItem.dragged {
+  opacity: 0.5;
+  transform: rotate(5deg);
+}
+
+.dragHandle {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem;
+  color: var(--text-secondary, #b0b0b0);
+  cursor: grab;
+  user-select: none;
+  border-right: 1px solid var(--border-color, #333);
+  font-size: 0.75rem;
+}
+
+.dragHandle:active {
+  cursor: grabbing;
+}
+
+.habitContent {
+  flex: 1;
+  padding: 0.75rem;
+}
+
+.habitInfo h4 {
+  margin: 0 0 0.25rem 0;
+  color: var(--text-primary, #e0e0e0);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.habitPrompt {
+  margin: 0 0 0.5rem 0;
+  color: var(--text-secondary, #b0b0b0);
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.habitMeta {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+}
+
+.habitType {
+  background: var(--tag-bg, #2a2a2a);
+  color: var(--tag-text, #a0a0a0);
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  text-transform: capitalize;
+}
+
+.habitUnit {
+  color: var(--text-secondary, #b0b0b0);
+  font-style: italic;
+}
+
+.habitActions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.5rem;
+  border-left: 1px solid var(--border-color, #333);
+}
+
+/* Edit Form */
+.editForm {
+  width: 100%;
+}
+
+.editInput, .editTextarea {
+  width: 100%;
+  background: var(--input-bg, #0a0a0a);
+  color: var(--text-primary, #e0e0e0);
+  border: 1px solid var(--border-color, #333);
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  resize: vertical;
+}
+
+.editInput:focus, .editTextarea:focus {
+  outline: none;
+  border-color: var(--accent-color, #4a90e2);
+  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+}
+
+.editActions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Buttons */
+.editButton, .deleteButton, .saveButton, .cancelButton {
+  padding: 0.375rem 0.75rem;
+  border: 1px solid;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 32px;
+  min-width: 48px; /* Accessibility */
+}
+
+.editButton {
+  background: var(--secondary-bg, #2a2a2a);
+  color: var(--text-primary, #e0e0e0);
+  border-color: var(--border-color, #333);
+}
+
+.editButton:hover {
+  background: var(--accent-color, #4a90e2);
+  border-color: var(--accent-color, #4a90e2);
+  color: var(--text-on-accent, #ffffff);
+}
+
+.deleteButton {
+  background: transparent;
+  color: var(--error-text, #ff6b6b);
+  border-color: var(--error-border, #ff6b6b);
+}
+
+.deleteButton:hover {
+  background: var(--error-text, #ff6b6b);
+  color: var(--text-on-accent, #ffffff);
+}
+
+.saveButton {
+  background: var(--success-bg, #2d5a2d);
+  color: var(--success-text, #4caf50);
+  border-color: var(--success-text, #4caf50);
+}
+
+.saveButton:hover {
+  background: var(--success-text, #4caf50);
+  color: var(--text-on-accent, #ffffff);
+}
+
+.cancelButton {
+  background: transparent;
+  color: var(--text-secondary, #b0b0b0);
+  border-color: var(--border-color, #333);
+}
+
+.cancelButton:hover {
+  background: var(--secondary-bg, #2a2a2a);
+  border-color: var(--text-secondary, #b0b0b0);
+}
+
+/* Action Buttons */
+.actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin: 1.5rem 0;
+}
+
+.addButton {
+  background: var(--accent-color, #4a90e2);
+  color: var(--text-on-accent, #ffffff);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 48px; /* Accessibility */
+}
+
+.addButton:hover:not(:disabled) {
+  background: var(--accent-hover, #357abd);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(74, 144, 226, 0.3);
+}
+
+.addButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.clearButton {
+  background: transparent;
+  color: var(--error-text, #ff6b6b);
+  border: 1px solid var(--error-text, #ff6b6b);
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 48px; /* Accessibility */
+}
+
+.clearButton:hover {
+  background: var(--error-text, #ff6b6b);
+  color: var(--text-on-accent, #ffffff);
+}
+
+/* Habit Form */
+.habitForm {
+  background: var(--card-bg, #1a1a1a);
+  border: 1px solid var(--border-color, #333);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.habitForm h3 {
+  margin: 0 0 1rem 0;
+  color: var(--text-primary, #e0e0e0);
+  font-size: 1.125rem;
+}
+
+.formGroup {
+  margin-bottom: 1rem;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--text-primary, #e0e0e0);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.formGroup input,
+.formGroup textarea,
+.formGroup select {
+  width: 100%;
+  background: var(--input-bg, #0a0a0a);
+  color: var(--text-primary, #e0e0e0);
+  border: 1px solid var(--border-color, #333);
+  border-radius: 0.25rem;
+  padding: 0.75rem;
+  font-size: 0.875rem;
+  transition: border-color 0.2s ease;
+}
+
+.formGroup input:focus,
+.formGroup textarea:focus,
+.formGroup select:focus {
+  outline: none;
+  border-color: var(--accent-color, #4a90e2);
+  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+}
+
+.formActions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+/* Template Selector */
+.templateSelector {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: var(--card-bg, #1a1a1a);
+  border: 1px solid var(--border-color, #333);
+  border-radius: 0.5rem;
+}
+
+.templateSelector h3 {
+  margin: 0 0 0.5rem 0;
+  color: var(--text-primary, #e0e0e0);
+  font-size: 1.125rem;
+}
+
+.templateSelector p {
+  margin: 0 0 1.5rem 0;
+  color: var(--text-secondary, #b0b0b0);
+  font-size: 0.875rem;
+}
+
+.templateGrid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}
+
+.templateCard {
+  background: var(--secondary-bg, #2a2a2a);
+  border: 1px solid var(--border-color, #333);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  transition: all 0.2s ease;
+}
+
+.templateCard:hover {
+  border-color: var(--accent-color, #4a90e2);
+  box-shadow: 0 2px 4px rgba(74, 144, 226, 0.1);
+}
+
+.templateCard h4 {
+  margin: 0 0 0.5rem 0;
+  color: var(--text-primary, #e0e0e0);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.templateCard p {
+  margin: 0 0 1rem 0;
+  color: var(--text-secondary, #b0b0b0);
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.templateHabits {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin-bottom: 1rem;
+}
+
+.templateHabit {
+  background: var(--tag-bg, #0a0a0a);
+  color: var(--tag-text, #a0a0a0);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+}
+
+.loadTemplateButton {
+  background: var(--accent-color, #4a90e2);
+  color: var(--text-on-accent, #ffffff);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 44px; /* Accessibility */
+  width: 100%;
+}
+
+.loadTemplateButton:hover {
+  background: var(--accent-hover, #357abd);
+}
+
+/* Desktop Responsive */
+@media (min-width: 768px) {
+  .container {
+    padding: 2rem;
+  }
+
+  .habitActions {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .formRow {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .templateGrid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+
+  .actions {
+    justify-content: flex-start;
+  }
+
+  .formActions {
+    justify-content: flex-start;
+  }
+
+  .loadTemplateButton {
+    width: auto;
+  }
+
+  /* Smaller touch targets on desktop */
+  .editButton, .deleteButton, .saveButton, .cancelButton {
+    min-height: 36px;
+    min-width: 44px;
+  }
+
+  .addButton, .clearButton {
+    min-height: 44px;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .habitItem {
+    border-width: 2px;
+  }
+
+  .habitItem:hover {
+    border-width: 3px;
+  }
+
+  .editInput:focus, .editTextarea:focus {
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.5);
+  }
+}
