@@ -33,6 +33,21 @@
   font-weight: 600;
   color: #fff;
   text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.2s;
+}
+
+.logo:hover:not(:disabled) {
+  background-color: #222;
+}
+
+.logo:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .logoIcon {
@@ -100,6 +115,39 @@
   margin-top: 3rem;
   padding-top: 2rem;
   border-top: 1px solid #333;
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  color: #ccc;
+  font-size: 1.1rem;
+}
+
+.backButton {
+  background-color: #6b7280;
+  color: #fff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-bottom: 2rem;
+  min-height: 48px;
+  min-width: 120px;
+}
+
+.backButton:hover {
+  background-color: #4b5563;
+}
+
+.backButton:focus {
+  outline: 2px solid #6b7280;
+  outline-offset: 2px;
 }
 
 /* Mobile-first responsive design */

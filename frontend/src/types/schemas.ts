@@ -51,9 +51,9 @@ export const HabitCompletionValueSchema = z.object({
 }).refine(
   (data) => {
     const keys = Object.keys(data).filter(key => data[key as keyof typeof data] !== undefined);
-    return keys.length === 1;
+    return keys.length <= 1; // Allow empty (0) or exactly one completion value
   },
-  { message: 'Exactly one completion value must be provided' }
+  { message: 'At most one completion value may be provided' }
 );
 
 // Habit completion schema
