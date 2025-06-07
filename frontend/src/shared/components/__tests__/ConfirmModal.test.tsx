@@ -164,7 +164,6 @@ describe('ConfirmModal', () => {
 
   describe('Keyboard Interactions', () => {
     it('should call onConfirm when Enter key is pressed', async () => {
-      const user = userEvent.setup();
       const onConfirm = vi.fn();
 
       render(<ConfirmModal {...defaultProps} onConfirm={onConfirm} />);

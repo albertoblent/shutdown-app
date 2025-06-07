@@ -171,8 +171,6 @@ describe('Modal', () => {
       );
 
       const firstButton = screen.getByText('First Button');
-      const secondButton = screen.getByText('Second Button');
-      const input = screen.getByPlaceholderText('Input field');
       const closeButton = screen.getByLabelText('Close modal');
 
       // Focus first element then shift+tab should wrap to last
