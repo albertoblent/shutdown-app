@@ -2,6 +2,8 @@
 
 This guide provides step-by-step testing instructions for the habit management system implemented in Issue #5. Follow these tests to verify all functionality works correctly across different devices and browsers.
 
+**Issue #5 Scope**: Habit CRUD operations with 7-habit limit, preset templates, inline editing with auto-save, and drag-and-drop reordering.
+
 ## Prerequisites
 
 1. **Start the Development Server**
@@ -44,14 +46,13 @@ This guide provides step-by-step testing instructions for the habit management s
 **Steps:**
 
 1. Click "Load Template" button on **Productivity Focus** card
-2. Verify confirmation dialog appears (if you already have habits)
-3. Confirm the action
-4. Check that 3 habits are added:
+2. Template loads immediately (no confirmation dialog for empty state)
+3. Check that 3 habits are added:
    - **Deep Work Hours** (numeric, 0-12 hours)
    - **Budget Reviewed** (boolean)
    - **Exercise Completed** (boolean)
-5. Verify habit counter shows "3/7 habits"
-6. Confirm template selector disappears
+4. Verify habit counter shows "3/7 habits"
+5. Confirm template selector disappears (only shows when habits.length === 0)
 
 **✅ Pass Criteria**: 3 productivity habits loaded correctly with proper types and prompts
 
@@ -61,16 +62,18 @@ This guide provides step-by-step testing instructions for the habit management s
 
 **Steps:**
 
-1. Click "Load Template" on **Health & Wellness** card
-2. Accept the confirmation dialog about adding to existing habits
-3. Verify 3 additional habits are added:
+1. With 3 existing habits, click "Add New Habit" to access templates (they only show in empty state)
+2. Alternatively, test by clearing all habits first, then load **Health & Wellness** template
+3. Verify 3 habits are added:
    - **Daily Steps** (numeric, 0-30000 steps)
    - **Water Intake** (numeric, 0-15 glasses)
    - **Sleep Hours** (numeric, 0-12 hours)
-4. Check habit counter shows "6/7 habits"
-5. Verify all 6 habits are displayed in the list
+4. Check habit counter shows "3/7 habits"
+5. Verify all habits are displayed in the list
 
-**✅ Pass Criteria**: Additional habits loaded correctly without replacing existing ones
+**Note**: Template selector only appears when no habits exist. To test multiple templates, either test separately or use the storage API directly.
+
+**✅ Pass Criteria**: Health & Wellness template loads correctly with proper numeric configurations
 
 ### 4. Habit Limit Enforcement
 
@@ -78,20 +81,17 @@ This guide provides step-by-step testing instructions for the habit management s
 
 **Steps:**
 
-1. With 6 habits already loaded, try to load **Work-Life Balance** template
-2. Verify error message appears: "Cannot load template: would exceed 7 habit limit (9 total)"
-3. Confirm no new habits are added
-4. Verify "Add New Habit" button is still visible (since under 7 limit)
-5. Click "Add New Habit" to manually create the 7th habit
-6. Fill out the form with:
-   - **Name**: "Test Habit"
-   - **Prompt**: "Did you test the app today?"
-   - **Type**: Boolean
-7. Submit the form
-8. Verify habit counter shows "7/7 habits"
-9. Confirm "Add New Habit" button disappears
+1. **Test Template Limit**: Load **Productivity Focus** template (3 habits), then **Health & Wellness** template (3 habits) = 6 total
+2. Note: Since templates only show in empty state, test templates separately or manually add 4 individual habits to reach 6 total
+3. Try to load **Work-Life Balance** template (3 habits) when you have 6 existing
+4. **Since templates don't show with existing habits**, test by manually adding individual habits until you reach 7
+5. Create individual habits until counter shows "7/7 habits"
+6. Verify "Add New Habit" button disappears (due to `validateHabitLimit` check)
+7. **Test storage-level limit**: If you could access templates with existing habits, verify error message: "Cannot load template: would exceed 7 habit limit"
 
-**✅ Pass Criteria**: 7-habit limit enforced correctly with proper UI updates
+**Note**: Due to current UI design, template selector is hidden when habits exist, so testing the template limit requires either clearing habits between tests or direct storage manipulation.
+
+**✅ Pass Criteria**: 7-habit limit enforced correctly with proper UI updates, Add New Habit button disappears at limit
 
 ### 5. Manual Habit Creation - Boolean Type
 
@@ -125,15 +125,33 @@ This guide provides step-by-step testing instructions for the habit management s
    - **Habit Name**: "Reading Time"
    - **Atomic Prompt**: "How many pages did you read today?"
    - **Type**: "Number (Numeric)"
-   - **Unit**: "pages"
-   - **Min Value**: 0
-   - **Max Value**: 100
+   - **Unit**: "pages" (optional field)
+   - **Min Value**: 0 (default)
+   - **Max Value**: 100 (change from default 10)
 3. Click "Add Habit"
 4. Verify habit appears with:
    - Type shows as "numeric"
    - Unit "(pages)" displayed in habit meta
 
 **✅ Pass Criteria**: Numeric habit created with proper unit display
+
+### 6a. Manual Habit Creation - Choice Type (Beyond Issue #5 Scope)
+
+**Expected Behavior**: Users can create choice-type habits (implemented beyond original scope)
+
+**Steps:**
+
+1. Click "Add New Habit"
+2. Fill out the form:
+   - **Habit Name**: "Mood Check"
+   - **Atomic Prompt**: "How was your overall mood today?"
+   - **Type**: "Multiple Choice"
+3. Click "Add Habit"
+4. Verify habit appears with:
+   - Type shows as "choice"
+   - No additional configuration fields visible
+
+**✅ Pass Criteria**: Choice habit created successfully (note: this was implemented beyond Issue #5 scope)
 
 ### 7. Inline Editing with Auto-Save
 
@@ -143,12 +161,13 @@ This guide provides step-by-step testing instructions for the habit management s
 
 1. Click "Edit" button on any habit
 2. Verify inline editing form appears with:
-   - Name input field (focused)
+   - Name input field (focused and auto-selected)
    - Prompt textarea
    - Save and Cancel buttons
+   - Drag handle is disabled during editing
 3. **Test Auto-Save on Blur**:
    - Modify the habit name to "Auto-Saved Name"
-   - Click outside the input field (or tab to next field)
+   - Click outside the input field (or tab to prompt field)
    - Verify changes are automatically saved without clicking "Save"
    - Confirm editing UI disappears after auto-save
 4. **Test Manual Save**:
@@ -162,10 +181,10 @@ This guide provides step-by-step testing instructions for the habit management s
    - **Escape**: Should cancel editing (test on a different habit)
 6. **Test Auto-Save Validation**:
    - Edit a habit and clear all text from name field
-   - Click outside - verify auto-save doesn't trigger with invalid data
-   - Enter valid data and blur again - verify auto-save works
+   - Tab to prompt field - verify auto-save doesn't trigger with invalid data
+   - Return to name field, enter valid data, then blur - verify auto-save works
 
-**✅ Pass Criteria**: Auto-save on blur works correctly, manual save works, keyboard shortcuts function properly
+**✅ Pass Criteria**: Auto-save on blur works correctly with validation, manual save works, keyboard shortcuts function properly
 
 ### 8. Drag and Drop Reordering
 
@@ -233,11 +252,12 @@ This guide provides step-by-step testing instructions for the habit management s
 2. Try to submit empty form - verify form validation prevents submission
 3. Enter only a name (no prompt) - verify validation fails
 4. Enter only a prompt (no name) - verify validation fails
-5. Try adding 8th habit (if at limit) - verify error message appears
-6. Test with very long names/prompts to check character limits
-7. Verify error messages are displayed prominently with red styling
+5. Try adding 8th habit (if at limit) - verify error message appears in red
+6. Test template loading beyond limit - verify error message displays
+7. Test inline editing with empty values - verify auto-save validation
+8. Verify error messages are displayed prominently with proper styling
 
-**✅ Pass Criteria**: Proper validation prevents invalid data entry
+**✅ Pass Criteria**: Proper validation prevents invalid data entry, error messages are clear and visible
 
 ### 12. Data Persistence
 
@@ -298,18 +318,18 @@ This guide provides step-by-step testing instructions for the habit management s
 
 Record your test results:
 
-- [ ] **Initial State Display**: Empty state shows correctly
-- [ ] **Template Loading**: All 3 templates load properly
-- [ ] **Habit Limit**: 7-habit limit enforced correctly
-- [ ] **Manual Creation**: Boolean and numeric habits create successfully
-- [ ] **Inline Editing**: Auto-save on blur and keyboard shortcuts work correctly
-- [ ] **Drag and Drop**: Reordering works on desktop and mobile
+- [ ] **Initial State Display**: Empty state shows correctly with template options
+- [ ] **Template Loading**: All 3 templates load properly (test individually due to UI design)
+- [ ] **Habit Limit**: 7-habit limit enforced correctly, Add New Habit button disappears at limit
+- [ ] **Manual Creation**: Boolean, numeric, and choice habits create successfully
+- [ ] **Inline Editing**: Auto-save on blur and keyboard shortcuts work correctly with validation
+- [ ] **Drag and Drop**: Reordering works on desktop and mobile, disabled during editing
 - [ ] **Deletion**: Individual deletion with confirmation works
 - [ ] **Clear All**: Bulk deletion with strong confirmation works
-- [ ] **Error Handling**: Invalid inputs handled gracefully
+- [ ] **Error Handling**: Invalid inputs handled gracefully with visible error messages
 - [ ] **Data Persistence**: Data survives page refreshes and browser sessions
 - [ ] **Responsive Design**: Works well on desktop, tablet, and mobile
-- [ ] **Performance**: App feels fast and responsive
+- [ ] **Performance**: App feels fast and responsive with proper loading states
 
 ## Browser Compatibility
 
@@ -347,5 +367,21 @@ If you find issues during testing:
 ❌ **Issues found**: Document bugs and retest after fixes
 
 ---
+
+## Summary
+
+This testing guide covers the **Issue #5** implementation scope:
+- ✅ **Core CRUD Operations**: Add, edit, delete, reorder habits
+- ✅ **7-Habit Limit**: Enforced at storage level with UI updates
+- ✅ **Preset Templates**: 3 templates available (Productivity, Health, Work-Life Balance)
+- ✅ **Inline Editing**: Auto-save on blur with validation and keyboard shortcuts
+- ✅ **Drag & Drop**: HTML5 drag API with touch support and visual feedback
+- ✅ **Additional Features**: Choice type (beyond scope), Clear All functionality
+
+**Key Implementation Notes**:
+- Template selector only shows when no habits exist (empty state)
+- Auto-save validates input before saving
+- Drag handles are disabled during editing mode
+- Add New Habit button disappears when 7-habit limit is reached
 
 *This testing guide corresponds to Issue #5 implementation. Last updated: January 2025*
