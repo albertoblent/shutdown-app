@@ -18,6 +18,7 @@ import {
   loadHabitTemplate,
   HABIT_TEMPLATES,
 } from '../api/templates';
+import { ConfirmModal } from '../../../shared/components';
 import styles from './HabitManager.module.css';
 
 interface HabitManagerProps {
@@ -32,10 +33,27 @@ export function HabitManager({ onHabitsChange }: HabitManagerProps) {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
 
+  // Modal state
+  const [confirmModal, setConfirmModal] = useState<{
+    isOpen: boolean;
+    title: string;
+    message: string;
+    onConfirm: () => void;
+    variant: 'danger' | 'warning' | 'info';
+    confirmText: string;
+  }>({
+    isOpen: false,
+    title: '',
+    message: '',
+    onConfirm: () => {},
+    variant: 'info',
+    confirmText: 'Confirm',
+  });
+
   const loadHabits = useCallback(async () => {
     setIsLoading(true);
     setError(null);
-    
+
     try {
       const result = getHabitsSorted();
       if (result.success) {
@@ -50,21 +68,20 @@ export function HabitManager({ onHabitsChange }: HabitManagerProps) {
     }
   }, []);
 
-  const handleLoadTemplate = useCallback(async (templateName: string) => {
-    if (habits.length > 0 && !confirm('This will add template habits to your existing habits. Continue?')) {
-      return;
-    }
+    const handleLoadTemplate = useCallback(async (templateName: string) => {
+    // Templates only show when habits.length === 0, so no confirmation needed
+    // But we'll keep this logic for potential future changes
 
     setError(null);
-    
+
     const result = loadHabitTemplate(templateName);
-    
+
     if (result.success) {
       await loadHabits();
     } else {
       setError(result.error || 'Failed to load template');
     }
-  }, [habits.length, loadHabits]);
+  }, [loadHabits]);
 
   // Load habits on mount
   useEffect(() => {
@@ -78,7 +95,7 @@ export function HabitManager({ onHabitsChange }: HabitManagerProps) {
 
   const handleAddHabit = async (habitData: Omit<Habit, 'id' | 'created_at' | 'position'>) => {
     setError(null);
-    
+
     const result = addHabit(habitData);
     if (result.success) {
       await loadHabits();
@@ -90,7 +107,7 @@ export function HabitManager({ onHabitsChange }: HabitManagerProps) {
 
   const handleEditHabit = async (habitId: string, updates: Partial<Omit<Habit, 'id' | 'created_at'>>) => {
     setError(null);
-    
+
     const result = editHabit(habitId, updates);
     if (result.success) {
       await loadHabits();
@@ -100,34 +117,51 @@ export function HabitManager({ onHabitsChange }: HabitManagerProps) {
     }
   };
 
-  const handleDeleteHabit = async (habitId: string) => {
-    if (!confirm('Are you sure you want to delete this habit?')) {
-      return;
-    }
+    const handleDeleteHabit = async (habitId: string) => {
+    const habit = habits.find(h => h.id === habitId);
+    const habitName = habit?.name || 'this habit';
 
-    setError(null);
-    
-    const result = deleteHabit(habitId);
-    if (result.success) {
-      await loadHabits();
-    } else {
-      setError(result.error || 'Failed to delete habit');
-    }
+    setConfirmModal({
+      isOpen: true,
+      title: 'Delete Habit',
+      message: `Are you sure you want to delete "${habitName}"? This action cannot be undone.`,
+      variant: 'danger',
+      confirmText: 'Delete',
+      onConfirm: async () => {
+        setError(null);
+
+        const result = deleteHabit(habitId);
+        if (result.success) {
+          await loadHabits();
+        } else {
+          setError(result.error || 'Failed to delete habit');
+        }
+
+        setConfirmModal(prev => ({ ...prev, isOpen: false }));
+      },
+    });
   };
 
-  const handleClearAll = async () => {
-    if (!confirm('Are you sure you want to delete ALL habits? This cannot be undone.')) {
-      return;
-    }
+    const handleClearAll = async () => {
+    setConfirmModal({
+      isOpen: true,
+      title: 'Clear All Habits',
+      message: `Are you sure you want to delete ALL ${habits.length} habits? This action cannot be undone.`,
+      variant: 'danger',
+      confirmText: 'Delete All',
+      onConfirm: async () => {
+        setError(null);
 
-    setError(null);
-    
-    const result = clearAllHabits();
-    if (result.success) {
-      await loadHabits();
-    } else {
-      setError(result.error || 'Failed to clear habits');
-    }
+        const result = clearAllHabits();
+        if (result.success) {
+          await loadHabits();
+        } else {
+          setError(result.error || 'Failed to clear habits');
+        }
+
+        setConfirmModal(prev => ({ ...prev, isOpen: false }));
+      },
+    });
   };
 
   const handleDragStart = (e: React.DragEvent, index: number) => {
@@ -143,7 +177,7 @@ export function HabitManager({ onHabitsChange }: HabitManagerProps) {
 
   const handleDrop = async (e: React.DragEvent, dropIndex: number) => {
     e.preventDefault();
-    
+
     if (draggedIndex === null || draggedIndex === dropIndex) {
       setDraggedIndex(null);
       return;
@@ -155,13 +189,13 @@ export function HabitManager({ onHabitsChange }: HabitManagerProps) {
 
     const habitIds = reorderedHabits.map(h => h.id);
     const result = reorderHabits(habitIds);
-    
+
     if (result.success) {
       await loadHabits();
     } else {
       setError(result.error || 'Failed to reorder habits');
     }
-    
+
     setDraggedIndex(null);
   };
 
@@ -245,6 +279,16 @@ export function HabitManager({ onHabitsChange }: HabitManagerProps) {
       {habits.length === 0 && !isAddingNew && (
         <TemplateSelector onLoadTemplate={handleLoadTemplate} />
       )}
+
+      <ConfirmModal
+        isOpen={confirmModal.isOpen}
+        onClose={() => setConfirmModal(prev => ({ ...prev, isOpen: false }))}
+        onConfirm={confirmModal.onConfirm}
+        title={confirmModal.title}
+        message={confirmModal.message}
+        variant={confirmModal.variant}
+        confirmText={confirmModal.confirmText}
+      />
     </div>
   );
 }
@@ -288,7 +332,7 @@ function HabitItem({
     if (!editName.trim() || !editPrompt.trim()) {
       return;
     }
-    
+
     onSave({
       name: editName.trim(),
       atomic_prompt: editPrompt.trim(),
@@ -319,7 +363,7 @@ function HabitItem({
       onDrop={onDrop}
     >
       <div className={styles.dragHandle}>⋮⋮</div>
-      
+
       <div className={styles.habitContent}>
         {isEditing ? (
           <div className={styles.editForm}>
@@ -394,13 +438,13 @@ function HabitForm({ onSave, onCancel }: HabitFormProps) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!name.trim() || !prompt.trim()) {
       return;
     }
 
     const configuration: Habit['configuration'] = {};
-    
+
     if (type === 'numeric') {
       configuration.numeric_unit = numericUnit || undefined;
       configuration.numeric_range = [numericMin, numericMax];
@@ -516,7 +560,7 @@ function TemplateSelector({ onLoadTemplate }: TemplateSelectorProps) {
     <div className={styles.templateSelector}>
       <h3>Quick Start Templates</h3>
       <p>Choose a preset template to get started quickly:</p>
-      
+
       <div className={styles.templateGrid}>
         {HABIT_TEMPLATES.map((template) => (
           <div key={template.name} className={styles.templateCard}>
