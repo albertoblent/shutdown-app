@@ -2,7 +2,6 @@ import { describe, it, expect, beforeEach, vi } from 'vitest'
 import {
   getHabits,
   saveHabits,
-  addHabit,
   getDailyEntry,
   saveDailyEntry,
   getSettings,
@@ -85,56 +84,6 @@ describe('Storage utilities', () => {
       })
     })
 
-    describe('addHabit', () => {
-      it('should add new habit with generated ID and position', () => {
-        const existingHabits = [mockHabit]
-        localStorage.setItem('shutdown_habits', JSON.stringify(existingHabits))
-
-        const newHabitData = {
-          name: 'New Habit',
-          type: 'numeric' as const,
-          atomic_prompt: 'How many?',
-          configuration: { numeric_unit: 'times' },
-          is_active: true,
-        }
-
-        const result = addHabit(newHabitData)
-        expect(result.success).toBe(true)
-        expect(result.data?.id).toBeDefined()
-        expect(result.data?.position).toBe(1) // After existing habit
-        expect(result.data?.created_at).toBeDefined()
-      })
-
-      it('should handle error when getting existing habits fails', () => {
-        localStorage.setItem('shutdown_habits', 'invalid json')
-
-        const newHabitData = {
-          name: 'New Habit',
-          type: 'boolean' as const,
-          atomic_prompt: 'Test?',
-          configuration: {},
-          is_active: true,
-        }
-
-        const result = addHabit(newHabitData)
-        expect(result.success).toBe(false)
-        expect(result.error).toContain('Invalid JSON format')
-      })
-
-      it('should add first habit with position 0', () => {
-        const newHabitData = {
-          name: 'First Habit',
-          type: 'boolean' as const,
-          atomic_prompt: 'First test?',
-          configuration: {},
-          is_active: true,
-        }
-
-        const result = addHabit(newHabitData)
-        expect(result.success).toBe(true)
-        expect(result.data?.position).toBe(0)
-      })
-    })
   })
 
   describe('Daily Entry operations', () => {

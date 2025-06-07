@@ -6,16 +6,18 @@
 import React, { useState, useEffect } from 'react';
 import type { Habit } from '../types/data';
 import {
-  getHabitsSorted,
   addHabit,
   editHabit,
   deleteHabit,
   reorderHabits,
-  loadHabitTemplate,
   clearAllHabits,
+  getHabitsSorted,
   validateHabitLimit,
+} from '../utils/habitStorage';
+import {
+  loadHabitTemplate,
   HABIT_TEMPLATES,
-} from '../utils/storage';
+} from '../utils/habitTemplates';
 import styles from './HabitManager.module.css';
 
 interface HabitManagerProps {

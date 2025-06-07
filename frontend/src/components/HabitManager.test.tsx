@@ -7,18 +7,22 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { HabitManager } from './HabitManager';
-import * as storage from '../utils/storage';
+import * as habitStorage from '../utils/habitStorage';
+import * as habitTemplates from '../utils/habitTemplates';
 
-// Mock the storage module
-vi.mock('../utils/storage', () => ({
+// Mock the storage modules
+vi.mock('../utils/habitStorage', () => ({
   getHabitsSorted: vi.fn(),
   addHabit: vi.fn(),
   editHabit: vi.fn(),
   deleteHabit: vi.fn(),
   reorderHabits: vi.fn(),
-  loadHabitTemplate: vi.fn(),
   clearAllHabits: vi.fn(),
   validateHabitLimit: vi.fn(),
+}));
+
+vi.mock('../utils/habitTemplates', () => ({
+  loadHabitTemplate: vi.fn(),
   HABIT_TEMPLATES: [
     {
       name: 'Test Template',
@@ -36,7 +40,8 @@ vi.mock('../utils/storage', () => ({
   ],
 }));
 
-const mockStorage = vi.mocked(storage);
+const mockHabitStorage = vi.mocked(habitStorage);
+const mockHabitTemplates = vi.mocked(habitTemplates);
 
 describe('HabitManager', () => {
   const user = userEvent.setup();
@@ -45,11 +50,11 @@ describe('HabitManager', () => {
     vi.clearAllMocks();
     
     // Default successful responses
-    mockStorage.getHabitsSorted.mockReturnValue({
+    mockHabitStorage.getHabitsSorted.mockReturnValue({
       success: true,
       data: [],
     });
-    mockStorage.validateHabitLimit.mockReturnValue(true);
+    mockHabitStorage.validateHabitLimit.mockReturnValue(true);
   });
 
   it('should render loading state initially', async () => {
@@ -83,7 +88,7 @@ describe('HabitManager', () => {
       },
     ];
 
-    mockStorage.getHabitsSorted.mockReturnValue({
+    mockHabitStorage.getHabitsSorted.mockReturnValue({
       success: true,
       data: mockHabits,
     });
@@ -100,7 +105,7 @@ describe('HabitManager', () => {
   });
 
   it('should display error message when loading fails', async () => {
-    mockStorage.getHabitsSorted.mockReturnValue({
+    mockHabitStorage.getHabitsSorted.mockReturnValue({
       success: false,
       error: 'Storage error',
     });
@@ -140,7 +145,7 @@ describe('HabitManager', () => {
       created_at: '2023-01-01T00:00:00.000Z',
     };
 
-    mockStorage.addHabit.mockReturnValue({
+    mockHabitStorage.addHabit.mockReturnValue({
       success: true,
       data: mockNewHabit,
     });
@@ -162,7 +167,7 @@ describe('HabitManager', () => {
     await user.click(screen.getByRole('button', { name: 'Add Habit' }));
     
     // Verify addHabit was called with correct data
-    expect(mockStorage.addHabit).toHaveBeenCalledWith({
+    expect(mockHabitStorage.addHabit).toHaveBeenCalledWith({
       name: 'New Habit',
       type: 'boolean',
       atomic_prompt: 'New prompt',
@@ -185,7 +190,7 @@ describe('HabitManager', () => {
       },
     ];
 
-    mockStorage.getHabitsSorted.mockReturnValue({
+    mockHabitStorage.getHabitsSorted.mockReturnValue({
       success: true,
       data: mockHabits,
     });
@@ -219,12 +224,12 @@ describe('HabitManager', () => {
       },
     ];
 
-    mockStorage.getHabitsSorted.mockReturnValue({
+    mockHabitStorage.getHabitsSorted.mockReturnValue({
       success: true,
       data: mockHabits,
     });
 
-    mockStorage.editHabit.mockReturnValue({
+    mockHabitStorage.editHabit.mockReturnValue({
       success: true,
       data: { ...mockHabits[0], name: 'Updated Habit' },
     });
@@ -245,7 +250,7 @@ describe('HabitManager', () => {
     // Save changes
     await user.click(screen.getByText('Save'));
     
-    expect(mockStorage.editHabit).toHaveBeenCalledWith('1', {
+    expect(mockHabitStorage.editHabit).toHaveBeenCalledWith('1', {
       name: 'Updated Habit',
       atomic_prompt: 'Test prompt',
     });
@@ -265,12 +270,12 @@ describe('HabitManager', () => {
       },
     ];
 
-    mockStorage.getHabitsSorted.mockReturnValue({
+    mockHabitStorage.getHabitsSorted.mockReturnValue({
       success: true,
       data: mockHabits,
     });
 
-    mockStorage.deleteHabit.mockReturnValue({
+    mockHabitStorage.deleteHabit.mockReturnValue({
       success: true,
     });
 
@@ -286,13 +291,13 @@ describe('HabitManager', () => {
     await user.click(screen.getByText('Delete'));
     
     expect(confirmSpy).toHaveBeenCalledWith('Are you sure you want to delete this habit?');
-    expect(mockStorage.deleteHabit).toHaveBeenCalledWith('1');
+    expect(mockHabitStorage.deleteHabit).toHaveBeenCalledWith('1');
     
     confirmSpy.mockRestore();
   });
 
   it('should load template when template button is clicked', async () => {
-    mockStorage.loadHabitTemplate.mockReturnValue({
+    mockHabitTemplates.loadHabitTemplate.mockReturnValue({
       success: true,
       data: [],
     });
@@ -305,7 +310,7 @@ describe('HabitManager', () => {
     
     await user.click(screen.getByText('Load Template'));
     
-    expect(mockStorage.loadHabitTemplate).toHaveBeenCalledWith('Test Template');
+    expect(mockHabitTemplates.loadHabitTemplate).toHaveBeenCalledWith('Test Template');
   });
 
   it('should show template selector only when no habits exist', async () => {
@@ -333,7 +338,7 @@ describe('HabitManager', () => {
       },
     ];
 
-    mockStorage.getHabitsSorted.mockReturnValue({
+    mockHabitStorage.getHabitsSorted.mockReturnValue({
       success: true,
       data: mockHabits,
     });
@@ -350,7 +355,7 @@ describe('HabitManager', () => {
   });
 
   it('should disable Add New Habit button when at habit limit', async () => {
-    mockStorage.validateHabitLimit.mockReturnValue(false);
+    mockHabitStorage.validateHabitLimit.mockReturnValue(false);
 
     const mockHabits = Array.from({ length: 7 }, (_, i) => ({
       id: `${i + 1}`,
@@ -363,7 +368,7 @@ describe('HabitManager', () => {
       created_at: '2023-01-01T00:00:00.000Z',
     }));
 
-    mockStorage.getHabitsSorted.mockReturnValue({
+    mockHabitStorage.getHabitsSorted.mockReturnValue({
       success: true,
       data: mockHabits,
     });
@@ -393,7 +398,7 @@ describe('HabitManager', () => {
       },
     ];
 
-    mockStorage.getHabitsSorted.mockReturnValue({
+    mockHabitStorage.getHabitsSorted.mockReturnValue({
       success: true,
       data: mockHabits,
     });
