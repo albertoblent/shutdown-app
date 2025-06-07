@@ -242,7 +242,7 @@ export function HabitManager({ onHabitsChange }: HabitManagerProps) {
         />
       )}
 
-      {habits.length === 0 && (
+      {habits.length === 0 && !isAddingNew && (
         <TemplateSelector onLoadTemplate={handleLoadTemplate} />
       )}
     </div>
