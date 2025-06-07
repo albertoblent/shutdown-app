@@ -22,7 +22,7 @@ import { ConfirmModal } from '../../../shared/components';
 import styles from './HabitManager.module.css';
 
 interface HabitManagerProps {
-  onHabitsChange?: (habits: Habit[]) => void;
+  onHabitsChange?: () => void;
 }
 
 export function HabitManager({ onHabitsChange }: HabitManagerProps) {
@@ -90,7 +90,7 @@ export function HabitManager({ onHabitsChange }: HabitManagerProps) {
 
   // Notify parent when habits change
   useEffect(() => {
-    onHabitsChange?.(habits);
+    onHabitsChange?.();
   }, [habits, onHabitsChange]);
 
   const handleAddHabit = async (habitData: Omit<Habit, 'id' | 'created_at' | 'position'>) => {

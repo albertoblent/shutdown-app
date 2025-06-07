@@ -17,12 +17,12 @@ function App() {
       const result = getHabitsSorted();
       const habitsExist = result.success && (result.data?.length || 0) > 0;
       setHasHabits(habitsExist);
-      
+
       // If no habits exist, show habit management
       if (!habitsExist) {
         setCurrentView('manage');
       }
-      
+
       setIsLoading(false);
     };
 
@@ -38,7 +38,7 @@ function App() {
     // Check if habits exist before going back to dashboard
     const result = getHabitsSorted();
     const habitsExist = result.success && (result.data?.length || 0) > 0;
-    
+
     if (habitsExist) {
       setHasHabits(true);
       setCurrentView('dashboard');
@@ -47,12 +47,13 @@ function App() {
 
   // Handle when habits are updated
   const handleHabitsChange = () => {
+    const hadHabits = hasHabits;
     const result = getHabitsSorted();
     const habitsExist = result.success && (result.data?.length || 0) > 0;
     setHasHabits(habitsExist);
-    
-    // If habits were just created, switch to dashboard
-    if (habitsExist && currentView === 'manage') {
+
+    // If habits were just created (transition from no habits to some), switch to dashboard
+    if (!hadHabits && habitsExist) {
       setCurrentView('dashboard');
     }
   };
@@ -69,8 +70,8 @@ function App() {
     <div className={styles.app}>
       <header className={styles.header}>
         <div className={styles.headerContent}>
-          <button 
-            onClick={() => setCurrentView('dashboard')} 
+          <button
+            onClick={() => setCurrentView('dashboard')}
             className={styles.logo}
             disabled={!hasHabits}
           >
@@ -95,7 +96,7 @@ function App() {
                 {hasHabits ? 'Manage Your Habits' : 'Daily Shutdown Routine'}
               </h1>
               <p className={styles.welcomeSubtitle}>
-                {hasHabits 
+                {hasHabits
                   ? 'Add, edit, or remove habits from your daily routine.'
                   : 'Build healthy habits and end your day with intention. Track your progress and create a meaningful routine.'
                 }
