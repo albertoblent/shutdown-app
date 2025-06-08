@@ -35,7 +35,7 @@ jobs:
       - name: Run lint
         run: npm run lint
 
-      - name: Run tests with coverage and generate JUnit report
+      - name: Run tests, generate coverage and JUnit report
         run: npm run test:junit
 
       - name: Upload coverage to Codecov

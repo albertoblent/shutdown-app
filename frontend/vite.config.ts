@@ -66,7 +66,7 @@ export default defineConfig({
     }),
     codecovVitePlugin({
         enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
-        bundleName: "shutdown-app",
+        bundleName: "frontend",
         uploadToken: process.env.CODECOV_TOKEN,
       }),
   ],
