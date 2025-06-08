@@ -259,4 +259,80 @@ describe('generateSmartPredictions', () => {
     
     expect(sources.size).toBeGreaterThan(0) // Should have at least one source
   })
+
+  it('should generate correct quarter points for numeric ranges', () => {
+    const habitWithRange: Habit = {
+      id: 'habit-range',
+      name: 'Hours Worked', 
+      type: 'numeric',
+      atomic_prompt: 'Hours worked today',
+      configuration: { numeric_range: [0, 20] }, // Range: 0-20 (>10, so uses quarter points)
+      position: 1,
+      is_active: true,
+      created_at: '2025-01-01T00:00:00.000Z'
+    }
+
+    const predictions = generateSmartPredictions(habitWithRange)
+    
+    // Should include quarter points: 0, 5, 10, 15, 20
+    const quarterPoints = [0, 5, 10, 15, 20]
+    const predictionValues = predictions.map(p => p.value)
+    
+    quarterPoints.forEach(point => {
+      expect(predictionValues).toContain(point)
+    })
+  })
+
+  it('should handle quarter point calculation for different ranges', () => {
+    const habitWithWideRange: Habit = {
+      id: 'habit-wide',
+      name: 'Steps',
+      type: 'numeric', 
+      atomic_prompt: 'Steps taken',
+      configuration: { numeric_range: [1000, 5000] }, // Range: 1000-5000
+      position: 1,
+      is_active: true,
+      created_at: '2025-01-01T00:00:00.000Z'
+    }
+
+    const predictions = generateSmartPredictions(habitWithWideRange)
+    const predictionValues = predictions.map(p => p.value)
+    
+    // Quarter points should be: 1000, 2000, 3000, 4000, 5000
+    const expectedQuarters = [1000, 2000, 3000, 4000, 5000]
+    
+    expectedQuarters.forEach(point => {
+      expect(predictionValues).toContain(point)
+    })
+  })
+
+  it('should fix quarter point calculation bug for non-zero minimum ranges', () => {
+    const habitWithOffsetRange: Habit = {
+      id: 'habit-offset',
+      name: 'Temperature', 
+      type: 'numeric',
+      atomic_prompt: 'Room temperature',
+      configuration: { numeric_range: [10, 30] }, // Range: 10-30
+      position: 1,
+      is_active: true,
+      created_at: '2025-01-01T00:00:00.000Z'
+    }
+
+    const predictions = generateSmartPredictions(habitWithOffsetRange)
+    const predictionValues = predictions.map(p => p.value)
+    
+    // Quarter points should be: 10, 15, 20, 25, 30
+    // NOT the buggy: 10, 17.5, 25, 32.5, 30 (from old min + max * X formula)
+    const correctQuarters = [10, 15, 20, 25, 30]
+    
+    correctQuarters.forEach(point => {
+      expect(predictionValues).toContain(point)
+    })
+    
+    // Ensure we don't have the buggy values
+    const buggyValues = [17.5, 32.5]
+    buggyValues.forEach(badValue => {
+      expect(predictionValues).not.toContain(badValue)
+    })
+  })
 })

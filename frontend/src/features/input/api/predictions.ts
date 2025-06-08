@@ -276,9 +276,9 @@ export const generateSmartPredictions = (habit: Habit): InputPrediction[] => {
       } else {
         typicalValues = [
           min,
-          Math.round((min + max * 0.25) * 10) / 10,
-          Math.round((min + max * 0.5) * 10) / 10,
-          Math.round((min + max * 0.75) * 10) / 10,
+          Math.round((min + (max - min) * 0.25) * 10) / 10,
+          Math.round((min + (max - min) * 0.5) * 10) / 10,
+          Math.round((min + (max - min) * 0.75) * 10) / 10,
           max
         ]
       }
