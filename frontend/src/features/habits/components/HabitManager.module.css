@@ -78,6 +78,7 @@
   margin-bottom: 0.75rem;
   transition: all 0.2s ease;
   min-height: 48px; /* Accessibility: minimum touch target */
+  touch-action: manipulation; /* Allow basic touch but prevent interference */
 }
 
 .habitItem:hover {
@@ -97,6 +98,7 @@
   color: var(--text-secondary, #b0b0b0);
   cursor: grab;
   user-select: none;
+  touch-action: none; /* Essential for mobile drag and drop */
   border-right: 1px solid var(--border-color, #333);
   font-size: 0.75rem;
 }
