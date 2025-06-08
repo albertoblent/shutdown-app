@@ -162,7 +162,7 @@ describe('VoiceInputButton', () => {
 
     it('should prevent clicks while listening', async () => {
       // Mock a delay to simulate real voice input duration
-      let resolveVoiceInput: (value: any) => void
+      let resolveVoiceInput: (value: { success: boolean; value: number }) => void
       mockStartVoiceInput.mockImplementation(() => 
         new Promise(resolve => {
           resolveVoiceInput = resolve

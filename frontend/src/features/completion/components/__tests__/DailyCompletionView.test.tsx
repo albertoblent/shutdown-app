@@ -326,7 +326,7 @@ describe('DailyCompletionView', () => {
       // Return malformed data that doesn't match Habit type
       mockGetHabitsSorted.mockReturnValue({
         success: true,
-        data: [{ invalid: 'data' }] as any
+        data: [{ invalid: 'data' }] as unknown as Habit[]
       })
 
       // Should not crash with malformed data
