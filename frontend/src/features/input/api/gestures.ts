@@ -30,21 +30,27 @@ export const detectGesture = (
   endEvent: TouchEvent, 
   timeThreshold: number = 500
 ): GestureType | null => {
-  // Handle missing touch data
-  if (!startEvent.touches?.length || !endEvent.touches?.length) {
+  // Handle missing touch data - for touchend events, touches are in changedTouches
+  if (!startEvent.touches?.length || 
+      (!endEvent.touches?.length && !endEvent.changedTouches?.length)) {
     return null
   }
 
   const start: TouchPoint = {
     x: startEvent.touches[0].clientX,
     y: startEvent.touches[0].clientY,
-    timestamp: (startEvent.touches[0] as Touch & { timestamp?: number }).timestamp || Date.now()
+    timestamp: startEvent.timeStamp
   }
 
+  // For touchend events, use changedTouches instead of touches
+  const endTouch = endEvent.touches?.length > 0 
+    ? endEvent.touches[0] 
+    : endEvent.changedTouches[0]
+
   const end: TouchPoint = {
-    x: endEvent.touches[0].clientX,
-    y: endEvent.touches[0].clientY,
-    timestamp: (endEvent.touches[0] as Touch & { timestamp?: number }).timestamp || Date.now()
+    x: endTouch.clientX,
+    y: endTouch.clientY,
+    timestamp: endEvent.timeStamp
   }
 
   const deltaX = end.x - start.x
@@ -85,20 +91,31 @@ export const detectDoubleTap = (
   timeThreshold: number = 300,
   distanceThreshold: number = 50
 ): boolean => {
-  if (!firstTap.touches?.length || !secondTap.touches?.length) {
+  // Handle missing touch data - for touchend events, touches are in changedTouches
+  if ((!firstTap.touches?.length && !firstTap.changedTouches?.length) || 
+      (!secondTap.touches?.length && !secondTap.changedTouches?.length)) {
     return false
   }
 
+  // For touchend events, use changedTouches instead of touches
+  const firstTouch = firstTap.touches?.length > 0 
+    ? firstTap.touches[0] 
+    : firstTap.changedTouches[0]
+    
+  const secondTouch = secondTap.touches?.length > 0 
+    ? secondTap.touches[0] 
+    : secondTap.changedTouches[0]
+
   const first = {
-    x: firstTap.touches[0].clientX,
-    y: firstTap.touches[0].clientY,
-    timestamp: (firstTap.touches[0] as Touch & { timestamp?: number }).timestamp || Date.now()
+    x: firstTouch.clientX,
+    y: firstTouch.clientY,
+    timestamp: firstTap.timeStamp
   }
 
   const second = {
-    x: secondTap.touches[0].clientX,
-    y: secondTap.touches[0].clientY,
-    timestamp: (secondTap.touches[0] as Touch & { timestamp?: number }).timestamp || Date.now()
+    x: secondTouch.clientX,
+    y: secondTouch.clientY,
+    timestamp: secondTap.timeStamp
   }
 
   const deltaTime = second.timestamp - first.timestamp

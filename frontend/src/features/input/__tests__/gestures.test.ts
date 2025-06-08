@@ -13,17 +13,25 @@ import {
 } from '../api/gestures'
 import type { GestureConfig } from '../../../types/data'
 
-// Mock touch events
+// Mock touch events that properly simulate real TouchEvent behavior
 const createMockTouchEvent = (
   type: string,
   touches: { clientX: number; clientY: number; timestamp?: number }[]
 ): TouchEvent => {
+  const touchObjects = touches.map(touch => ({
+    clientX: touch.clientX,
+    clientY: touch.clientY,
+    // Remove timestamp from Touch object - real Touch objects don't have this
+  }))
+
   return {
     type,
-    touches: touches.map(touch => ({
-      ...touch,
-      timestamp: touch.timestamp || Date.now()
-    })),
+    // For touchstart events, touches contains the touch data
+    // For touchend events, touches is empty and changedTouches contains the data
+    touches: type === 'touchend' ? [] : touchObjects,
+    changedTouches: type === 'touchend' ? touchObjects : [],
+    // Use timeStamp on the TouchEvent (not timestamp on Touch)
+    timeStamp: touches[0]?.timestamp || Date.now(),
     preventDefault: vi.fn(),
     stopPropagation: vi.fn()
   } as unknown as TouchEvent
@@ -95,6 +103,52 @@ describe('detectGesture', () => {
     const result = detectGesture(touchStart, touchEnd)
     
     expect(result).toBe(null)
+  })
+
+  it('should correctly handle real touchend events with empty touches array', () => {
+    const now = Date.now()
+    const touchStart = createMockTouchEvent('touchstart', [{ clientX: 100, clientY: 100, timestamp: now }])
+    // Need enough distance for a swipe (minimum 50px)
+    const touchEnd = createMockTouchEvent('touchend', [{ clientX: 100, clientY: 200, timestamp: now + 100 }])
+    
+    // touchEnd should have empty touches array and data in changedTouches
+    expect(touchEnd.touches).toHaveLength(0)
+    expect(touchEnd.changedTouches).toHaveLength(1)
+    
+    const result = detectGesture(touchStart, touchEnd)
+    
+    expect(result).toBe('swipe-down')
+  })
+
+  it('should use TouchEvent.timeStamp instead of non-existent Touch.timestamp', () => {
+    const startTime = 1000
+    const endTime = 1600 // 600ms later
+    
+    const touchStart = createMockTouchEvent('touchstart', [{ clientX: 100, clientY: 100, timestamp: startTime }])
+    const touchEnd = createMockTouchEvent('touchend', [{ clientX: 102, clientY: 102, timestamp: endTime }])
+    
+    // Verify the TouchEvent has timeStamp property
+    expect(touchStart.timeStamp).toBe(startTime)
+    expect(touchEnd.timeStamp).toBe(endTime)
+    
+    // Should detect long-press due to 600ms duration
+    const result = detectGesture(touchStart, touchEnd, 500)
+    expect(result).toBe('long-press')
+  })
+
+  it('should handle double-tap with both touchend events', () => {
+    const now = Date.now()
+    const tap1 = createMockTouchEvent('touchend', [{ clientX: 100, clientY: 100, timestamp: now }])
+    const tap2 = createMockTouchEvent('touchend', [{ clientX: 105, clientY: 105, timestamp: now + 200 }])
+    
+    // Both events should have empty touches and data in changedTouches
+    expect(tap1.touches).toHaveLength(0)
+    expect(tap1.changedTouches).toHaveLength(1)
+    expect(tap2.touches).toHaveLength(0)
+    expect(tap2.changedTouches).toHaveLength(1)
+    
+    const result = detectDoubleTap(tap1, tap2, 300, 50)
+    expect(result).toBe(true)
   })
 })
 
