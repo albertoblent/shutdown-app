@@ -3,18 +3,18 @@
   min-height: 100%;
   display: flex;
   flex-direction: column;
-  background-color: #000;
-  color: #fff;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  font-family: var(--font-family-base);
 }
 
 .header {
-  background-color: #111;
-  border-bottom: 1px solid #333;
-  padding: 1rem;
+  background-color: var(--color-background-elevated);
+  border-bottom: 1px solid var(--color-border);
+  padding: var(--space-4);
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: var(--z-sticky);
 }
 
 .headerContent {
@@ -28,21 +28,21 @@
 .logo {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #fff;
+  gap: var(--space-2);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
   text-decoration: none;
   background: none;
   border: none;
   cursor: pointer;
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-  transition: background-color 0.2s;
+  padding: var(--space-2);
+  border-radius: var(--radius-lg);
+  transition: background-color var(--transition-normal);
 }
 
 .logo:hover:not(:disabled) {
-  background-color: #222;
+  background-color: var(--color-background-tertiary);
 }
 
 .logo:disabled {
@@ -53,12 +53,12 @@
 .logoIcon {
   width: 24px;
   height: 24px;
-  fill: #ae0100;
+  fill: var(--color-primary);
 }
 
 .main {
   flex: 1;
-  padding: 2rem 1rem;
+  padding: var(--space-8) var(--space-4);
   width: 100%;
 }
 
@@ -66,7 +66,7 @@
   .main {
     max-width: 800px;
     margin: 0 auto;
-    padding: 2rem;
+    padding: var(--space-8);
   }
 }
 
@@ -75,46 +75,46 @@
 }
 
 .welcomeTitle {
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-  color: #fff;
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--space-4);
+  color: var(--color-text-primary);
 }
 
 .welcomeSubtitle {
-  font-size: 1.125rem;
-  color: #ccc;
-  margin-bottom: 2rem;
-  line-height: 1.5;
+  font-size: var(--font-size-lg);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-8);
+  line-height: var(--line-height-normal);
 }
 
 .getStartedButton {
-  background-color: #ae0100;
-  color: #fff;
+  background-color: var(--color-primary);
+  color: var(--color-text-primary);
   border: none;
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  font-weight: 600;
-  border-radius: 6px;
+  padding: var(--space-3) var(--space-6);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  border-radius: var(--radius-md);
   cursor: pointer;
-  transition: background-color 0.2s;
-  min-height: 48px; /* Touch target accessibility */
-  min-width: 48px;
+  transition: background-color var(--transition-normal);
+  min-height: var(--touch-target-min);
+  min-width: var(--touch-target-min);
 }
 
 .getStartedButton:hover {
-  background-color: #8a0100;
+  background-color: var(--color-primary-hover);
 }
 
 .getStartedButton:focus {
-  outline: 2px solid #ae0100;
+  outline: 2px solid var(--color-border-focus);
   outline-offset: 2px;
 }
 
 .habitSection {
-  margin-top: 3rem;
-  padding-top: 2rem;
-  border-top: 1px solid #333;
+  margin-top: var(--space-12);
+  padding-top: var(--space-8);
+  border-top: 1px solid var(--color-border);
 }
 
 .loading {
@@ -122,41 +122,41 @@
   align-items: center;
   justify-content: center;
   min-height: 200px;
-  color: #ccc;
-  font-size: 1.1rem;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-lg);
 }
 
 .backButton {
-  background-color: #6b7280;
-  color: #fff;
+  background-color: var(--color-text-muted);
+  color: var(--color-text-primary);
   border: none;
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  font-weight: 600;
-  border-radius: 6px;
+  padding: var(--space-3) var(--space-6);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  border-radius: var(--radius-md);
   cursor: pointer;
-  transition: background-color 0.2s;
-  margin-bottom: 2rem;
-  min-height: 48px;
+  transition: background-color var(--transition-normal);
+  margin-bottom: var(--space-8);
+  min-height: var(--touch-target-min);
   min-width: 120px;
 }
 
 .backButton:hover {
-  background-color: #4b5563;
+  background-color: var(--color-background-tertiary);
 }
 
 .backButton:focus {
-  outline: 2px solid #6b7280;
+  outline: 2px solid var(--color-border-focus);
   outline-offset: 2px;
 }
 
 /* Mobile-first responsive design */
 @media (max-width: 640px) {
   .header {
-    padding: 0.75rem 1rem;
+    padding: var(--space-3) var(--space-4);
   }
 
   .welcomeTitle {
-    font-size: 1.75rem;
+    font-size: var(--font-size-2xl);
   }
 }
