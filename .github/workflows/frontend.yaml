@@ -36,7 +36,7 @@ jobs:
         run: npm run lint
 
       - name: Run tests with coverage and generate JUnit report
-        run: vitest run --coverage --reporter=junit --outputFile=test-report.junit.xml
+        run: npm run test:junit
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
