@@ -41,13 +41,31 @@ export const parseVoiceToNumber = (transcript: string): number | null => {
     return parseFloat(numericMatch[0])
   }
 
-  // Handle decimal expressions like "two point five"
-  const decimalMatch = text.match(/((?:zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|\d+))\s+(?:point|dot)\s+((?:zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|\d+))/)
+  // Handle decimal expressions like "two point five" or "two point fifteen"
+  const decimalMatch = text.match(/((?:zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|\d+))\s+(?:point|dot)\s+([\w\s]+)/)
   if (decimalMatch) {
     const wholePart = wordNumbers[decimalMatch[1]] ?? parseInt(decimalMatch[1], 10)
-    const decimalPart = wordNumbers[decimalMatch[2]] ?? parseInt(decimalMatch[2], 10)
+    const decimalText = decimalMatch[2].trim()
+    
+    // Parse the decimal part, which could be compound numbers like "twenty five"
+    let decimalPart: number
+    
+    // Check for compound numbers in decimal part like "twenty five" = 25
+    const compoundMatch = decimalText.match(/(twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety)\s+(one|two|three|four|five|six|seven|eight|nine)/)
+    if (compoundMatch) {
+      const tens = wordNumbers[compoundMatch[1]]
+      const ones = wordNumbers[compoundMatch[2]]
+      decimalPart = tens + ones
+    } else {
+      // Try simple word number or numeric
+      decimalPart = wordNumbers[decimalText] ?? parseInt(decimalText, 10)
+    }
+    
     if (!isNaN(wholePart) && !isNaN(decimalPart)) {
-      return wholePart + (decimalPart / 10)
+      // Fix: Calculate proper decimal divisor based on number of digits
+      const decimalDigits = decimalPart.toString().length
+      const divisor = Math.pow(10, decimalDigits)
+      return wholePart + (decimalPart / divisor)
     }
   }
 

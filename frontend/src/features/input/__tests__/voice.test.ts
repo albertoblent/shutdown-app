@@ -75,8 +75,20 @@ describe('parseVoiceToNumber', () => {
   })
 
   it('should parse decimal numbers', () => {
+    // Single-digit decimals
     expect(parseVoiceToNumber('two point five')).toBe(2.5)
     expect(parseVoiceToNumber('3.7')).toBe(3.7)
+    expect(parseVoiceToNumber('zero point nine')).toBe(0.9)
+    
+    // Multi-digit decimals (the bug case)
+    expect(parseVoiceToNumber('two point fifteen')).toBe(2.15)
+    expect(parseVoiceToNumber('three point twenty five')).toBe(3.25)
+    expect(parseVoiceToNumber('one point twelve')).toBe(1.12)
+    expect(parseVoiceToNumber('five dot ninety nine')).toBe(5.99)
+    
+    // Edge cases with different decimal lengths
+    expect(parseVoiceToNumber('four point one')).toBe(4.1)
+    expect(parseVoiceToNumber('six point zero')).toBe(6.0)
   })
 
   it('should parse time expressions', () => {
