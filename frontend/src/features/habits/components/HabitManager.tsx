@@ -3,7 +3,28 @@
  * Provides CRUD operations for habits with templates and drag-and-drop reordering
  */
 
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core';
+import type { DragEndEvent } from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+  useSortable,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+import {
+  restrictToVerticalAxis,
+  restrictToWindowEdges,
+} from '@dnd-kit/modifiers';
 import type { Habit } from '../../../types/data';
 import {
   addHabit,
@@ -31,7 +52,18 @@ export function HabitManager({ onHabitsChange }: HabitManagerProps) {
   const [error, setError] = useState<string | null>(null);
   const [isAddingNew, setIsAddingNew] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+
+  // Configure dnd-kit sensors for touch and keyboard support
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8, // Require 8px movement to start drag (prevents accidental drags)
+      },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
 
   // Modal state
   const [confirmModal, setConfirmModal] = useState<{
@@ -164,39 +196,34 @@ export function HabitManager({ onHabitsChange }: HabitManagerProps) {
     });
   };
 
-  const handleDragStart = (e: React.DragEvent, index: number) => {
-    setDraggedIndex(index);
-    e.dataTransfer.effectAllowed = 'move';
-    e.dataTransfer.setData('text/html', e.currentTarget.outerHTML);
-  };
+  // Handle drag end with dnd-kit
+  const handleDragEnd = async (event: DragEndEvent) => {
+    const { active, over } = event;
 
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = 'move';
-  };
-
-  const handleDrop = async (e: React.DragEvent, dropIndex: number) => {
-    e.preventDefault();
-
-    if (draggedIndex === null || draggedIndex === dropIndex) {
-      setDraggedIndex(null);
+    if (!over || active.id === over.id) {
       return;
     }
 
-    const reorderedHabits = [...habits];
-    const [draggedHabit] = reorderedHabits.splice(draggedIndex, 1);
-    reorderedHabits.splice(dropIndex, 0, draggedHabit);
+    const oldIndex = habits.findIndex(habit => habit.id === active.id);
+    const newIndex = habits.findIndex(habit => habit.id === over.id);
 
+    if (oldIndex === -1 || newIndex === -1) {
+      return;
+    }
+
+    // Optimistically update UI
+    const reorderedHabits = arrayMove(habits, oldIndex, newIndex);
+    setHabits(reorderedHabits);
+
+    // Persist to storage
     const habitIds = reorderedHabits.map(h => h.id);
     const result = reorderHabits(habitIds);
 
-    if (result.success) {
-      await loadHabits();
-    } else {
+    if (!result.success) {
       setError(result.error || 'Failed to reorder habits');
+      // Revert on error
+      await loadHabits();
     }
-
-    setDraggedIndex(null);
   };
 
   if (isLoading) {
@@ -228,23 +255,31 @@ export function HabitManager({ onHabitsChange }: HabitManagerProps) {
           <p>Get started by adding a habit or loading a template</p>
         </div>
       ) : (
-        <div className={styles.habitList}>
-          {habits.map((habit, index) => (
-            <HabitItem
-              key={habit.id}
-              habit={habit}
-              isEditing={editingId === habit.id}
-              onEdit={() => setEditingId(habit.id)}
-              onSave={(updates) => handleEditHabit(habit.id, updates)}
-              onCancel={() => setEditingId(null)}
-              onDelete={() => handleDeleteHabit(habit.id)}
-              onDragStart={(e) => handleDragStart(e, index)}
-              onDragOver={handleDragOver}
-              onDrop={(e) => handleDrop(e, index)}
-              isDragged={draggedIndex === index}
-            />
-          ))}
-        </div>
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+          modifiers={[restrictToVerticalAxis, restrictToWindowEdges]}
+        >
+          <SortableContext
+            items={habits.map(habit => habit.id)}
+            strategy={verticalListSortingStrategy}
+          >
+            <div className={styles.habitList}>
+              {habits.map((habit) => (
+                <SortableHabitItem
+                  key={habit.id}
+                  habit={habit}
+                  isEditing={editingId === habit.id}
+                  onEdit={() => setEditingId(habit.id)}
+                  onSave={(updates) => handleEditHabit(habit.id, updates)}
+                  onCancel={() => setEditingId(null)}
+                  onDelete={() => handleDeleteHabit(habit.id)}
+                />
+              ))}
+            </div>
+          </SortableContext>
+        </DndContext>
       )}
 
       <div className={styles.actions}>
@@ -293,6 +328,43 @@ export function HabitManager({ onHabitsChange }: HabitManagerProps) {
   );
 }
 
+// Wrapper component for dnd-kit sortable functionality
+interface SortableHabitItemProps {
+  habit: Habit;
+  isEditing: boolean;
+  onEdit: () => void;
+  onSave: (updates: Partial<Omit<Habit, 'id' | 'created_at'>>) => void;
+  onCancel: () => void;
+  onDelete: () => void;
+}
+
+function SortableHabitItem(props: SortableHabitItemProps) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: props.habit.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
+  return (
+    <div ref={setNodeRef} style={style}>
+      <HabitItem
+        {...props}
+        dragHandleProps={{ ...attributes, ...listeners }}
+        isDragged={isDragging}
+      />
+    </div>
+  );
+}
+
 interface HabitItemProps {
   habit: Habit;
   isEditing: boolean;
@@ -300,10 +372,11 @@ interface HabitItemProps {
   onSave: (updates: Partial<Omit<Habit, 'id' | 'created_at'>>) => void;
   onCancel: () => void;
   onDelete: () => void;
-  onDragStart: (e: React.DragEvent) => void;
-  onDragOver: (e: React.DragEvent) => void;
-  onDrop: (e: React.DragEvent) => void;
-  isDragged: boolean;
+  dragHandleProps?: {
+    onPointerDown?: (event: React.PointerEvent) => void;
+    onKeyDown?: (event: React.KeyboardEvent) => void;
+  };
+  isDragged?: boolean;
 }
 
 function HabitItem({
@@ -313,10 +386,8 @@ function HabitItem({
   onSave,
   onCancel,
   onDelete,
-  onDragStart,
-  onDragOver,
-  onDrop,
-  isDragged,
+  dragHandleProps = {},
+  isDragged = false,
 }: HabitItemProps) {
   const [editName, setEditName] = useState(habit.name);
   const [editPrompt, setEditPrompt] = useState(habit.atomic_prompt);
@@ -357,12 +428,14 @@ function HabitItem({
   return (
     <div
       className={`${styles.habitItem} ${isDragged ? styles.dragged : ''}`}
-      draggable={!isEditing}
-      onDragStart={onDragStart}
-      onDragOver={onDragOver}
-      onDrop={onDrop}
     >
-      <div className={styles.dragHandle}>⋮⋮</div>
+      <div 
+        className={styles.dragHandle}
+        {...dragHandleProps}
+        style={{ cursor: isDragged ? 'grabbing' : 'grab' }}
+      >
+        ⋮⋮
+      </div>
 
       <div className={styles.habitContent}>
         {isEditing ? (

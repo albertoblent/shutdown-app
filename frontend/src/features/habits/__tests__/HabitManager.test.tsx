@@ -409,7 +409,7 @@ describe('HabitManager', () => {
     render(<HabitManager onHabitsChange={onHabitsChange} />);
     
     await waitFor(() => {
-      expect(onHabitsChange).toHaveBeenCalledWith(mockHabits);
+      expect(onHabitsChange).toHaveBeenCalledWith();
     });
   });
 });

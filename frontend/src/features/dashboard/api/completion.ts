@@ -17,7 +17,7 @@ export const createDailyEntry = (date: string, habits: Habit[]): StorageResult<D
     }
 
     const entryKey = getEntryKey(date);
-    
+
     // Check if entry already exists
     const existing = localStorage.getItem(entryKey);
     if (existing) {
@@ -68,7 +68,7 @@ export const getDailyEntry = (date: string): StorageResult<DailyEntry | null> =>
 
     const entryKey = getEntryKey(date);
     const stored = localStorage.getItem(entryKey);
-    
+
     if (!stored) {
       return { success: true, data: null };
     }
@@ -88,7 +88,7 @@ export const getDailyEntry = (date: string): StorageResult<DailyEntry | null> =>
 export const saveDailyEntry = (dailyEntry: DailyEntry): StorageResult<DailyEntry> => {
   try {
     validateDailyEntry(dailyEntry);
-    
+
     const entryKey = getEntryKey(dailyEntry.date);
     localStorage.setItem(entryKey, JSON.stringify(dailyEntry));
 
@@ -120,7 +120,7 @@ export const updateHabitCompletion = (
 
     const dailyEntry = entryResult.data;
     const completionIndex = dailyEntry.habit_completions.findIndex(c => c.habit_id === habitId);
-    
+
     if (completionIndex === -1) {
       throw new Error('Habit completion not found for habit: ' + habitId);
     }
@@ -200,7 +200,7 @@ export const completeDailyEntry = (date: string): StorageResult<DailyEntry> => {
 // Utility functions
 export const getTodaysEntry = (habits: Habit[]): StorageResult<DailyEntry> => {
   const today = formatDate(new Date());
-  
+
   const existingResult = getDailyEntry(today);
   if (!existingResult.success) {
     return { success: false, error: existingResult.error };
@@ -218,7 +218,7 @@ export const getYesterdaysEntry = (): StorageResult<DailyEntry | null> => {
   const yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);
   const yesterdayStr = formatDate(yesterday);
-  
+
   return getDailyEntry(yesterdayStr);
 };
 
