@@ -65,7 +65,7 @@ describe('HabitCompletionCard', () => {
     
     const button = screen.getByRole('button')
     expect(button).toHaveTextContent('Completed')
-    expect(button).toBeDisabled()
+    expect(button).toBeEnabled() // Should be clickable to reset
   })
 
   it('should call onComplete when completion button clicked', async () => {
@@ -82,6 +82,22 @@ describe('HabitCompletionCard', () => {
     
     await user.click(screen.getByRole('button'))
     expect(onComplete).toHaveBeenCalledWith(mockBooleanHabit.id, true)
+  })
+
+  it('should call onComplete with false when completed habit clicked', async () => {
+    const onComplete = vi.fn()
+    const user = userEvent.setup()
+    
+    render(
+      <HabitCompletionCard 
+        habit={mockBooleanHabit}
+        isCompleted={true}
+        onComplete={onComplete}
+      />
+    )
+    
+    await user.click(screen.getByRole('button'))
+    expect(onComplete).toHaveBeenCalledWith(mockBooleanHabit.id, false)
   })
 
   it('should show numeric input for numeric habits', () => {
@@ -116,6 +132,26 @@ describe('HabitCompletionCard', () => {
     await user.click(button)
     
     expect(onComplete).toHaveBeenCalledWith(mockNumericHabit.id, 3)
+  })
+
+  it('should show reset button for completed numeric habit', async () => {
+    const onComplete = vi.fn()
+    const user = userEvent.setup()
+    
+    render(
+      <HabitCompletionCard 
+        habit={mockNumericHabit}
+        isCompleted={true}
+        completedValue={5}
+        onComplete={onComplete}
+      />
+    )
+    
+    const resetButton = screen.getByRole('button')
+    expect(resetButton).toHaveTextContent('5 (click to reset)')
+    
+    await user.click(resetButton)
+    expect(onComplete).toHaveBeenCalledWith(mockNumericHabit.id, 0)
   })
 
   it('should have proper CSS classes for touch targets', () => {

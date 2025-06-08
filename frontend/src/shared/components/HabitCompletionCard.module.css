@@ -133,6 +133,32 @@
   font-size: var(--font-size-base);
 }
 
+.resetButton {
+  background: none;
+  border: 2px dashed var(--color-success);
+  border-radius: var(--radius-md);
+  color: var(--color-success);
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  
+  /* Touch target accessibility */
+  min-height: var(--touch-target-min);
+  min-width: 80px;
+}
+
+.resetButton:hover {
+  background-color: var(--color-success-bg);
+  border-style: solid;
+}
+
+.resetButton:focus {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+}
+
 /* Desktop Enhancements */
 @media (min-width: 768px) {
   .card {
@@ -150,7 +176,8 @@
   /* Desktop can use slightly smaller touch targets */
   .completeButton,
   .numericInput,
-  .submitButton {
+  .submitButton,
+  .resetButton {
     min-height: 44px;
   }
 }

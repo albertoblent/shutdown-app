@@ -18,9 +18,8 @@ export function HabitCompletionCard({
   const [numericValue, setNumericValue] = useState<string>('')
 
   const handleBooleanComplete = () => {
-    if (!isCompleted) {
-      onComplete(habit.id, true)
-    }
+    // Toggle between completed and incomplete
+    onComplete(habit.id, !isCompleted)
   }
 
   const handleNumericSubmit = () => {
@@ -43,8 +42,7 @@ export function HabitCompletionCard({
         <button 
           className={styles.completeButton}
           onClick={handleBooleanComplete}
-          disabled={isCompleted}
-          aria-label={isCompleted ? 'Habit completed' : `Complete ${habit.name}`}
+          aria-label={isCompleted ? `Mark ${habit.name} as incomplete` : `Complete ${habit.name}`}
         >
           {isCompleted ? 'Completed' : 'Mark Complete'}
         </button>
@@ -54,9 +52,13 @@ export function HabitCompletionCard({
     if (habit.type === 'numeric') {
       if (isCompleted && typeof completedValue === 'number') {
         return (
-          <div className={styles.completedValue}>
-            {completedValue}
-          </div>
+          <button
+            className={styles.resetButton}
+            onClick={() => onComplete(habit.id, 0)}
+            aria-label={`Reset ${habit.name} (currently ${completedValue})`}
+          >
+            {completedValue} (click to reset)
+          </button>
         )
       }
 

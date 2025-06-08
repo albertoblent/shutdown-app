@@ -58,8 +58,8 @@ describe('DailyHabitList', () => {
     // First habit should be completed
     expect(screen.getByText('Completed')).toBeInTheDocument()
     
-    // Should show numeric value for completed numeric habit as text (not input)
-    expect(screen.getByText('3')).toBeInTheDocument()
+    // Should show numeric value for completed numeric habit as reset button
+    expect(screen.getByText('3 (click to reset)')).toBeInTheDocument()
   })
 
   it('should call onHabitComplete when habit is completed', async () => {
