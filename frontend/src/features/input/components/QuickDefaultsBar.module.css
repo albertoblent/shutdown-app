@@ -1,0 +1,202 @@
+/* Quick Defaults Bar Styles */
+
+.container {
+  margin: var(--space-3) 0;
+}
+
+.scrollContainer {
+  display: flex;
+  gap: var(--space-2);
+  overflow-x: auto;
+  padding: var(--space-1) 0;
+  margin-bottom: var(--space-2);
+  /* Hide scrollbar while keeping scroll functionality */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scrollContainer::-webkit-scrollbar {
+  display: none;
+}
+
+.defaultButton {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-3);
+  min-height: var(--touch-target-min);
+  min-width: var(--touch-target-comfortable);
+  background-color: var(--color-background-elevated);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.defaultButton:hover:not(:disabled) {
+  background-color: var(--color-background-tertiary);
+  border-color: var(--color-border-light);
+  color: var(--color-text-primary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.defaultButton:focus {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+}
+
+.defaultButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.defaultButton.selected {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-text-primary);
+}
+
+.defaultButton.selected:hover {
+  background-color: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
+}
+
+/* Confidence-based styling */
+.defaultButton.high {
+  border-color: var(--color-success);
+}
+
+.defaultButton.high:hover:not(:disabled) {
+  border-color: var(--color-success-hover);
+  background-color: var(--color-success-bg);
+}
+
+.defaultButton.medium {
+  border-color: var(--color-warning);
+}
+
+.defaultButton.medium:hover:not(:disabled) {
+  border-color: var(--color-warning-hover);
+  background-color: var(--color-warning-bg);
+}
+
+.defaultButton.low {
+  border-color: var(--color-border);
+  opacity: 0.8;
+}
+
+.value {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+}
+
+.label {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  line-height: var(--line-height-tight);
+  text-align: center;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.defaultButton:hover .label {
+  color: var(--color-text-secondary);
+}
+
+.defaultButton.selected .label {
+  color: var(--color-text-primary);
+}
+
+.confidenceBar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  width: calc(var(--confidence, 0) * 100%);
+  background: linear-gradient(90deg, var(--color-error), var(--color-warning), var(--color-success));
+  transition: width var(--transition-normal);
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+}
+
+.legend {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.legendText {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .scrollContainer {
+    gap: var(--space-1);
+  }
+  
+  .defaultButton {
+    min-width: var(--touch-target-min);
+    padding: var(--space-2);
+  }
+  
+  .value {
+    font-size: var(--font-size-base);
+  }
+  
+  .label {
+    font-size: 10px;
+    max-width: 60px;
+  }
+}
+
+/* Animation for new predictions */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.defaultButton {
+  animation: slideIn 0.3s ease-out;
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .defaultButton {
+    animation: none;
+    transition: none;
+  }
+  
+  .defaultButton:hover:not(:disabled) {
+    transform: none;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .defaultButton {
+    border-width: 3px;
+  }
+  
+  .confidenceBar {
+    height: 4px;
+  }
+}
