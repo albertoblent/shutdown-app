@@ -303,5 +303,62 @@ describe('Daily Completion API', () => {
       const isComplete = isDailyEntryComplete(uncheckedEntry.data!);
       expect(isComplete).toBe(false);
     });
+
+    it('should reset timestamps and time_to_complete when unchecking completed habits', () => {
+      // Test the specific bug fix: timestamps should reset on uncompletion
+      const date = '2025-01-09';
+      const mockHabit = mockHabits[0]; // Boolean habit
+      
+      // Create daily entry
+      const createResult = createDailyEntry(date, [mockHabit]);
+      expect(createResult.success).toBe(true);
+      const entryStartTime = createResult.data!.started_at;
+      
+      // Get initial state
+      const initialEntry = getDailyEntry(date);
+      expect(initialEntry.success).toBe(true);
+      const initialHabit = initialEntry.data!.habit_completions.find(c => c.habit_id === mockHabit.id);
+      expect(Object.keys(initialHabit!.value)).toHaveLength(0); // Initially empty
+      expect(initialHabit?.completed_at).toBe(entryStartTime); // Initially set to entry start time
+      expect(initialHabit?.time_to_complete).toBe(0); // Initially 0
+      
+      // Complete the habit
+      const completeResult = updateHabitCompletion(date, mockHabit.id, { boolean: true });
+      expect(completeResult.success).toBe(true);
+      
+      // Verify completion state
+      const completedEntry = getDailyEntry(date);
+      expect(completedEntry.success).toBe(true);
+      const completedHabit = completedEntry.data!.habit_completions.find(c => c.habit_id === mockHabit.id);
+      expect(completedHabit?.value.boolean).toBe(true);
+      expect(completedHabit?.time_to_complete).toBeGreaterThanOrEqual(0); // Should have calculated time
+      
+      // Store completion data for comparison
+      const originalCompletedAt = completedHabit!.completed_at;
+      const originalTimeToComplete = completedHabit!.time_to_complete;
+      
+      // Uncheck the habit (this is where the bug was)
+      const uncheckResult = updateHabitCompletion(date, mockHabit.id, {});
+      expect(uncheckResult.success).toBe(true);
+      
+      // Verify timestamps are reset correctly (the main bug fix)
+      const uncheckedEntry = getDailyEntry(date);
+      expect(uncheckedEntry.success).toBe(true);
+      const uncheckedHabit = uncheckedEntry.data!.habit_completions.find(c => c.habit_id === mockHabit.id);
+      
+      // Critical bug fix verification:
+      expect(Object.keys(uncheckedHabit!.value)).toHaveLength(0); // Value should be empty
+      expect(uncheckedHabit?.completed_at).toBe(entryStartTime); // Reset to entry start time
+      expect(uncheckedHabit?.time_to_complete).toBe(0); // Reset to 0
+      
+      // Before the fix, these would have been the same (the bug):
+      // - completed_at would have kept the completion timestamp
+      // - time_to_complete would have kept the calculated time
+      // Now they should be reset
+      
+      // Verify daily entry status also resets
+      expect(uncheckedEntry.data?.is_complete).toBe(false);
+      expect(uncheckedEntry.data?.completed_at).toBeUndefined(); // Daily entry completion timestamp removed
+    });
   });
 });

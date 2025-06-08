@@ -128,17 +128,40 @@ export const updateHabitCompletion = (
     }
 
     const completion = dailyEntry.habit_completions[completionIndex];
-    const wasEmpty = Object.keys(completion.value).length === 0;
-    const startTime = wasEmpty ? new Date(dailyEntry.started_at).getTime() : new Date(completion.completed_at || dailyEntry.started_at).getTime();
+    const wasEmpty = Object.keys(completion.value).length === 0; // OLD state
+    const becomesEmpty = Object.keys(value).length === 0; // NEW state
+
+    // Determine transition type
+    const isCompleting = wasEmpty && !becomesEmpty; // empty → filled
+    const isUnCompleting = !wasEmpty && becomesEmpty; // filled → empty
+
+    // Calculate appropriate timestamps based on transition
+    let completedAt: string;
+    let timeToComplete: number;
+
+    if (isCompleting) {
+      // Transitioning from empty to completed
+      completedAt = formatTimestamp(new Date());
+      const startTime = new Date(dailyEntry.started_at).getTime();
+      timeToComplete = Date.now() - startTime;
+    } else if (isUnCompleting) {
+      // Transitioning from completed to empty - reset timestamps
+      completedAt = dailyEntry.started_at; // Reset to entry start time
+      timeToComplete = 0; // Reset time
+    } else {
+      // Modifying existing completion or no change - preserve timestamps
+      completedAt = completion.completed_at;
+      timeToComplete = completion.time_to_complete;
+    }
 
     // Update the completion
     const updatedCompletion: HabitCompletion = {
       ...completion,
       value,
-      completed_at: wasEmpty ? formatTimestamp(new Date()) : completion.completed_at, // Only update timestamp when transitioning from incomplete to complete
+      completed_at: completedAt,
       flagged_for_action: flagged ?? completion.flagged_for_action,
       action_note: actionNote ?? completion.action_note,
-      time_to_complete: wasEmpty ? Date.now() - startTime : completion.time_to_complete,
+      time_to_complete: timeToComplete,
     };
 
     validateHabitCompletion(updatedCompletion);
@@ -146,11 +169,16 @@ export const updateHabitCompletion = (
     // Update the daily entry
     dailyEntry.habit_completions[completionIndex] = updatedCompletion;
 
-    // Check if all habits are now complete
+    // Check daily entry completion status (both directions)
     const allComplete = isDailyEntryComplete(dailyEntry);
     if (allComplete && !dailyEntry.is_complete) {
+      // All habits now complete - mark daily entry as complete
       dailyEntry.is_complete = true;
       dailyEntry.completed_at = formatTimestamp(new Date());
+    } else if (!allComplete && dailyEntry.is_complete) {
+      // Some habits now incomplete - mark daily entry as incomplete
+      dailyEntry.is_complete = false;
+      delete dailyEntry.completed_at; // Remove completion timestamp
     }
 
     const saveResult = saveDailyEntry(dailyEntry);
