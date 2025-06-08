@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
+import { codecovVitePlugin } from "@codecov/vite-plugin";
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -62,7 +63,12 @@ export default defineConfig({
           }
         ]
       }
-    })
+    }),
+    codecovVitePlugin({
+        enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
+        bundleName: "shutdown-app",
+        uploadToken: process.env.CODECOV_TOKEN,
+      }),
   ],
   css: {
     modules: {
