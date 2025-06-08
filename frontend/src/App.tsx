@@ -1,7 +1,9 @@
-import { useState, useEffect } from 'react';
-import { HabitManager } from './features/habits';
-import { Dashboard } from './features/dashboard';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { getHabitsSorted } from './features/habits/api/storage';
+
+// Lazy load heavy components
+const HabitManager = lazy(() => import('./features/habits').then(m => ({ default: m.HabitManager })));
+const Dashboard = lazy(() => import('./features/dashboard').then(m => ({ default: m.Dashboard })));
 import styles from './App.module.css';
 
 type AppView = 'dashboard' | 'manage';
@@ -87,32 +89,34 @@ function App() {
       </header>
 
       <main className={styles.main}>
-        {currentView === 'dashboard' && hasHabits ? (
-          <Dashboard onManageHabits={handleManageHabits} />
-        ) : (
-          <>
-            <section className={styles.welcomeSection}>
-              <h1 className={styles.welcomeTitle}>
-                {hasHabits ? 'Manage Your Habits' : 'Daily Shutdown Routine'}
-              </h1>
-              <p className={styles.welcomeSubtitle}>
-                {hasHabits
-                  ? 'Add, edit, or remove habits from your daily routine.'
-                  : 'Build healthy habits and end your day with intention. Track your progress and create a meaningful routine.'
-                }
-              </p>
-              {hasHabits && (
-                <button onClick={handleBackToDashboard} className={styles.backButton}>
-                  ← Back to Dashboard
-                </button>
-              )}
-            </section>
+        <Suspense fallback={<div className={styles.loading}>Loading...</div>}>
+          {currentView === 'dashboard' && hasHabits ? (
+            <Dashboard onManageHabits={handleManageHabits} />
+          ) : (
+            <>
+              <section className={styles.welcomeSection}>
+                <h1 className={styles.welcomeTitle}>
+                  {hasHabits ? 'Manage Your Habits' : 'Daily Shutdown Routine'}
+                </h1>
+                <p className={styles.welcomeSubtitle}>
+                  {hasHabits
+                    ? 'Add, edit, or remove habits from your daily routine.'
+                    : 'Build healthy habits and end your day with intention. Track your progress and create a meaningful routine.'
+                  }
+                </p>
+                {hasHabits && (
+                  <button onClick={handleBackToDashboard} className={styles.backButton}>
+                    ← Back to Dashboard
+                  </button>
+                )}
+              </section>
 
-            <section className={styles.habitSection}>
-              <HabitManager onHabitsChange={handleHabitsChange} />
-            </section>
-          </>
-        )}
+              <section className={styles.habitSection}>
+                <HabitManager onHabitsChange={handleHabitsChange} />
+              </section>
+            </>
+          )}
+        </Suspense>
       </main>
     </div>
   )

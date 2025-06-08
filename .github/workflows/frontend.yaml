@@ -60,9 +60,9 @@ jobs:
           GZIP_SIZE=$(find dist -name "*.js" -o -name "*.css" | xargs gzip -c | wc -c)
           echo "Build size: $BUILD_SIZE bytes"
           echo "Gzipped JS/CSS: $GZIP_SIZE bytes"
-          # Temporarily increased to 110KB (112640 bytes) for Issue #6 - see Issue #26 for permanent fix
-          if [ "$GZIP_SIZE" -gt 112640 ]; then
-            echo "Bundle size exceeds 110KB temporary limit"
+          # Restored to 100KB (102400 bytes) limit - Issue #26 implementation
+          if [ "$GZIP_SIZE" -gt 102400 ]; then
+            echo "Bundle size exceeds 100KB limit"
             exit 1
           fi
 
