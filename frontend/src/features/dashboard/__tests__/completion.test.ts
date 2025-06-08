@@ -333,10 +333,6 @@ describe('Daily Completion API', () => {
       expect(completedHabit?.value.boolean).toBe(true);
       expect(completedHabit?.time_to_complete).toBeGreaterThanOrEqual(0); // Should have calculated time
       
-      // Store completion data for comparison
-      const originalCompletedAt = completedHabit!.completed_at;
-      const originalTimeToComplete = completedHabit!.time_to_complete;
-      
       // Uncheck the habit (this is where the bug was)
       const uncheckResult = updateHabitCompletion(date, mockHabit.id, {});
       expect(uncheckResult.success).toBe(true);
