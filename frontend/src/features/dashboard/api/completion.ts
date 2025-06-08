@@ -24,6 +24,8 @@ export const createDailyEntry = (date: string, habits: Habit[]): StorageResult<D
       throw new Error(`Daily entry already exists for ${date}`);
     }
 
+    const entryStartTime = formatTimestamp(new Date());
+    
     // Create habit completions for all active habits
     const habit_completions: HabitCompletion[] = habits
       .filter(habit => habit.is_active)
@@ -31,7 +33,7 @@ export const createDailyEntry = (date: string, habits: Habit[]): StorageResult<D
         id: generateId(),
         habit_id: habit.id,
         value: {}, // Empty value - not completed yet
-        completed_at: formatTimestamp(new Date()), // Set to current time, will be updated when completed
+        completed_at: entryStartTime, // Set to entry creation time, will be updated when actually completed
         flagged_for_action: false,
         time_to_complete: 0,
       }));
@@ -39,7 +41,7 @@ export const createDailyEntry = (date: string, habits: Habit[]): StorageResult<D
     const dailyEntry: DailyEntry = {
       id: generateId(),
       date,
-      started_at: formatTimestamp(new Date()),
+      started_at: entryStartTime,
       is_complete: false,
       habit_completions,
     };
@@ -133,7 +135,7 @@ export const updateHabitCompletion = (
     const updatedCompletion: HabitCompletion = {
       ...completion,
       value,
-      completed_at: formatTimestamp(new Date()),
+      completed_at: wasEmpty ? formatTimestamp(new Date()) : completion.completed_at, // Only update timestamp when transitioning from incomplete to complete
       flagged_for_action: flagged ?? completion.flagged_for_action,
       action_note: actionNote ?? completion.action_note,
       time_to_complete: wasEmpty ? Date.now() - startTime : completion.time_to_complete,
