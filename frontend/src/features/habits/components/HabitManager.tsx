@@ -3,7 +3,7 @@
  * Provides CRUD operations for habits with templates and drag-and-drop reordering
  */
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, Suspense } from 'react';
 import {
   DndContext,
   closestCenter,
@@ -315,15 +315,17 @@ export function HabitManager({ onHabitsChange }: HabitManagerProps) {
         <TemplateSelector onLoadTemplate={handleLoadTemplate} />
       )}
 
-      <ConfirmModal
-        isOpen={confirmModal.isOpen}
-        onClose={() => setConfirmModal(prev => ({ ...prev, isOpen: false }))}
-        onConfirm={confirmModal.onConfirm}
-        title={confirmModal.title}
-        message={confirmModal.message}
-        variant={confirmModal.variant}
-        confirmText={confirmModal.confirmText}
-      />
+      <Suspense fallback={null}>
+        <ConfirmModal
+          isOpen={confirmModal.isOpen}
+          onClose={() => setConfirmModal(prev => ({ ...prev, isOpen: false }))}
+          onConfirm={confirmModal.onConfirm}
+          title={confirmModal.title}
+          message={confirmModal.message}
+          variant={confirmModal.variant}
+          confirmText={confirmModal.confirmText}
+        />
+      </Suspense>
     </div>
   );
 }

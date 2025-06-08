@@ -78,10 +78,43 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom']
+        manualChunks: (id) => {
+          // React vendor chunk
+          if (id.includes('node_modules/react') || id.includes('node_modules/react-dom')) {
+            return 'vendor-react';
+          }
+          // Drag and drop libraries
+          if (id.includes('@dnd-kit')) {
+            return 'vendor-dnd';
+          }
+          // Zod validation library
+          if (id.includes('node_modules/zod')) {
+            return 'vendor-zod';
+          }
+          // Feature-based chunks
+          if (id.includes('src/features/habits')) {
+            return 'feature-habits';
+          }
+          if (id.includes('src/features/dashboard')) {
+            return 'feature-dashboard';
+          }
+          // Shared utilities
+          if (id.includes('src/shared')) {
+            return 'shared';
+          }
         }
       }
-    }
+    },
+    // Optimize bundle size
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+        pure_funcs: ['console.log']
+      }
+    },
+    // Reduce chunk size warnings threshold
+    chunkSizeWarningLimit: 500
   }
 })
