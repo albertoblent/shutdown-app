@@ -212,7 +212,8 @@ function HabitCard({
   disabled = false 
 }: HabitCardProps) {
   const handleBooleanChange = (checked: boolean) => {
-    onComplete({ boolean: checked });
+    // When unchecked, pass empty object to clear the completion
+    onComplete(checked ? { boolean: true } : {});
   };
 
   const handleNumericChange = (value: number) => {

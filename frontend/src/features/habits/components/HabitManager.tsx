@@ -372,10 +372,7 @@ interface HabitItemProps {
   onSave: (updates: Partial<Omit<Habit, 'id' | 'created_at'>>) => void;
   onCancel: () => void;
   onDelete: () => void;
-  dragHandleProps?: {
-    onPointerDown?: (event: React.PointerEvent) => void;
-    onKeyDown?: (event: React.KeyboardEvent) => void;
-  };
+  dragHandleProps?: Record<string, unknown>;
   isDragged?: boolean;
 }
 

@@ -267,4 +267,41 @@ describe('Daily Completion API', () => {
       expect(result).toBe(true);
     });
   });
+
+  describe('Boolean habit unchecking edge case', () => {
+    it('should handle boolean habit unchecking by passing empty value', () => {
+      // Test the edge case where user unchecks a completed boolean habit
+      const date = '2025-01-08';
+      const mockHabit = mockHabits[0]; // Boolean habit
+      
+      // Create daily entry
+      const createResult = createDailyEntry(date, [mockHabit]);
+      expect(createResult.success).toBe(true);
+
+      // First complete the habit
+      const completeResult = updateHabitCompletion(date, mockHabit.id, { boolean: true });
+      expect(completeResult.success).toBe(true);
+      
+      // Verify it's completed
+      const completedEntry = getDailyEntry(date);
+      expect(completedEntry.success).toBe(true);
+      const completion1 = completedEntry.data!.habit_completions.find(c => c.habit_id === mockHabit.id);
+      expect(completion1?.value.boolean).toBe(true);
+      
+      // Now uncheck by passing empty object (simulates unchecking checkbox)
+      const uncheckResult = updateHabitCompletion(date, mockHabit.id, {});
+      expect(uncheckResult.success).toBe(true);
+      
+      // Verify it's now incomplete
+      const uncheckedEntry = getDailyEntry(date);
+      expect(uncheckedEntry.success).toBe(true);
+      const completion2 = uncheckedEntry.data!.habit_completions.find(c => c.habit_id === mockHabit.id);
+      expect(Object.keys(completion2!.value)).toHaveLength(0);
+      expect(completion2?.value.boolean).toBeUndefined();
+      
+      // Verify entry is no longer complete
+      const isComplete = isDailyEntryComplete(uncheckedEntry.data!);
+      expect(isComplete).toBe(false);
+    });
+  });
 });
