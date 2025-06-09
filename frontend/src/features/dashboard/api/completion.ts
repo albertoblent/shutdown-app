@@ -253,7 +253,8 @@ export const getYesterdaysEntry = (): StorageResult<DailyEntry | null> => {
 };
 
 export const isDailyEntryComplete = (dailyEntry: DailyEntry): boolean => {
-  return dailyEntry.habit_completions.every(completion => {
+  const completions = dailyEntry.habit_completions;
+  const isComplete = completions.every(completion => {
     const { value } = completion;
     return Object.keys(value).length > 0 && (
       value.boolean !== undefined ||
@@ -261,6 +262,27 @@ export const isDailyEntryComplete = (dailyEntry: DailyEntry): boolean => {
       value.choice !== undefined
     );
   });
+  
+  // Debug logging to help identify the issue
+  console.log('isDailyEntryComplete debug:', {
+    totalCompletions: completions.length,
+    completedCount: completions.filter(c => {
+      const { value } = c;
+      return Object.keys(value).length > 0 && (
+        value.boolean !== undefined ||
+        value.numeric !== undefined ||
+        value.choice !== undefined
+      );
+    }).length,
+    isComplete,
+    completions: completions.map(c => ({
+      habit_id: c.habit_id,
+      hasValue: Object.keys(c.value).length > 0,
+      value: c.value
+    }))
+  });
+  
+  return isComplete;
 };
 
 // Date utilities for navigation
