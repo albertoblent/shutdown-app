@@ -421,7 +421,7 @@ describe('Quick-Win First Ordering Algorithm', () => {
         { habit_id: 'habit-1', position: 3, momentum_score: 0.3, reasoning: 'Final task' }
       ]
 
-      const result = getSequenceRecommendations(optimalSequence, mockHabits)
+      const result = getSequenceRecommendations(optimalSequence)
 
       expect(result.success).toBe(true)
       
