@@ -379,7 +379,7 @@ describe('QuickDefaultsBar', () => {
     it('should include confidence bars with CSS custom properties', () => {
       const buttons = screen.getAllByRole('button')
       
-      buttons.forEach((button, index) => {
+      buttons.forEach((button) => {
         const confidenceBar = button.querySelector('[style*="--confidence"]')
         expect(confidenceBar).toBeInTheDocument()
         

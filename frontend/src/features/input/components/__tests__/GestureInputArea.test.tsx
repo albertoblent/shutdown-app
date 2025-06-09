@@ -4,7 +4,6 @@
  */
 
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest'
 import { GestureInputArea } from '../GestureInputArea'
 import * as gesturesApi from '../../api/gestures'
@@ -305,7 +304,7 @@ describe('GestureInputArea', () => {
   })
 
   describe('Gesture Action Handling', () => {
-    let mockHandleGesture: (gesture: any) => void
+    let mockHandleGesture: (gesture: string) => void
 
     beforeEach(() => {
       mockCreateGestureDetector.mockImplementation((handleGesture) => {
@@ -425,7 +424,7 @@ describe('GestureInputArea', () => {
 
     it('should handle unknown actions gracefully', () => {
       mockApplyGestureAction.mockReturnValue({
-        action: 'none' as any,
+        action: 'none' as 'increment' | 'decrement' | 'complete' | 'reset' | 'none',
         newValue: 5
       })
 
@@ -467,7 +466,7 @@ describe('GestureInputArea', () => {
         newValue: 6
       })
 
-      let capturedHandler: (gesture: any) => void
+      let capturedHandler: (gesture: string) => void
 
       mockCreateGestureDetector.mockImplementation((handler) => {
         capturedHandler = handler
@@ -493,7 +492,7 @@ describe('GestureInputArea', () => {
   describe('Container Reference Handling', () => {
     it('should handle missing container ref gracefully', () => {
       // Mock useRef to return null initially
-      const originalUseRef = vi.doMock('react', async () => {
+      vi.doMock('react', async () => {
         const actual = await vi.importActual('react')
         return {
           ...actual,
