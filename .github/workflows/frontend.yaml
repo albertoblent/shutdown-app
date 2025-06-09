@@ -69,12 +69,12 @@ jobs:
             exit 1
           fi
 
-  deploy-production:
-    name: Deploy to Production (Fly.io)
+  deploy:
+    name: Deploy to Fly.io
     runs-on: ubuntu-latest
     needs: test
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    concurrency: deploy-frontend-production
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push' || github.event_name == 'pull_request'
+    concurrency: deploy-frontend-group
     defaults:
       run:
         working-directory: ./frontend
@@ -83,133 +83,7 @@ jobs:
 
       - uses: superfly/flyctl-actions/setup-flyctl@master
 
-      - name: Deploy to Production
+      - name: Deploy to Fly.io
         run: flyctl deploy --app frontend-autumn-brook-1037
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-
-  deploy-preview:
-    name: Deploy Preview (Fly.io)
-    runs-on: ubuntu-latest
-    needs: test
-    if: github.event_name == 'pull_request'
-    concurrency: 
-      group: deploy-frontend-preview-${{ github.event.pull_request.number }}
-      cancel-in-progress: true
-    defaults:
-      run:
-        working-directory: ./frontend
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: superfly/flyctl-actions/setup-flyctl@master
-
-      - name: Generate preview app name
-        id: preview-app
-        run: |
-          PR_NUMBER=${{ github.event.pull_request.number }}
-          APP_NAME="frontend-pr-${PR_NUMBER}-autumn-brook-1037"
-          echo "app-name=${APP_NAME}" >> $GITHUB_OUTPUT
-          echo "Preview app name: ${APP_NAME}"
-
-      - name: Deploy Preview
-        run: |
-          APP_NAME="${{ steps.preview-app.outputs.app-name }}"
-          
-          # Create app if it doesn't exist
-          if ! flyctl apps list | grep -q "${APP_NAME}"; then
-            echo "Creating new preview app: ${APP_NAME}"
-            flyctl apps create "${APP_NAME}" --org personal
-          fi
-          
-          # Deploy to preview app
-          flyctl deploy --app "${APP_NAME}"
-        env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-
-      - name: Comment PR with preview URL
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const appName = "${{ steps.preview-app.outputs.app-name }}";
-            const previewUrl = `https://${appName}.fly.dev`;
-            const prNumber = context.issue.number;
-            
-            // Find existing preview comment
-            const comments = await github.rest.issues.listComments({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: prNumber,
-            });
-            
-            const previewComment = comments.data.find(comment => 
-              comment.body.includes('🚀 Preview Deployment')
-            );
-            
-            const commentBody = `🚀 **Preview Deployment**
-            
-            Your changes have been deployed to a preview environment:
-            
-            **🔗 Preview URL:** ${previewUrl}
-            
-            This preview will be updated automatically on every commit to this PR.
-            
-            ---
-            *Deployed from commit: ${context.sha.substring(0, 7)}*`;
-            
-            if (previewComment) {
-              // Update existing comment
-              await github.rest.issues.updateComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                comment_id: previewComment.id,
-                body: commentBody
-              });
-            } else {
-              // Create new comment
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: prNumber,
-                body: commentBody
-              });
-            }
-
-  cleanup-preview:
-    name: Cleanup Preview
-    runs-on: ubuntu-latest
-    if: github.event.action == 'closed'
-    defaults:
-      run:
-        working-directory: ./frontend
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: superfly/flyctl-actions/setup-flyctl@master
-
-      - name: Delete preview app
-        run: |
-          PR_NUMBER=${{ github.event.pull_request.number }}
-          APP_NAME="frontend-pr-${PR_NUMBER}-autumn-brook-1037"
-          
-          if flyctl apps list | grep -q "${APP_NAME}"; then
-            echo "Deleting preview app: ${APP_NAME}"
-            flyctl apps destroy "${APP_NAME}" --yes
-          else
-            echo "Preview app ${APP_NAME} not found, skipping deletion"
-          fi
-        env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-
-      - name: Comment PR with cleanup notification
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const prNumber = context.issue.number;
-            
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: prNumber,
-              body: "🧹 **Preview Cleanup**\n\nPreview deployment has been cleaned up as this PR was closed."
-            });
