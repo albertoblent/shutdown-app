@@ -25,20 +25,16 @@ export function SmartPredictionChips({
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    const loadPredictions = async () => {
-      setIsLoading(true)
-      try {
-        const smartPredictions = generateSmartPredictions(habit)
-        setPredictions(smartPredictions)
-      } catch (error) {
-        console.warn('Failed to generate predictions:', error)
-        setPredictions([])
-      } finally {
-        setIsLoading(false)
-      }
+    setIsLoading(true)
+    try {
+      const smartPredictions = generateSmartPredictions(habit)
+      setPredictions(smartPredictions)
+    } catch (error) {
+      console.warn('Failed to generate predictions:', error)
+      setPredictions([])
+    } finally {
+      setIsLoading(false)
     }
-
-    loadPredictions()
   }, [habit])
 
   if (isLoading) {
