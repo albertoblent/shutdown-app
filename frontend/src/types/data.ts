@@ -104,6 +104,38 @@ export const parseDate = (dateString: string): Date => {
   return new Date(dateString);
 };
 
+// Rapid Input Types for Issue #28
+export interface VoiceInputResult {
+  success: boolean;
+  value?: number;
+  confidence?: number;
+  error?: string;
+}
+
+export interface InputPrediction {
+  value: number | string;
+  confidence: number;
+  source: 'pattern' | 'average' | 'yesterday' | 'trending';
+  label: string;
+}
+
+export type GestureType = 'swipe-up' | 'swipe-down' | 'double-tap' | 'long-press';
+
+export interface GestureConfig {
+  gesture: GestureType;
+  action: 'increment' | 'decrement' | 'complete' | 'reset';
+  value?: number;
+}
+
+// Storage for rapid input optimization
+export interface InputHistory {
+  habit_id: string;
+  recent_values: number[];
+  average_value: number;
+  completion_times: number[]; // milliseconds
+  last_updated: string; // ISO timestamp
+}
+
 // Default values
 export const createDefaultSettings = (): Settings => ({
   theme: 'dark',

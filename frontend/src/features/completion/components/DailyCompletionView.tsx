@@ -8,9 +8,15 @@ export function DailyCompletionView() {
   const [completions, setCompletions] = useState<Map<string, boolean | number>>(new Map())
 
   useEffect(() => {
-    const habitsResult = getHabitsSorted()
-    if (habitsResult.success && habitsResult.data) {
-      setHabits(habitsResult.data)
+    try {
+      const habitsResult = getHabitsSorted()
+      if (habitsResult.success && habitsResult.data) {
+        setHabits(habitsResult.data)
+      }
+    } catch (error) {
+      // Handle storage errors gracefully
+      console.error('Failed to load habits:', error)
+      setHabits([])
     }
   }, [])
 
