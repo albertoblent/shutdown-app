@@ -136,6 +136,40 @@ export interface InputHistory {
   last_updated: string; // ISO timestamp
 }
 
+// Smart Sequencing Types for Issue #29
+export interface SequencingData {
+  habit_id: string;
+  average_completion_time: number; // milliseconds
+  completion_count: number;
+  group_id?: string;
+  quick_win_score: number; // 0-1, higher = better quick win
+  last_updated: string; // ISO timestamp
+}
+
+export interface HabitGroup {
+  id: string;
+  name: string;
+  habit_ids: string[];
+  group_type: 'contextual' | 'temporal' | 'difficulty' | 'manual';
+  created_at: string; // ISO timestamp
+}
+
+export interface SequencingPreferences {
+  manual_order?: string[]; // Override automatic ordering
+  disabled_grouping: boolean;
+  quick_wins_first: boolean;
+  adapt_to_patterns: boolean;
+  override_algorithm: boolean;
+}
+
+export interface OptimizedSequence {
+  habit_id: string;
+  position: number;
+  group_id?: string;
+  momentum_score: number; // 0-1 priority score
+  reasoning: string; // Human-readable explanation
+}
+
 // Default values
 export const createDefaultSettings = (): Settings => ({
   theme: 'dark',
