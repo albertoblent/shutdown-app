@@ -7,9 +7,7 @@ import { useState, useEffect, useCallback, Suspense } from 'react';
 import {
   DndContext,
   closestCenter,
-  KeyboardSensor,
   PointerSensor,
-  TouchSensor,
   useSensor,
   useSensors,
 } from '@dnd-kit/core';
@@ -17,15 +15,10 @@ import type { DragEndEvent } from '@dnd-kit/core';
 import {
   arrayMove,
   SortableContext,
-  sortableKeyboardCoordinates,
   verticalListSortingStrategy,
   useSortable,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import {
-  restrictToVerticalAxis,
-  restrictToWindowEdges,
-} from '@dnd-kit/modifiers';
 import type { Habit } from '../../../types/data';
 import {
   addHabit,
@@ -54,25 +47,12 @@ export function HabitManager({ onHabitsChange }: HabitManagerProps) {
   const [isAddingNew, setIsAddingNew] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
 
-  // Configure dnd-kit sensors optimized for mobile touch and desktop pointer
+  // Minimal mobile-first sensor configuration
   const sensors = useSensors(
-    // Primary pointer sensor for unified mouse/touch handling
     useSensor(PointerSensor, {
       activationConstraint: {
-        distance: 3, // Reduced for more responsive mobile dragging
-        tolerance: 5, // Allow slight movement before cancelling
+        distance: 8, // Minimal distance to prevent accidental drags
       },
-    }),
-    // Dedicated touch sensor for mobile devices (fallback)
-    useSensor(TouchSensor, {
-      activationConstraint: {
-        delay: 100, // Short delay to differentiate from scrolling
-        tolerance: 8, // Allow for imprecise touch input
-      },
-    }),
-    // Keyboard sensor for accessibility
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
     })
   );
 
@@ -270,7 +250,6 @@ export function HabitManager({ onHabitsChange }: HabitManagerProps) {
           sensors={sensors}
           collisionDetection={closestCenter}
           onDragEnd={handleDragEnd}
-          modifiers={[restrictToVerticalAxis, restrictToWindowEdges]}
         >
           <SortableContext
             items={habits.map(habit => habit.id)}
@@ -442,19 +421,8 @@ function HabitItem({
       <div 
         className={styles.dragHandle}
         {...dragHandleProps}
-        style={{ cursor: isDragged ? 'grabbing' : 'grab' }}
-        role="button"
-        aria-label="Drag to reorder habit"
-        tabIndex={0}
       >
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-          <circle cx="9" cy="5" r="1"/>
-          <circle cx="15" cy="5" r="1"/>
-          <circle cx="9" cy="12" r="1"/>
-          <circle cx="15" cy="12" r="1"/>
-          <circle cx="9" cy="19" r="1"/>
-          <circle cx="15" cy="19" r="1"/>
-        </svg>
+        ⋮⋮
       </div>
 
       <div className={styles.habitContent}>

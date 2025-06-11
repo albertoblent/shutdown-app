@@ -5,6 +5,11 @@ import { codecovVitePlugin } from "@codecov/vite-plugin";
 
 // https://vite.dev/config/
 export default defineConfig({
+  server: {
+    host: true, // Allow external connections
+    // Enable HTTPS for mobile testing to support crypto.randomUUID()
+    ...(process.env.VITE_HTTPS === 'true' && { https: {} }),
+  },
   plugins: [
     react(),
     VitePWA({
