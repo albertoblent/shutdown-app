@@ -78,7 +78,8 @@
   margin-bottom: 0.75rem;
   transition: all 0.2s ease;
   min-height: 48px; /* Accessibility: minimum touch target */
-  touch-action: manipulation; /* Allow basic touch but prevent interference */
+  touch-action: manipulation; /* Consistent touch behavior for mobile */
+  position: relative; /* Ensure proper stacking context */
 }
 
 .habitItem:hover {
@@ -87,24 +88,68 @@
 }
 
 .habitItem.dragged {
-  opacity: 0.5;
-  transform: rotate(5deg);
+  opacity: 0.8;
+  transform: rotate(3deg);
+  z-index: 1000;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
 
 .dragHandle {
   display: flex;
   align-items: center;
+  justify-content: center;
   padding: 0.75rem;
   color: var(--text-secondary, #b0b0b0);
   cursor: grab;
   user-select: none;
-  touch-action: none; /* Essential for mobile drag and drop */
+  touch-action: none; /* Critical: Override parent touch-action for drag */
   border-right: 1px solid var(--border-color, #333);
-  font-size: 0.75rem;
+  font-size: 1rem;
+  min-width: 48px; /* Mobile touch target minimum */
+  position: relative;
+  z-index: 10; /* Ensure drag handle is always on top */
+  /* Prevent text selection on all browsers */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* Improve mobile touch response */
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .dragHandle:active {
   cursor: grabbing;
+}
+
+/* Mobile-specific touch feedback and optimization */
+@media (pointer: coarse) {
+  .habitItem {
+    touch-action: manipulation; /* Reinforce touch behavior on mobile */
+    margin-bottom: 1rem; /* More space between items on mobile */
+  }
+  
+  .dragHandle {
+    min-width: 52px; /* Larger touch target on mobile */
+    min-height: 52px; /* Ensure square touch target */
+    font-size: 1.2rem;
+    padding: 1rem; /* More padding for easier grabbing */
+    /* Enhanced mobile touch feedback */
+    transition: background-color 0.15s ease;
+  }
+  
+  .dragHandle:active {
+    background-color: var(--accent-color, #4a90e2);
+    color: var(--text-on-accent, #ffffff);
+    transform: scale(1.05); /* Subtle feedback on touch */
+  }
+  
+  /* Ensure drag feedback is visible on mobile */
+  .habitItem.dragged {
+    transform: rotate(2deg) scale(1.02);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+    z-index: 1000;
+  }
 }
 
 .habitContent {

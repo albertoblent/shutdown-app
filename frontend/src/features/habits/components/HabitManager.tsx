@@ -9,6 +9,7 @@ import {
   closestCenter,
   KeyboardSensor,
   PointerSensor,
+  TouchSensor,
   useSensor,
   useSensors,
 } from '@dnd-kit/core';
@@ -53,13 +54,23 @@ export function HabitManager({ onHabitsChange }: HabitManagerProps) {
   const [isAddingNew, setIsAddingNew] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
 
-  // Configure dnd-kit sensors for touch and keyboard support
+  // Configure dnd-kit sensors optimized for mobile touch and desktop pointer
   const sensors = useSensors(
+    // Primary pointer sensor for unified mouse/touch handling
     useSensor(PointerSensor, {
       activationConstraint: {
-        distance: 8, // Require 8px movement to start drag (prevents accidental drags)
+        distance: 3, // Reduced for more responsive mobile dragging
+        tolerance: 5, // Allow slight movement before cancelling
       },
     }),
+    // Dedicated touch sensor for mobile devices (fallback)
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 100, // Short delay to differentiate from scrolling
+        tolerance: 8, // Allow for imprecise touch input
+      },
+    }),
+    // Keyboard sensor for accessibility
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     })
@@ -432,8 +443,18 @@ function HabitItem({
         className={styles.dragHandle}
         {...dragHandleProps}
         style={{ cursor: isDragged ? 'grabbing' : 'grab' }}
+        role="button"
+        aria-label="Drag to reorder habit"
+        tabIndex={0}
       >
-        ⋮⋮
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <circle cx="9" cy="5" r="1"/>
+          <circle cx="15" cy="5" r="1"/>
+          <circle cx="9" cy="12" r="1"/>
+          <circle cx="15" cy="12" r="1"/>
+          <circle cx="9" cy="19" r="1"/>
+          <circle cx="15" cy="19" r="1"/>
+        </svg>
       </div>
 
       <div className={styles.habitContent}>
