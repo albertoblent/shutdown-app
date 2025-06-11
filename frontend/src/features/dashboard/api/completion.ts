@@ -237,11 +237,74 @@ export const getTodaysEntry = (habits: Habit[]): StorageResult<DailyEntry> => {
   }
 
   if (existingResult.data) {
-    return { success: true, data: existingResult.data };
+    // Sync existing entry with current habit list
+    const syncResult = syncDailyEntryWithHabits(existingResult.data, habits);
+    if (!syncResult.success) {
+      return { success: false, error: syncResult.error };
+    }
+    return { success: true, data: syncResult.data };
   }
 
   // Create new entry for today
   return createDailyEntry(today, habits);
+};
+
+// Helper function to sync daily entry completions with current active habits
+const syncDailyEntryWithHabits = (dailyEntry: DailyEntry, habits: Habit[]): StorageResult<DailyEntry> => {
+  try {
+    const activeHabits = habits.filter(habit => habit.is_active);
+    const activeHabitIds = new Set(activeHabits.map(habit => habit.id));
+    
+    // Remove completions for habits that are no longer active
+    const existingCompletions = dailyEntry.habit_completions.filter(completion => 
+      activeHabitIds.has(completion.habit_id)
+    );
+    
+    // Find habits that need new completion records
+    const existingHabitIds = new Set(existingCompletions.map(completion => completion.habit_id));
+    const newHabits = activeHabits.filter(habit => !existingHabitIds.has(habit.id));
+    
+    // Create completions for new habits
+    const newCompletions: HabitCompletion[] = newHabits.map(habit => ({
+      id: generateId(),
+      habit_id: habit.id,
+      value: {}, // Empty value - not completed yet
+      completed_at: dailyEntry.started_at, // Set to entry creation time
+      flagged_for_action: false,
+      time_to_complete: 0,
+    }));
+    
+    // Combine existing and new completions
+    const allCompletions = [...existingCompletions, ...newCompletions];
+    
+    // Update daily entry with synced completions
+    const syncedEntry: DailyEntry = {
+      ...dailyEntry,
+      habit_completions: allCompletions,
+    };
+    
+    // Recalculate completion status after sync
+    const allComplete = isDailyEntryComplete(syncedEntry);
+    if (!allComplete && syncedEntry.is_complete) {
+      // Entry was complete but now has new incomplete habits
+      syncedEntry.is_complete = false;
+      delete syncedEntry.completed_at;
+    }
+    
+    // Validate and save the synced entry
+    validateDailyEntry(syncedEntry);
+    const saveResult = saveDailyEntry(syncedEntry);
+    if (!saveResult.success) {
+      throw new Error(saveResult.error || 'Failed to save synced daily entry');
+    }
+    
+    return { success: true, data: syncedEntry };
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error syncing daily entry with habits',
+    };
+  }
 };
 
 export const getYesterdaysEntry = (): StorageResult<DailyEntry | null> => {
@@ -263,24 +326,6 @@ export const isDailyEntryComplete = (dailyEntry: DailyEntry): boolean => {
     );
   });
   
-  // Debug logging to help identify the issue
-  console.log('isDailyEntryComplete debug:', {
-    totalCompletions: completions.length,
-    completedCount: completions.filter(c => {
-      const { value } = c;
-      return Object.keys(value).length > 0 && (
-        value.boolean !== undefined ||
-        value.numeric !== undefined ||
-        value.choice !== undefined
-      );
-    }).length,
-    isComplete,
-    completions: completions.map(c => ({
-      habit_id: c.habit_id,
-      hasValue: Object.keys(c.value).length > 0,
-      value: c.value
-    }))
-  });
   
   return isComplete;
 };

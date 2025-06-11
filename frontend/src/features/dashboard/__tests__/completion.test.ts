@@ -357,4 +357,70 @@ describe('Daily Completion API', () => {
       expect(uncheckedEntry.data?.completed_at).toBeUndefined(); // Daily entry completion timestamp removed
     });
   });
+
+  describe('Habit-Completion Synchronization Bug', () => {
+    it('should handle habits added after daily entry creation (reproduces habit completion sync bug)', () => {
+      // This test reproduces the specific bug scenario:
+      // 1. Create first habit → daily entry created with completion for habit 1
+      // 2. Create second habit → habit stored but daily entry not updated
+      // 3. Try to complete second habit → "Habit completion not found" error
+      
+      const today = new Date().toISOString().split('T')[0];
+      const firstHabit = mockHabits[0];
+      const secondHabit = mockHabits[1];
+      
+      // Step 1: Create daily entry with first habit only (simulates first habit creation)
+      const initialResult = getTodaysEntry([firstHabit]);
+      expect(initialResult.success).toBe(true);
+      expect(initialResult.data!.habit_completions).toHaveLength(1);
+      expect(initialResult.data!.habit_completions[0].habit_id).toBe(firstHabit.id);
+      
+      // Step 2: Now add second habit to the list (simulates creating second habit via Manage Habits)
+      // When user returns to dashboard, getTodaysEntry is called with BOTH habits
+      // but existing daily entry only has completion record for first habit
+      const syncResult = getTodaysEntry([firstHabit, secondHabit]);
+      expect(syncResult.success).toBe(true);
+      expect(syncResult.data!.habit_completions).toHaveLength(2); // Should now have both completions
+      
+      // Verify both habits have completion records
+      const firstCompletion = syncResult.data!.habit_completions.find(c => c.habit_id === firstHabit.id);
+      const secondCompletion = syncResult.data!.habit_completions.find(c => c.habit_id === secondHabit.id);
+      
+      expect(firstCompletion).toBeDefined();
+      expect(secondCompletion).toBeDefined();
+      
+      // Step 3: Now both habits should be completable without error
+      const completeFirstResult = updateHabitCompletion(today, firstHabit.id, { boolean: true });
+      expect(completeFirstResult.success).toBe(true);
+      
+      const completeSecondResult = updateHabitCompletion(today, secondHabit.id, { numeric: 5 });
+      expect(completeSecondResult.success).toBe(true);
+      
+      // Verify both completions were successful
+      const finalEntry = getDailyEntry(today);
+      expect(finalEntry.success).toBe(true);
+      
+      const finalFirstCompletion = finalEntry.data!.habit_completions.find(c => c.habit_id === firstHabit.id);
+      const finalSecondCompletion = finalEntry.data!.habit_completions.find(c => c.habit_id === secondHabit.id);
+      
+      expect(finalFirstCompletion!.value.boolean).toBe(true);
+      expect(finalSecondCompletion!.value.numeric).toBe(5);
+    });
+
+    it('should handle habits removed from active list (cleanup unused completions)', () => {
+      // Test the inverse scenario: what happens when habits are deactivated
+      
+      // Start with both habits
+      const initialResult = getTodaysEntry(mockHabits);
+      expect(initialResult.success).toBe(true);
+      expect(initialResult.data!.habit_completions).toHaveLength(2);
+      
+      // Remove one habit from active list
+      const remainingHabit = mockHabits[0];
+      const syncResult = getTodaysEntry([remainingHabit]);
+      expect(syncResult.success).toBe(true);
+      expect(syncResult.data!.habit_completions).toHaveLength(1);
+      expect(syncResult.data!.habit_completions[0].habit_id).toBe(remainingHabit.id);
+    });
+  });
 });
