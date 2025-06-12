@@ -173,9 +173,10 @@ describe('Dashboard', () => {
   it('should handle boolean habit completion and unchecking', () => {
     render(<Dashboard onManageHabits={mockOnManageHabits} />);
     
-    // Test that boolean habit shows proper UI state
-    expect(screen.getByRole('checkbox')).not.toBeChecked();
-    expect(screen.getByText('Mark as complete')).toBeInTheDocument();
+    // Test that boolean habit shows proper UI state with new toggle
+    const toggle = screen.getByRole('button', { name: 'Mark habit as complete' });
+    expect(toggle).toHaveAttribute('aria-pressed', 'false');
+    expect(screen.getByText('×')).toBeInTheDocument(); // Red X shows for incomplete
   });
 
   // Simple tests to cover the new completion logic functions
@@ -199,8 +200,13 @@ describe('Dashboard', () => {
 
       render(<Dashboard onManageHabits={mockOnManageHabits} />);
       
-      // Boolean true should show as completed
-      expect(screen.getByText('Completed')).toBeInTheDocument();
+      // Boolean true should show as completed with toggle pressed
+      const toggle = screen.getByRole('button', { name: 'Mark habit as incomplete' });
+      expect(toggle).toHaveAttribute('aria-pressed', 'true');
+      
+      // The toggle should be in complete state (checking within the toggle only)
+      const slider = screen.getByTestId('toggle-slider');
+      expect(slider).toHaveClass('_sliderComplete_9e1495');
     });
 
     it('should identify boolean false as not completed', () => {
@@ -222,8 +228,10 @@ describe('Dashboard', () => {
 
       render(<Dashboard onManageHabits={mockOnManageHabits} />);
       
-      // Boolean false should show as not completed
-      expect(screen.getByText('Mark as complete')).toBeInTheDocument();
+      // Boolean false should show as not completed with toggle unpressed
+      const toggle = screen.getByRole('button', { name: 'Mark habit as complete' });
+      expect(toggle).toHaveAttribute('aria-pressed', 'false');
+      expect(screen.getByText('×')).toBeInTheDocument(); // Red X shows for incomplete
     });
 
     it('should identify numeric zero as not completed', () => {

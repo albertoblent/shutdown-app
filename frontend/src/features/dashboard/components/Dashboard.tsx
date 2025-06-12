@@ -6,6 +6,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import type { Habit, DailyEntry, HabitCompletion } from '../../../types/data';
 import { getHabitsSorted } from '../../habits/api/storage';
+import { HabitToggle } from './HabitToggle';
 import {
   getTodaysEntry,
   updateHabitCompletion,
@@ -349,16 +350,12 @@ function HabitCard({
       case 'boolean':
         return (
           <div className={styles.booleanInput}>
-            <input
-              type="checkbox"
-              id={`habit-${habit.id}`}
-              checked={completionValue.boolean || false}
-              onChange={(e) => handleBooleanChange(e.target.checked)}
+            <HabitToggle
+              isCompleted={completionValue.boolean || false}
+              onToggle={() => handleBooleanChange(!(completionValue.boolean || false))}
+              habitId={habit.id}
               disabled={disabled}
             />
-            <label htmlFor={`habit-${habit.id}`}>
-              {completionValue.boolean ? 'Completed' : 'Mark as complete'}
-            </label>
           </div>
         );
 

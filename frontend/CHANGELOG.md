@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Enhanced Habit Toggle UI**: Replaced basic checkbox with satisfying animated toggle for habit completion
+  - Custom HabitToggle component with sliding animation and visual feedback
+  - Red 'X' icon for incomplete habits slides to reveal green checkmark when completed
+  - Smooth CSS animations with cubic-bezier easing and spring physics
+  - Accessibility-first design with proper ARIA labels and keyboard navigation
+  - Mobile-optimized with 44px minimum touch targets
+  - Reduced motion support for users with motion preferences
+  - Comprehensive test coverage with 24 test cases covering all interaction patterns
+  - Follows existing design system with CSS custom properties and dark theme support
+
 ## [0.1.1] - 2025-01-06
 
 ### Added

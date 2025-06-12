@@ -1,0 +1,203 @@
+/* HabitToggle Component Styles */
+
+.toggle {
+  position: relative;
+  min-width: 80px;
+  min-height: 44px;
+  padding: 0;
+  border: 2px solid var(--color-border);
+  border-radius: 22px;
+  background: var(--color-background-secondary);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  outline: none;
+  overflow: hidden;
+}
+
+.toggle:hover:not(.disabled) {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(174, 1, 0, 0.1);
+}
+
+.toggle:focus:not(.disabled) {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(174, 1, 0, 0.2);
+}
+
+.toggle:active:not(.disabled) {
+  transform: scale(0.98);
+}
+
+/* Track contains the sliding slider */
+.track {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+/* Slider element that moves left/right */
+.slider {
+  position: absolute;
+  top: 2px;
+  width: 36px;
+  height: 36px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Incomplete state - slider on the right, showing red X */
+.sliderIncomplete {
+  transform: translateX(40px);
+  background: var(--color-error);
+}
+
+/* Complete state - slider on the left, showing green checkmark */
+.sliderComplete {
+  transform: translateX(2px);
+  background: var(--color-success);
+}
+
+/* Icons within the slider */
+.icon {
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+  position: absolute;
+  transition: opacity 0.2s ease-in-out;
+}
+
+/* Show/hide icons based on slider state */
+.sliderIncomplete .incompleteIcon {
+  opacity: 1;
+}
+
+.sliderIncomplete .completeIcon {
+  opacity: 0;
+}
+
+.sliderComplete .incompleteIcon {
+  opacity: 0;
+}
+
+.sliderComplete .completeIcon {
+  opacity: 1;
+}
+
+/* Toggle state styles */
+.incomplete {
+  border-color: var(--color-error);
+  background: linear-gradient(90deg, var(--color-background-secondary) 0%, rgba(239, 68, 68, 0.05) 100%);
+}
+
+.complete {
+  border-color: var(--color-success);
+  background: linear-gradient(90deg, rgba(16, 185, 129, 0.05) 0%, var(--color-background-secondary) 100%);
+}
+
+/* Disabled state */
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  border-color: var(--color-border);
+  background: var(--color-background-secondary);
+}
+
+.disabled:hover {
+  border-color: var(--color-border);
+  box-shadow: none;
+  transform: none;
+}
+
+.disabled .slider {
+  background: var(--color-text-secondary);
+}
+
+/* Reduced motion support */
+.reducedMotion,
+.reducedMotion .slider,
+.reducedMotion .icon {
+  transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toggle,
+  .slider,
+  .icon {
+    transition: none;
+  }
+}
+
+/* Mobile optimization */
+@media (max-width: 768px) {
+  .toggle {
+    min-width: 76px;
+    min-height: 44px;
+  }
+  
+  .slider {
+    width: 34px;
+    height: 34px;
+  }
+  
+  .sliderIncomplete {
+    transform: translateX(38px);
+  }
+  
+  .icon {
+    font-size: 16px;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .toggle {
+    border-width: 3px;
+  }
+  
+  .sliderIncomplete {
+    background: #dc2626;
+  }
+  
+  .sliderComplete {
+    background: #059669;
+  }
+  
+  .icon {
+    color: white;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* Dark theme specific adjustments */
+@media (prefers-color-scheme: dark) {
+  .toggle {
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+  }
+  
+  .slider {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* Animation for users who prefer motion */
+@media (prefers-reduced-motion: no-preference) {
+  .toggle:hover:not(.disabled) .slider {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  .slider {
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                box-shadow 0.2s ease-in-out,
+                background-color 0.3s ease-in-out;
+  }
+  
+  .icon {
+    transition: opacity 0.2s ease-in-out;
+  }
+}
