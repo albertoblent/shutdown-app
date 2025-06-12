@@ -3,7 +3,7 @@
  * The primary interface for daily habit completion
  */
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import type { Habit, DailyEntry, HabitCompletion } from '../../../types/data';
 import { getHabitsSorted } from '../../habits/api/storage';
 import {
@@ -84,13 +84,13 @@ export function Dashboard({ onManageHabits }: DashboardProps) {
     }
   }, [dailyEntry, loadData]);
 
-  // Get completion value for a habit
-  const getCompletionValue = (habitId: string): HabitCompletion['value'] => {
+  // Get completion value for a habit (memoized to prevent infinite re-renders)
+  const getCompletionValue = useCallback((habitId: string): HabitCompletion['value'] => {
     if (!dailyEntry) return {};
     
     const completion = dailyEntry.habit_completions.find(c => c.habit_id === habitId);
     return completion?.value || {};
-  };
+  }, [dailyEntry]);
 
   // Check if habit is completed (Issue #39: Zero values should never mark complete)
   const isHabitCompleted = (habitId: string): boolean => {
@@ -192,16 +192,19 @@ export function Dashboard({ onManageHabits }: DashboardProps) {
       </header>
 
       <main className={styles.habitList}>
-        {habits.map((habit) => (
-          <HabitCard
-            key={habit.id}
-            habit={habit}
-            completionValue={getCompletionValue(habit.id)}
-            isCompleted={isHabitCompleted(habit.id)}
-            onComplete={(value) => handleHabitCompletion(habit.id, value)}
-            disabled={isSaving}
-          />
-        ))}
+        {habits.map((habit) => {
+          const completionValue = getCompletionValue(habit.id);
+          return (
+            <HabitCard
+              key={habit.id}
+              habit={habit}
+              completionValue={completionValue}
+              isCompleted={isHabitCompleted(habit.id)}
+              onComplete={(value) => handleHabitCompletion(habit.id, value)}
+              disabled={isSaving}
+            />
+          );
+        })}
       </main>
 
       {isSaving && (
@@ -230,17 +233,14 @@ function HabitCard({
 }: HabitCardProps) {
   const [localNumericValue, setLocalNumericValue] = useState<string>('');
 
-  // Sync local state with completion value
+  // Sync local state with completion value - use stable reference
+  const numericValue = completionValue.numeric;
   useEffect(() => {
     if (habit.type === 'numeric') {
-      const numericValue = completionValue.numeric;
-      if (numericValue !== undefined) {
-        setLocalNumericValue(String(numericValue));
-      } else {
-        setLocalNumericValue('');
-      }
+      const newValue = numericValue !== undefined ? String(numericValue) : '';
+      setLocalNumericValue(newValue);
     }
-  }, [completionValue.numeric, habit.type]);
+  }, [numericValue, habit.type]);
 
   const handleBooleanChange = (checked: boolean) => {
     // When unchecked, pass empty object to clear the completion
