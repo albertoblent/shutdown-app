@@ -324,7 +324,7 @@ function HabitCard({
               <button
                 type="button"
                 onClick={() => handleNumericButtonChange(Math.max(min, (currentValue || 0) - 1))}
-                disabled={disabled || (currentValue !== null && currentValue <= min)}
+                disabled={disabled || (currentValue || 0) <= min}
                 aria-label="Decrease"
               >
                 -

@@ -49,7 +49,10 @@ describe('Dashboard', () => {
       name: 'Read Pages',
       type: 'numeric' as const,
       atomic_prompt: 'How many pages did you read?',
-      configuration: { min_value: 0, max_value: 100, unit: 'pages' },
+      configuration: { 
+        numeric_unit: 'pages',
+        numeric_range: [0, 100] as [number, number]
+      },
       is_active: true,
       position: 1,
       created_at: '2023-01-01T00:00:00.000Z',
@@ -287,6 +290,22 @@ describe('Dashboard', () => {
       const input = screen.getByRole('spinbutton');
       expect(input).toHaveAttribute('placeholder', '0');
       expect(input.value).toBe(''); // Empty by default
+    });
+
+    it('should respect custom numeric range configuration', () => {
+      render(<Dashboard onManageHabits={mockOnManageHabits} />);
+      
+      const input = screen.getByRole('spinbutton');
+      // Should use the configured range [0, 100] instead of default [0, 10]
+      expect(input).toHaveAttribute('min', '0');
+      expect(input).toHaveAttribute('max', '100');
+      
+      const decrementButton = screen.getByLabelText('Decrease');
+      const incrementButton = screen.getByLabelText('Increase');
+      
+      // Buttons should be enabled within the custom range
+      expect(decrementButton).toBeDisabled(); // At min value (empty = 0)
+      expect(incrementButton).not.toBeDisabled(); // Can increment within 0-100 range
     });
 
   });
