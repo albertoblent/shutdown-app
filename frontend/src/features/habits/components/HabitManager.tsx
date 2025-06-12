@@ -7,7 +7,9 @@ import { useState, useEffect, useCallback, Suspense } from 'react';
 import {
   DndContext,
   closestCenter,
+  KeyboardSensor,
   PointerSensor,
+  TouchSensor,
   useSensor,
   useSensors,
 } from '@dnd-kit/core';
@@ -15,10 +17,15 @@ import type { DragEndEvent } from '@dnd-kit/core';
 import {
   arrayMove,
   SortableContext,
+  sortableKeyboardCoordinates,
   verticalListSortingStrategy,
   useSortable,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import {
+  restrictToVerticalAxis,
+  restrictToWindowEdges,
+} from '@dnd-kit/modifiers';
 import type { Habit } from '../../../types/data';
 import {
   addHabit,
@@ -47,12 +54,24 @@ export function HabitManager({ onHabitsChange }: HabitManagerProps) {
   const [isAddingNew, setIsAddingNew] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
 
-  // Minimal mobile-first sensor configuration
+
+  // Configure dnd-kit sensors for touch and keyboard support
   const sensors = useSensors(
     useSensor(PointerSensor, {
+      // Require 8px movement for mouse to start drag
       activationConstraint: {
-        distance: 8, // Minimal distance to prevent accidental drags
+        distance: 8,
       },
+    }),
+    useSensor(TouchSensor, {
+      // Press delay for 250ms, and move tolerance of 5px to distinguish from scrolling
+      activationConstraint: {
+        delay: 250,
+        tolerance: 5,
+      },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
     })
   );
 
@@ -249,6 +268,7 @@ export function HabitManager({ onHabitsChange }: HabitManagerProps) {
         <DndContext
           sensors={sensors}
           collisionDetection={closestCenter}
+          modifiers={[restrictToVerticalAxis, restrictToWindowEdges]}
           onDragEnd={handleDragEnd}
         >
           <SortableContext
@@ -418,7 +438,7 @@ function HabitItem({
     <div
       className={`${styles.habitItem} ${isDragged ? styles.dragged : ''}`}
     >
-      <div 
+      <div
         className={styles.dragHandle}
         {...dragHandleProps}
       >

@@ -98,15 +98,14 @@
   padding: 0.75rem;
   color: var(--text-secondary, #b0b0b0);
   cursor: grab;
+  touch-action: none;
   border-right: 1px solid var(--border-color, #333);
   min-width: 48px;
-  touch-action: none;
 }
 
 .dragHandle:active {
   cursor: grabbing;
 }
-
 
 .habitContent {
   flex: 1;
@@ -169,6 +168,7 @@
   margin-bottom: 0.5rem;
   font-size: 0.875rem;
   resize: vertical;
+  touch-action: auto; /* Allow text input */
 }
 
 .editInput:focus, .editTextarea:focus {
@@ -193,6 +193,7 @@
   transition: all 0.2s ease;
   min-height: 32px;
   min-width: 48px; /* Accessibility */
+  touch-action: auto; /* Allow button taps */
 }
 
 .editButton {
