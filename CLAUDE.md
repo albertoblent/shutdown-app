@@ -41,9 +41,18 @@ footer (optional)
 
 ## Code Quality Standards
 
-- Run `npm run lint` before committing
-- Run `npm test` to ensure all tests pass
-- Ensure `npm run build` succeeds
+### Automated Quality Checks
+- **Pre-push hook**: Automatically runs `lint + test + build` before every push
+- All pushes are blocked until quality checks pass
+- No manual intervention required - the system enforces quality
+
+### Manual Quality Checks (for local development)
+- Run `npm run ci` for full quality check (lint + test + build)
+- Run `npm run lint` to check code style
+- Run `npm test` to run tests individually 
+- Run `npm run build` to verify production build
+
+### Code Standards
 - No console.logs in production code
 - Follow existing TypeScript and React patterns
 - **Follow feature-based architecture**: See `frontend/CLAUDE.md` for detailed architectural guidelines

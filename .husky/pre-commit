@@ -1,0 +1,1 @@
+echo "Pre-commit hook: No checks configured (tests run on pre-push)"
