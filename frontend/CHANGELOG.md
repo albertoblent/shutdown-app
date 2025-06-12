@@ -9,14 +9,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Automatic Daily Habit Reset**: Implements date change detection with automatic habit reset at midnight (#38)
+- **Reset Notification System**: Visual feedback component showing users when daily reset occurs
+- **Date Change Detection**: Interval-based checking every 60 seconds to detect when date changes
+- **Page Visibility Handlers**: Event listeners for tab focus/return scenarios to trigger date checks
 - **Habit Management System**: Complete CRUD operations for habits with 7-habit limit enforcement
 - **Habit Templates**: 3 preset templates (Productivity Focus, Health & Wellness, Work-Life Balance)
 - **Habit Manager Component**: React component with inline editing, drag-and-drop reordering, and template loading
 - **Modal System**: Custom Modal and ConfirmModal components replacing browser dialogs for better UX
 - **Comprehensive Testing**: 148 total tests with feature-specific test organization and 80%+ function coverage
 
+### Fixed
+
+- **Habit Persistence Issue**: Fixed habit completion state persisting across days when app stays open overnight (#38)
+- **Date Change Detection**: Dashboard now automatically refreshes when date changes vs old behavior of only loading on mount
+- **Timezone Handling**: Graceful handling of timezone changes during overnight app usage
+
 ### Changed
 
+- **Dashboard Component**: Enhanced with date change detection, automatic data reloading, and cleanup mechanisms
+- **User Experience**: Habits now automatically reset at midnight with clear visual feedback
 - **Architecture**: Migrated from utils-based to feature-based architecture for better separation of concerns
 - **File Organization**: Implemented `src/features/{feature}/{api,components,__tests__}/` structure
 - **Import Structure**: Added barrel exports for clean public APIs
