@@ -33,17 +33,16 @@ export function ResetNotification({
       <div className={styles.content}>
         <div className={styles.icon}>🌅</div>
         <div className={styles.message}>
-          <h3 className={styles.title}>New Day Started</h3>
-          <p className={styles.description}>
-            Your shutdown routine has been reset for a fresh start.
-          </p>
+          <h4 className={styles.title}>New Day Started</h4>
+          <p>Your habits have been reset for {newDate}.</p>
+          <p className={styles.detail}>Previous day's data ({previousDate}) has been saved.</p>
         </div>
         <button
           onClick={onClose}
           className={styles.closeButton}
           aria-label="Close notification"
         >
-          ✕
+          ×
         </button>
       </div>
     </div>
