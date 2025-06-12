@@ -7,8 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] - 2025-01-06
+
 ### Added
 
+- **Comprehensive ResetNotification Tests**: Added 23 test cases covering all logic paths in ResetNotification component
+  - Timer behavior testing with fake timers and proper cleanup
+  - User interaction testing for close button and content clicks  
+  - Accessibility testing for ARIA attributes and semantic HTML
+  - Edge case testing for empty dates and special characters
+  - Component state change testing for rapid show/hide toggles
+  - Achieves 100% coverage for statements, branches, functions, and lines
 - **Automatic Daily Habit Reset**: Implements date change detection with automatic habit reset at midnight (#38)
 - **Reset Notification System**: Visual feedback component showing users when daily reset occurs
 - **Date Change Detection**: Interval-based checking every 60 seconds to detect when date changes
@@ -17,17 +26,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Habit Templates**: 3 preset templates (Productivity Focus, Health & Wellness, Work-Life Balance)
 - **Habit Manager Component**: React component with inline editing, drag-and-drop reordering, and template loading
 - **Modal System**: Custom Modal and ConfirmModal components replacing browser dialogs for better UX
-- **Comprehensive Testing**: 148 total tests with feature-specific test organization and 80%+ function coverage
+- **Comprehensive Testing**: 148+ total tests with feature-specific test organization and 80%+ function coverage
 
 ### Fixed
 
 - **Habit Persistence Issue**: Fixed habit completion state persisting across days when app stays open overnight (#38)
 - **Date Change Detection**: Dashboard now automatically refreshes when date changes vs old behavior of only loading on mount
 - **Timezone Handling**: Graceful handling of timezone changes during overnight app usage
+- **Test Coverage Gap**: ResetNotification component now fully tested, improving patch coverage from 55.71% with 31 missing lines
 
 ### Changed
 
 - **Dashboard Component**: Enhanced with date change detection, automatic data reloading, and cleanup mechanisms
+- **Reset Notification Props**: Fixed previousDate tracking to properly capture the previous date before reset
 - **User Experience**: Habits now automatically reset at midnight with clear visual feedback
 - **Architecture**: Migrated from utils-based to feature-based architecture for better separation of concerns
 - **File Organization**: Implemented `src/features/{feature}/{api,components,__tests__}/` structure
