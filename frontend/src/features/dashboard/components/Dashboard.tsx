@@ -3,7 +3,7 @@
  * The primary interface for daily habit completion
  */
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import type { Habit, DailyEntry, HabitCompletion } from '../../../types/data';
 import { getHabitsSorted } from '../../habits/api/storage';
 import {
@@ -11,8 +11,10 @@ import {
   updateHabitCompletion,
   isDailyEntryComplete,
   isToday,
+  getDateString,
 } from '../api/completion';
 import styles from './Dashboard.module.css';
+import { ResetNotification } from './ResetNotification';
 
 interface DashboardProps {
   onManageHabits?: () => void;
@@ -24,6 +26,12 @@ export function Dashboard({ onManageHabits }: DashboardProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
+  const [showReset, setShowReset] = useState(false);
+  const [previousDate, setPreviousDate] = useState<string>('');
+
+  // Track current date for detecting date changes
+  const currentDateRef = useRef<string>(getDateString());
+  const dateCheckIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // Load habits and daily entry
   const loadData = useCallback(async () => {
@@ -47,6 +55,9 @@ export function Dashboard({ onManageHabits }: DashboardProps) {
       }
 
       setDailyEntry(entryResult.data || null);
+
+      // Update current date reference to match loaded data
+      currentDateRef.current = getDateString();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unknown error loading data');
     } finally {
@@ -54,10 +65,45 @@ export function Dashboard({ onManageHabits }: DashboardProps) {
     }
   }, []);
 
-  // Load data on mount
+  // Check if date has changed and reload if necessary
+  const checkDateChange = useCallback(() => {
+    const currentDate = getDateString();
+
+    if (currentDate !== currentDateRef.current) {
+      // Date has changed - show reset notification and reload data
+      setPreviousDate(currentDateRef.current); // Capture previous date
+      setShowReset(true);
+      currentDateRef.current = currentDate;
+      loadData();
+    }
+  }, [loadData]);
+
+  // Handle page visibility changes (when user returns to tab)
+  const handleVisibilityChange = useCallback(() => {
+    if (!document.hidden) {
+      // Page became visible - check for date changes
+      checkDateChange();
+    }
+  }, [checkDateChange]);
+
+  // Load data on mount and set up date change detection
   useEffect(() => {
     loadData();
-  }, [loadData]);
+
+    // Set up interval to check for date changes every minute
+    dateCheckIntervalRef.current = setInterval(checkDateChange, 60000);
+
+    // Listen for page visibility changes
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    // Cleanup function
+    return () => {
+      if (dateCheckIntervalRef.current) {
+        clearInterval(dateCheckIntervalRef.current);
+      }
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [loadData, checkDateChange, handleVisibilityChange]);
 
   // Handle habit completion
   const handleHabitCompletion = useCallback(async (
@@ -162,6 +208,12 @@ export function Dashboard({ onManageHabits }: DashboardProps) {
 
   return (
     <div className={styles.container}>
+      <ResetNotification
+        show={showReset}
+        onClose={() => setShowReset(false)}
+        previousDate={previousDate}
+        newDate={currentDateRef.current}
+      />
       <header className={styles.header}>
         <div className={styles.headerTop}>
           <h1 className={styles.title}>
