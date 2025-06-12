@@ -257,8 +257,8 @@ function HabitCard({
     // Intent-based completion: only mark complete on blur with value > 0
     const numericValue = localNumericValue === '' ? null : Number(localNumericValue);
 
-    if (numericValue === null || numericValue === 0 || isNaN(numericValue)) {
-      // Empty, zero, or invalid = clear completion
+    if (numericValue === null || numericValue <= 0 || isNaN(numericValue)) {
+      // Empty, zero, negative, or invalid = clear completion
       onComplete({});
     } else {
       // Positive value = mark complete

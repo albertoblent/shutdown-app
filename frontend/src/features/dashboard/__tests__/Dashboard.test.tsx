@@ -308,6 +308,34 @@ describe('Dashboard', () => {
       expect(incrementButton).not.toBeDisabled(); // Can increment within 0-100 range
     });
 
+    it('should handle negative values correctly in blur', () => {
+      // Mock a daily entry with negative numeric value
+      const entryWithNegativeNumeric = {
+        ...mockDailyEntry,
+        habit_completions: [
+          mockDailyEntry.habit_completions[0],
+          {
+            ...mockDailyEntry.habit_completions[1],
+            value: { numeric: -5 }
+          }
+        ]
+      };
+      
+      mockCompletionApi.getTodaysEntry.mockReturnValue({
+        success: true,
+        data: entryWithNegativeNumeric,
+      });
+
+      render(<Dashboard onManageHabits={mockOnManageHabits} />);
+      
+      // Should show 0 of 2 habits completed (negative doesn't count as complete)
+      expect(screen.getByText('0 of 2 habits completed')).toBeInTheDocument();
+      
+      // The input should display the negative value but habit should not be marked as completed
+      const input = screen.getByRole('spinbutton');
+      expect(input).toHaveValue(-5);
+    });
+
   });
 
   it.skip('should handle numeric habit increment buttons', async () => {
