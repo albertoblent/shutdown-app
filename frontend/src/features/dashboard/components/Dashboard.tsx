@@ -3,7 +3,7 @@
  * The primary interface for daily habit completion
  */
 
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import type { Habit, DailyEntry, HabitCompletion } from '../../../types/data';
 import { getHabitsSorted } from '../../habits/api/storage';
 import {
