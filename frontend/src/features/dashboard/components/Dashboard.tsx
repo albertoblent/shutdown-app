@@ -27,6 +27,7 @@ export function Dashboard({ onManageHabits }: DashboardProps) {
   const [error, setError] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [showReset, setShowReset] = useState(false);
+  const [previousDate, setPreviousDate] = useState<string>('');
 
   // Track current date for detecting date changes
   const currentDateRef = useRef<string>(getDateString());
@@ -70,6 +71,7 @@ export function Dashboard({ onManageHabits }: DashboardProps) {
 
     if (currentDate !== currentDateRef.current) {
       // Date has changed - show reset notification and reload data
+      setPreviousDate(currentDateRef.current); // Capture previous date
       setShowReset(true);
       currentDateRef.current = currentDate;
       loadData();
@@ -209,8 +211,8 @@ export function Dashboard({ onManageHabits }: DashboardProps) {
       <ResetNotification
         show={showReset}
         onClose={() => setShowReset(false)}
-        previousDate={currentDateRef.current}
-        newDate={getDateString()}
+        previousDate={previousDate}
+        newDate={currentDateRef.current}
       />
       <header className={styles.header}>
         <div className={styles.headerTop}>
