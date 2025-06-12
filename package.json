@@ -1,4 +1,5 @@
 {
+  "name": "shutdown-app",
   "devDependencies": {
     "@types/node": "^22.15.30"
   },
