@@ -9,6 +9,7 @@ import {
   closestCenter,
   KeyboardSensor,
   PointerSensor,
+  TouchSensor,
   useSensor,
   useSensors,
 } from '@dnd-kit/core';
@@ -53,11 +54,20 @@ export function HabitManager({ onHabitsChange }: HabitManagerProps) {
   const [isAddingNew, setIsAddingNew] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
 
+
   // Configure dnd-kit sensors for touch and keyboard support
   const sensors = useSensors(
     useSensor(PointerSensor, {
+      // Require 8px movement for mouse to start drag
       activationConstraint: {
-        distance: 8, // Require 8px movement to start drag (prevents accidental drags)
+        distance: 8,
+      },
+    }),
+    useSensor(TouchSensor, {
+      // Press delay for 250ms, and move tolerance of 5px to distinguish from scrolling
+      activationConstraint: {
+        delay: 250,
+        tolerance: 5,
       },
     }),
     useSensor(KeyboardSensor, {
@@ -258,8 +268,8 @@ export function HabitManager({ onHabitsChange }: HabitManagerProps) {
         <DndContext
           sensors={sensors}
           collisionDetection={closestCenter}
-          onDragEnd={handleDragEnd}
           modifiers={[restrictToVerticalAxis, restrictToWindowEdges]}
+          onDragEnd={handleDragEnd}
         >
           <SortableContext
             items={habits.map(habit => habit.id)}
@@ -428,10 +438,9 @@ function HabitItem({
     <div
       className={`${styles.habitItem} ${isDragged ? styles.dragged : ''}`}
     >
-      <div 
+      <div
         className={styles.dragHandle}
         {...dragHandleProps}
-        style={{ cursor: isDragged ? 'grabbing' : 'grab' }}
       >
         ⋮⋮
       </div>

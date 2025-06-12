@@ -86,9 +86,20 @@ export const parseDateFromEntryKey = (key: string): string | null => {
   return key.substring(STORAGE_KEYS.ENTRY_PREFIX.length);
 };
 
-// UUID generation helper
+// UUID generation helper with fallback for non-secure contexts
 export const generateId = (): string => {
-  return crypto.randomUUID();
+  // Use crypto.randomUUID() in secure contexts (HTTPS, localhost)
+  if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+    return crypto.randomUUID();
+  }
+  
+  // Fallback for non-secure contexts (HTTP development)
+  // This generates a v4 UUID compatible string
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    const r = Math.random() * 16 | 0;
+    const v = c === 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
 };
 
 // Date utilities
