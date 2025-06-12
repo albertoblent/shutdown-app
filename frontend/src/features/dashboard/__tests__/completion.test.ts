@@ -266,6 +266,51 @@ describe('Daily Completion API', () => {
       const result = isDailyEntryComplete(entry.data!);
       expect(result).toBe(true);
     });
+
+    describe('Issue #39: Zero Value Completion Logic', () => {
+      it('should return false when numeric habit has zero value (zero should never complete)', () => {
+        const date = '2025-01-07';
+        createDailyEntry(date, mockHabits);
+        updateHabitCompletion(date, '550e8400-e29b-41d4-a716-446655440002', { numeric: 0 });
+
+        const entry = getDailyEntry(date);
+        const result = isDailyEntryComplete(entry.data!);
+        expect(result).toBe(false); // Zero values should NOT mark habit as complete
+      });
+
+      it('should return true when numeric habit has positive value', () => {
+        const date = '2025-01-07';
+        createDailyEntry(date, mockHabits);
+        updateHabitCompletion(date, '550e8400-e29b-41d4-a716-446655440001', { boolean: true });
+        updateHabitCompletion(date, '550e8400-e29b-41d4-a716-446655440002', { numeric: 1 });
+
+        const entry = getDailyEntry(date);
+        const result = isDailyEntryComplete(entry.data!);
+        expect(result).toBe(true); // Positive values should mark habit as complete
+      });
+
+      it('should handle mixed completion states correctly', () => {
+        const date = '2025-01-07';
+        createDailyEntry(date, mockHabits);
+        updateHabitCompletion(date, '550e8400-e29b-41d4-a716-446655440001', { boolean: true }); // Complete
+        updateHabitCompletion(date, '550e8400-e29b-41d4-a716-446655440002', { numeric: 0 }); // Not complete (zero)
+
+        const entry = getDailyEntry(date);
+        const result = isDailyEntryComplete(entry.data!);
+        expect(result).toBe(false); // One completed, one with zero = not all complete
+      });
+
+      it('should handle boolean false as incomplete', () => {
+        const date = '2025-01-07';
+        createDailyEntry(date, mockHabits);
+        updateHabitCompletion(date, '550e8400-e29b-41d4-a716-446655440001', { boolean: false });
+        updateHabitCompletion(date, '550e8400-e29b-41d4-a716-446655440002', { numeric: 5 });
+
+        const entry = getDailyEntry(date);
+        const result = isDailyEntryComplete(entry.data!);
+        expect(result).toBe(false); // Boolean false should not mark as complete
+      });
+    });
   });
 
   describe('Boolean habit unchecking edge case', () => {

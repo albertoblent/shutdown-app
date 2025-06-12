@@ -319,13 +319,29 @@ export const isDailyEntryComplete = (dailyEntry: DailyEntry): boolean => {
   const completions = dailyEntry.habit_completions;
   const isComplete = completions.every(completion => {
     const { value } = completion;
-    return Object.keys(value).length > 0 && (
-      value.boolean !== undefined ||
-      value.numeric !== undefined ||
-      value.choice !== undefined
-    );
+    
+    // Empty value = not completed
+    if (Object.keys(value).length === 0) {
+      return false;
+    }
+    
+    // Boolean: only true is completed (false or undefined = not completed)
+    if (value.boolean !== undefined) {
+      return value.boolean === true;
+    }
+    
+    // Numeric: only positive values are completed (zero or undefined = not completed)
+    if (value.numeric !== undefined) {
+      return value.numeric > 0;
+    }
+    
+    // Choice: any defined choice is completed
+    if (value.choice !== undefined) {
+      return true;
+    }
+    
+    return false;
   });
-  
   
   return isComplete;
 };

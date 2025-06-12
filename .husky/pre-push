@@ -1,0 +1,24 @@
+echo "🔍 Running pre-push checks..."
+echo "📁 Entering frontend directory..."
+
+cd frontend || exit 1
+
+echo "🔍 Running ESLint..."
+npm run lint || {
+  echo "❌ Lint failed! Fix linting errors before pushing."
+  exit 1
+}
+
+echo "🧪 Running tests..."
+npm test || {
+  echo "❌ Tests failed! Fix failing tests before pushing."
+  exit 1
+}
+
+echo "🏗️  Running build..."
+npm run build || {
+  echo "❌ Build failed! Fix build errors before pushing."
+  exit 1
+}
+
+echo "✅ All pre-push checks passed! Pushing..."

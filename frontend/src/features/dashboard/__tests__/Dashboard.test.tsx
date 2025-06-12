@@ -49,7 +49,10 @@ describe('Dashboard', () => {
       name: 'Read Pages',
       type: 'numeric' as const,
       atomic_prompt: 'How many pages did you read?',
-      configuration: { min_value: 0, max_value: 100, unit: 'pages' },
+      configuration: { 
+        numeric_unit: 'pages',
+        numeric_range: [0, 100] as [number, number]
+      },
       is_active: true,
       position: 1,
       created_at: '2023-01-01T00:00:00.000Z',
@@ -57,23 +60,28 @@ describe('Dashboard', () => {
   ];
 
   const mockDailyEntry = {
+    id: 'test-daily-entry-id',
     date: '2023-12-06',
+    started_at: '2023-12-06T10:00:00.000Z',
+    is_complete: false,
     habit_completions: [
       {
+        id: 'completion-1',
         habit_id: '1',
-        completed: false,
-        value: null,
-        completed_at: null,
+        value: {},
+        completed_at: '2023-12-06T10:00:00.000Z',
+        flagged_for_action: false,
+        time_to_complete: 0,
       },
       {
+        id: 'completion-2', 
         habit_id: '2',
-        completed: false,
-        value: null,
-        completed_at: null,
+        value: {},
+        completed_at: '2023-12-06T10:00:00.000Z',
+        flagged_for_action: false,
+        time_to_complete: 0,
       },
     ],
-    created_at: '2023-12-06T10:00:00.000Z',
-    updated_at: '2023-12-06T10:00:00.000Z',
   };
 
   beforeEach(() => {
@@ -169,24 +177,165 @@ describe('Dashboard', () => {
     expect(screen.getByText('Mark as complete')).toBeInTheDocument();
   });
 
-  it.skip('should handle numeric habit input', async () => {
-    render(<Dashboard onManageHabits={mockOnManageHabits} />);
-    
-    const input = screen.getByRole('spinbutton');
-    await user.clear(input);
-    await user.type(input, '25');
-    
-    // Wait for debounced save
-    vi.advanceTimersByTime(1000);
-    
-    await waitFor(() => {
-      expect(mockCompletionApi.updateHabitCompletion).toHaveBeenCalledWith(
-        '2023-12-06',
-        '2',
-        25,
-        true
-      );
+  // Simple tests to cover the new completion logic functions
+  describe('Completion Logic - Issue #39 Fixes', () => {
+    it('should identify boolean habits as completed only when true', () => {
+      // Mock a daily entry with boolean habit
+      const entryWithBooleanTrue = {
+        ...mockDailyEntry,
+        habit_completions: [
+          {
+            ...mockDailyEntry.habit_completions[0],
+            value: { boolean: true }
+          }
+        ]
+      };
+      
+      mockCompletionApi.getTodaysEntry.mockReturnValue({
+        success: true,
+        data: entryWithBooleanTrue,
+      });
+
+      render(<Dashboard onManageHabits={mockOnManageHabits} />);
+      
+      // Boolean true should show as completed
+      expect(screen.getByText('Completed')).toBeInTheDocument();
     });
+
+    it('should identify boolean false as not completed', () => {
+      // Mock a daily entry with boolean false
+      const entryWithBooleanFalse = {
+        ...mockDailyEntry,
+        habit_completions: [
+          {
+            ...mockDailyEntry.habit_completions[0],
+            value: { boolean: false }
+          }
+        ]
+      };
+      
+      mockCompletionApi.getTodaysEntry.mockReturnValue({
+        success: true,
+        data: entryWithBooleanFalse,
+      });
+
+      render(<Dashboard onManageHabits={mockOnManageHabits} />);
+      
+      // Boolean false should show as not completed
+      expect(screen.getByText('Mark as complete')).toBeInTheDocument();
+    });
+
+    it('should identify numeric zero as not completed', () => {
+      // Mock a daily entry with numeric zero
+      const entryWithNumericZero = {
+        ...mockDailyEntry,
+        habit_completions: [
+          mockDailyEntry.habit_completions[0],
+          {
+            ...mockDailyEntry.habit_completions[1],
+            value: { numeric: 0 }
+          }
+        ]
+      };
+      
+      mockCompletionApi.getTodaysEntry.mockReturnValue({
+        success: true,
+        data: entryWithNumericZero,
+      });
+
+      render(<Dashboard onManageHabits={mockOnManageHabits} />);
+      
+      // Should show 0 of 2 habits completed (zero doesn't count)
+      expect(screen.getByText('0 of 2 habits completed')).toBeInTheDocument();
+    });
+
+    it('should identify positive numeric values as completed', () => {
+      // Mock a daily entry with positive numeric value
+      const entryWithPositiveNumeric = {
+        ...mockDailyEntry,
+        habit_completions: [
+          {
+            ...mockDailyEntry.habit_completions[0],
+            value: { boolean: true }
+          },
+          {
+            ...mockDailyEntry.habit_completions[1],
+            value: { numeric: 5 }
+          }
+        ]
+      };
+      
+      mockCompletionApi.getTodaysEntry.mockReturnValue({
+        success: true,
+        data: entryWithPositiveNumeric,
+      });
+
+      render(<Dashboard onManageHabits={mockOnManageHabits} />);
+      
+      // Should show 2 of 2 habits completed (positive number counts)
+      expect(screen.getByText('2 of 2 habits completed')).toBeInTheDocument();
+    });
+
+    it('should handle empty values as not completed', () => {
+      // Mock a daily entry with empty values (default state)
+      render(<Dashboard onManageHabits={mockOnManageHabits} />);
+      
+      // Should show 0 of 2 habits completed (empty values)
+      expect(screen.getByText('0 of 2 habits completed')).toBeInTheDocument();
+    });
+
+    it('should render numeric input with placeholder', () => {
+      render(<Dashboard onManageHabits={mockOnManageHabits} />);
+      
+      const input = screen.getByRole('spinbutton');
+      expect(input).toHaveAttribute('placeholder', '0');
+      expect(input.value).toBe(''); // Empty by default
+    });
+
+    it('should respect custom numeric range configuration', () => {
+      render(<Dashboard onManageHabits={mockOnManageHabits} />);
+      
+      const input = screen.getByRole('spinbutton');
+      // Should use the configured range [0, 100] instead of default [0, 10]
+      expect(input).toHaveAttribute('min', '0');
+      expect(input).toHaveAttribute('max', '100');
+      
+      const decrementButton = screen.getByLabelText('Decrease');
+      const incrementButton = screen.getByLabelText('Increase');
+      
+      // Buttons should be enabled within the custom range
+      expect(decrementButton).toBeDisabled(); // At min value (empty = 0)
+      expect(incrementButton).not.toBeDisabled(); // Can increment within 0-100 range
+    });
+
+    it('should handle negative values correctly in blur', () => {
+      // Mock a daily entry with negative numeric value
+      const entryWithNegativeNumeric = {
+        ...mockDailyEntry,
+        habit_completions: [
+          mockDailyEntry.habit_completions[0],
+          {
+            ...mockDailyEntry.habit_completions[1],
+            value: { numeric: -5 }
+          }
+        ]
+      };
+      
+      mockCompletionApi.getTodaysEntry.mockReturnValue({
+        success: true,
+        data: entryWithNegativeNumeric,
+      });
+
+      render(<Dashboard onManageHabits={mockOnManageHabits} />);
+      
+      // Should show 0 of 2 habits completed (negative doesn't count as complete)
+      expect(screen.getByText('0 of 2 habits completed')).toBeInTheDocument();
+      
+      // The input should display the negative value but habit should not be marked as completed
+      const input = screen.getByRole('spinbutton');
+      expect(input).toHaveValue(-5);
+    });
+
   });
 
   it.skip('should handle numeric habit increment buttons', async () => {
@@ -195,11 +344,11 @@ describe('Dashboard', () => {
     const incrementButton = screen.getByLabelText('Increase');
     await user.click(incrementButton);
     
+    // Should call updateHabitCompletion with numeric value object
     expect(mockCompletionApi.updateHabitCompletion).toHaveBeenCalledWith(
       '2023-12-06',
       '2',
-      1,
-      true
+      { numeric: 1 }
     );
   });
 

@@ -84,22 +84,39 @@ export function Dashboard({ onManageHabits }: DashboardProps) {
     }
   }, [dailyEntry, loadData]);
 
-  // Get completion value for a habit
-  const getCompletionValue = (habitId: string): HabitCompletion['value'] => {
+  // Get completion value for a habit (memoized to prevent infinite re-renders)
+  const getCompletionValue = useCallback((habitId: string): HabitCompletion['value'] => {
     if (!dailyEntry) return {};
-    
+
     const completion = dailyEntry.habit_completions.find(c => c.habit_id === habitId);
     return completion?.value || {};
-  };
+  }, [dailyEntry]);
 
-  // Check if habit is completed
+  // Check if habit is completed (Issue #39: Zero values should never mark complete)
   const isHabitCompleted = (habitId: string): boolean => {
     const value = getCompletionValue(habitId);
-    return Object.keys(value).length > 0 && (
-      value.boolean !== undefined ||
-      value.numeric !== undefined ||
-      value.choice !== undefined
-    );
+
+    // Empty value = not completed
+    if (Object.keys(value).length === 0) {
+      return false;
+    }
+
+    // Boolean: only true is completed (false or undefined = not completed)
+    if (value.boolean !== undefined) {
+      return value.boolean === true;
+    }
+
+    // Numeric: only positive values are completed (zero or undefined = not completed)
+    if (value.numeric !== undefined) {
+      return value.numeric > 0;
+    }
+
+    // Choice: any defined choice is completed
+    if (value.choice !== undefined) {
+      return true;
+    }
+
+    return false;
   };
 
   // Calculate completion stats
@@ -154,10 +171,10 @@ export function Dashboard({ onManageHabits }: DashboardProps) {
             Manage Habits
           </button>
         </div>
-        
+
         <div className={styles.progress}>
           <div className={styles.progressBar}>
-            <div 
+            <div
               className={styles.progressFill}
               style={{ width: `${progressPercentage}%` }}
             />
@@ -175,16 +192,19 @@ export function Dashboard({ onManageHabits }: DashboardProps) {
       </header>
 
       <main className={styles.habitList}>
-        {habits.map((habit) => (
-          <HabitCard
-            key={habit.id}
-            habit={habit}
-            completionValue={getCompletionValue(habit.id)}
-            isCompleted={isHabitCompleted(habit.id)}
-            onComplete={(value) => handleHabitCompletion(habit.id, value)}
-            disabled={isSaving}
-          />
-        ))}
+        {habits.map((habit) => {
+          const completionValue = getCompletionValue(habit.id);
+          return (
+            <HabitCard
+              key={habit.id}
+              habit={habit}
+              completionValue={completionValue}
+              isCompleted={isHabitCompleted(habit.id)}
+              onComplete={(value) => handleHabitCompletion(habit.id, value)}
+              disabled={isSaving}
+            />
+          );
+        })}
       </main>
 
       {isSaving && (
@@ -204,20 +224,72 @@ interface HabitCardProps {
   disabled?: boolean;
 }
 
-function HabitCard({ 
-  habit, 
-  completionValue, 
-  isCompleted, 
-  onComplete, 
-  disabled = false 
+function HabitCard({
+  habit,
+  completionValue,
+  isCompleted,
+  onComplete,
+  disabled = false
 }: HabitCardProps) {
+  const [localNumericValue, setLocalNumericValue] = useState<string>('');
+
+  // Sync local state with completion value - use stable reference
+  const numericValue = completionValue.numeric;
+  useEffect(() => {
+    if (habit.type === 'numeric') {
+      const newValue = numericValue !== undefined ? String(numericValue) : '';
+      setLocalNumericValue(newValue);
+    }
+  }, [numericValue, habit.type]);
+
   const handleBooleanChange = (checked: boolean) => {
     // When unchecked, pass empty object to clear the completion
     onComplete(checked ? { boolean: true } : {});
   };
 
-  const handleNumericChange = (value: number) => {
-    onComplete({ numeric: value });
+  const handleNumericInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Only update visual state, don't trigger completion yet
+    const newValue = e.target.value;
+    setLocalNumericValue(newValue);
+  };
+
+  const handleNumericBlur = () => {
+    // Intent-based completion: only mark complete on blur with value > 0
+    const numericValue = localNumericValue === '' ? null : Number(localNumericValue);
+
+    if (numericValue === null || numericValue <= 0 || isNaN(numericValue)) {
+      // Empty, zero, negative, or invalid = clear completion
+      onComplete({});
+    } else {
+      // Positive value = mark complete
+      onComplete({ numeric: numericValue });
+    }
+  };
+
+  const handleNumericKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.currentTarget.blur(); // Trigger blur to complete input
+    }
+  };
+
+  const handleNumericFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    // Select all text on focus to prevent leading zeros
+    e.target.select();
+  };
+
+  const handleNumericButtonChange = (newValue: number) => {
+    // For +/- buttons, update both local state and complete immediately
+    const min = habit.configuration.numeric_range?.[0] || 0;
+    const max = habit.configuration.numeric_range?.[1] || 10;
+    const clampedValue = Math.max(min, Math.min(max, newValue));
+
+    setLocalNumericValue(String(clampedValue));
+
+    if (clampedValue > 0) {
+      onComplete({ numeric: clampedValue });
+    } else {
+      onComplete({});
+    }
   };
 
   const renderInput = () => {
@@ -241,8 +313,8 @@ function HabitCard({
       case 'numeric': {
         const min = habit.configuration.numeric_range?.[0] || 0;
         const max = habit.configuration.numeric_range?.[1] || 10;
-        const currentValue = completionValue.numeric || 0;
-        
+        const currentValue = localNumericValue === '' ? null : Number(localNumericValue);
+
         return (
           <div className={styles.numericInput}>
             <label htmlFor={`habit-${habit.id}`}>
@@ -251,8 +323,8 @@ function HabitCard({
             <div className={styles.numericControls}>
               <button
                 type="button"
-                onClick={() => handleNumericChange(Math.max(min, currentValue - 1))}
-                disabled={disabled || currentValue <= min}
+                onClick={() => handleNumericButtonChange(Math.max(min, (currentValue || 0) - 1))}
+                disabled={disabled || (currentValue || 0) <= min}
                 aria-label="Decrease"
               >
                 -
@@ -260,16 +332,20 @@ function HabitCard({
               <input
                 type="number"
                 id={`habit-${habit.id}`}
-                value={currentValue}
-                onChange={(e) => handleNumericChange(Number(e.target.value))}
+                value={localNumericValue}
+                onChange={handleNumericInputChange}
+                onBlur={handleNumericBlur}
+                onFocus={handleNumericFocus}
+                onKeyDown={handleNumericKeyDown}
                 min={min}
                 max={max}
+                placeholder="0"
                 disabled={disabled}
               />
               <button
                 type="button"
-                onClick={() => handleNumericChange(Math.min(max, currentValue + 1))}
-                disabled={disabled || currentValue >= max}
+                onClick={() => handleNumericButtonChange(Math.min(max, (currentValue || 0) + 1))}
+                disabled={disabled || (currentValue || 0) >= max}
                 aria-label="Increase"
               >
                 +
@@ -298,11 +374,11 @@ function HabitCard({
         <h3 className={styles.habitName}>{habit.name}</h3>
         <p className={styles.habitPrompt}>{habit.atomic_prompt}</p>
       </div>
-      
+
       <div className={styles.habitInput}>
         {renderInput()}
       </div>
-      
+
       {isCompleted && (
         <div className={styles.completionIndicator}>
           ✓
