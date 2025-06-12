@@ -3,7 +3,7 @@
  * The primary interface for daily habit completion
  */
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import type { Habit, DailyEntry, HabitCompletion } from '../../../types/data';
 import { getHabitsSorted } from '../../habits/api/storage';
 import {
@@ -11,6 +11,7 @@ import {
   updateHabitCompletion,
   isDailyEntryComplete,
   isToday,
+  getDateString,
 } from '../api/completion';
 import styles from './Dashboard.module.css';
 
@@ -24,9 +25,14 @@ export function Dashboard({ onManageHabits }: DashboardProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
+  
+  // Track current date for detecting date changes
+  const currentDateRef = useRef<string>(getDateString());
+  const dateCheckIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // Load habits and daily entry
   const loadData = useCallback(async () => {
+    console.log('📊 Loading dashboard data...');
     setIsLoading(true);
     setError(null);
 
@@ -47,6 +53,9 @@ export function Dashboard({ onManageHabits }: DashboardProps) {
       }
 
       setDailyEntry(entryResult.data || null);
+      
+      // Update current date reference to match loaded data
+      currentDateRef.current = getDateString();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unknown error loading data');
     } finally {
@@ -54,10 +63,57 @@ export function Dashboard({ onManageHabits }: DashboardProps) {
     }
   }, []);
 
-  // Load data on mount
-  useEffect(() => {
-    loadData();
+  // Check if date has changed and reload if necessary
+  const checkDateChange = useCallback(() => {
+    const currentDate = getDateString();
+    console.log('🕐 Date check:', { 
+      currentDate, 
+      loadedDate: currentDateRef.current, 
+      hasChanged: currentDate !== currentDateRef.current 
+    });
+    
+    if (currentDate !== currentDateRef.current) {
+      console.log('📅 DATE CHANGED! Reloading data...', {
+        from: currentDateRef.current,
+        to: currentDate
+      });
+      // Date has changed - update ref and reload data
+      currentDateRef.current = currentDate;
+      loadData();
+    }
   }, [loadData]);
+
+  // Handle page visibility changes (when user returns to tab)
+  const handleVisibilityChange = useCallback(() => {
+    if (!document.hidden) {
+      console.log('👁️ Page became visible - checking for date changes...');
+      // Page became visible - check for date changes
+      checkDateChange();
+    }
+  }, [checkDateChange]);
+
+  // Load data on mount and set up date change detection
+  useEffect(() => {
+    console.log('⚡ Dashboard mounted - setting up date change detection...');
+    loadData();
+
+    // Set up interval to check for date changes every minute
+    console.log('⏰ Setting up 60-second interval for date checks...');
+    dateCheckIntervalRef.current = setInterval(checkDateChange, 60000);
+
+    // Listen for page visibility changes
+    console.log('👁️ Setting up page visibility listener...');
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    // Cleanup function
+    return () => {
+      console.log('🧹 Cleaning up date change detection...');
+      if (dateCheckIntervalRef.current) {
+        clearInterval(dateCheckIntervalRef.current);
+      }
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [loadData, checkDateChange, handleVisibilityChange]);
 
   // Handle habit completion
   const handleHabitCompletion = useCallback(async (
