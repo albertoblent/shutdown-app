@@ -316,11 +316,11 @@ describe('Dashboard', () => {
     const incrementButton = screen.getByLabelText('Increase');
     await user.click(incrementButton);
     
+    // Should call updateHabitCompletion with numeric value object
     expect(mockCompletionApi.updateHabitCompletion).toHaveBeenCalledWith(
       '2023-12-06',
       '2',
-      1,
-      true
+      { numeric: 1 }
     );
   });
 

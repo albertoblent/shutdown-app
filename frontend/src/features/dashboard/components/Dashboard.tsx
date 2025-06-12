@@ -87,7 +87,7 @@ export function Dashboard({ onManageHabits }: DashboardProps) {
   // Get completion value for a habit (memoized to prevent infinite re-renders)
   const getCompletionValue = useCallback((habitId: string): HabitCompletion['value'] => {
     if (!dailyEntry) return {};
-    
+
     const completion = dailyEntry.habit_completions.find(c => c.habit_id === habitId);
     return completion?.value || {};
   }, [dailyEntry]);
@@ -95,27 +95,27 @@ export function Dashboard({ onManageHabits }: DashboardProps) {
   // Check if habit is completed (Issue #39: Zero values should never mark complete)
   const isHabitCompleted = (habitId: string): boolean => {
     const value = getCompletionValue(habitId);
-    
+
     // Empty value = not completed
     if (Object.keys(value).length === 0) {
       return false;
     }
-    
+
     // Boolean: only true is completed (false or undefined = not completed)
     if (value.boolean !== undefined) {
       return value.boolean === true;
     }
-    
-    // Numeric: only positive values are completed (zero or undefined = not completed)  
+
+    // Numeric: only positive values are completed (zero or undefined = not completed)
     if (value.numeric !== undefined) {
       return value.numeric > 0;
     }
-    
+
     // Choice: any defined choice is completed
     if (value.choice !== undefined) {
       return true;
     }
-    
+
     return false;
   };
 
@@ -171,10 +171,10 @@ export function Dashboard({ onManageHabits }: DashboardProps) {
             Manage Habits
           </button>
         </div>
-        
+
         <div className={styles.progress}>
           <div className={styles.progressBar}>
-            <div 
+            <div
               className={styles.progressFill}
               style={{ width: `${progressPercentage}%` }}
             />
@@ -224,12 +224,12 @@ interface HabitCardProps {
   disabled?: boolean;
 }
 
-function HabitCard({ 
-  habit, 
-  completionValue, 
-  isCompleted, 
-  onComplete, 
-  disabled = false 
+function HabitCard({
+  habit,
+  completionValue,
+  isCompleted,
+  onComplete,
+  disabled = false
 }: HabitCardProps) {
   const [localNumericValue, setLocalNumericValue] = useState<string>('');
 
@@ -256,7 +256,7 @@ function HabitCard({
   const handleNumericBlur = () => {
     // Intent-based completion: only mark complete on blur with value > 0
     const numericValue = localNumericValue === '' ? null : Number(localNumericValue);
-    
+
     if (numericValue === null || numericValue === 0 || isNaN(numericValue)) {
       // Empty, zero, or invalid = clear completion
       onComplete({});
@@ -282,9 +282,9 @@ function HabitCard({
     const min = habit.configuration.numeric_range?.[0] || 0;
     const max = habit.configuration.numeric_range?.[1] || 10;
     const clampedValue = Math.max(min, Math.min(max, newValue));
-    
+
     setLocalNumericValue(String(clampedValue));
-    
+
     if (clampedValue > 0) {
       onComplete({ numeric: clampedValue });
     } else {
@@ -314,7 +314,7 @@ function HabitCard({
         const min = habit.configuration.numeric_range?.[0] || 0;
         const max = habit.configuration.numeric_range?.[1] || 10;
         const currentValue = localNumericValue === '' ? null : Number(localNumericValue);
-        
+
         return (
           <div className={styles.numericInput}>
             <label htmlFor={`habit-${habit.id}`}>
@@ -345,7 +345,7 @@ function HabitCard({
               <button
                 type="button"
                 onClick={() => handleNumericButtonChange(Math.min(max, (currentValue || 0) + 1))}
-                disabled={disabled || (currentValue !== null && currentValue >= max)}
+                disabled={disabled || (currentValue || 0) >= max}
                 aria-label="Increase"
               >
                 +
@@ -374,11 +374,11 @@ function HabitCard({
         <h3 className={styles.habitName}>{habit.name}</h3>
         <p className={styles.habitPrompt}>{habit.atomic_prompt}</p>
       </div>
-      
+
       <div className={styles.habitInput}>
         {renderInput()}
       </div>
-      
+
       {isCompleted && (
         <div className={styles.completionIndicator}>
           ✓
