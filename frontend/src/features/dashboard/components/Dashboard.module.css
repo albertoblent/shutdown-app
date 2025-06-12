@@ -257,6 +257,14 @@
   font-size: 1.1rem;
   width: 80px;
   min-height: 48px;
+  -moz-appearance: textfield; /* Remove spinner for Firefox */
+}
+
+/* Remove spinner for Webkit browsers (Chrome, Safari, Edge) */
+.numericControls input[type="number"]::-webkit-outer-spin-button,
+.numericControls input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .numericControls input[type="number"]:focus {
@@ -306,25 +314,25 @@
   .container {
     padding: 0.75rem;
   }
-  
+
   .title {
     font-size: 1.75rem;
   }
-  
+
   .headerTop {
     flex-direction: column;
     gap: 1rem;
     align-items: stretch;
   }
-  
+
   .manageButton {
     width: 100%;
   }
-  
+
   .habitCard {
     padding: 1rem;
   }
-  
+
   .numericControls {
     justify-content: center;
   }
@@ -335,12 +343,12 @@
   .container {
     padding: 2rem;
   }
-  
+
   .numericControls button {
     width: 40px;
     height: 40px;
   }
-  
+
   .numericControls input[type="number"] {
     min-height: 40px;
   }
