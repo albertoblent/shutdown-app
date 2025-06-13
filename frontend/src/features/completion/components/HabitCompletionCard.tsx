@@ -18,9 +18,8 @@ export function HabitCompletionCard({
 }: HabitCompletionCardProps) {
   const [numericValue, setNumericValue] = useState<string>('')
 
-  const handleBooleanComplete = () => {
-    // Toggle between completed and incomplete
-    onComplete(habit.id, !isCompleted)
+  const handleBooleanComplete = (checked: boolean) => {
+    onComplete(habit.id, checked)
   }
 
   const handleNumericSubmit = () => {
