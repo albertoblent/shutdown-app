@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Switch from 'react-switch'
 import type { Habit } from '../../types/data'
 import styles from './HabitCompletionCard.module.css'
 
@@ -39,13 +40,56 @@ export function HabitCompletionCard({
   const renderCompletionControl = () => {
     if (habit.type === 'boolean') {
       return (
-        <button 
-          className={styles.completeButton}
-          onClick={handleBooleanComplete}
-          aria-label={isCompleted ? `Mark ${habit.name} as incomplete` : `Complete ${habit.name}`}
-        >
-          {isCompleted ? 'Completed' : 'Mark Complete'}
-        </button>
+        <div className={styles.switchContainer}>
+          <label htmlFor={`switch-${habit.id}`} id={`switch-label-${habit.id}`} className={styles.switchLabel}>
+            {isCompleted ? 'Completed' : 'Mark Complete'}
+          </label>
+          <Switch
+            id={`switch-${habit.id}`}
+            checked={isCompleted}
+            onChange={handleBooleanComplete}
+            onColor="#4ade80"
+            offColor="#6b7280"
+            onHandleColor="#ffffff"
+            offHandleColor="#ffffff"
+            handleDiameter={24}
+            uncheckedIcon={
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: "100%",
+                  fontSize: 14,
+                  color: "#ffffff",
+                  paddingRight: 2
+                }}
+              >
+                ✕
+              </div>
+            }
+            checkedIcon={
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: "100%",
+                  fontSize: 14,
+                  color: "#ffffff",
+                  paddingLeft: 2
+                }}
+              >
+                ✓
+              </div>
+            }
+            height={32}
+            width={64}
+            className={styles.switch}
+            aria-label={isCompleted ? `Mark ${habit.name} as incomplete` : `Complete ${habit.name}`}
+            aria-labelledby={`switch-label-${habit.id}`}
+          />
+        </div>
       )
     }
 

@@ -40,7 +40,7 @@ describe('HabitCompletionCard', () => {
     expect(screen.getByText('Did I check my budget today?')).toBeInTheDocument()
   })
 
-  it('should show completion button for incomplete boolean habit', () => {
+  it('should show switch toggle for boolean habit', () => {
     render(
       <HabitCompletionCard 
         habit={mockBooleanHabit}
@@ -49,9 +49,9 @@ describe('HabitCompletionCard', () => {
       />
     )
     
-    const button = screen.getByRole('button')
-    expect(button).toHaveTextContent('Mark Complete')
-    expect(button).not.toBeDisabled()
+    const switchElement = screen.getByRole('switch')
+    expect(switchElement).toBeInTheDocument()
+    expect(switchElement).not.toBeChecked()
   })
 
   it('should show completed state for completed boolean habit', () => {
@@ -63,12 +63,12 @@ describe('HabitCompletionCard', () => {
       />
     )
     
-    const button = screen.getByRole('button')
-    expect(button).toHaveTextContent('Completed')
-    expect(button).toBeEnabled() // Should be clickable to reset
+    const switchElement = screen.getByRole('switch')
+    expect(switchElement).toBeInTheDocument()
+    expect(switchElement).toBeChecked()
   })
 
-  it('should call onComplete when completion button clicked', async () => {
+  it('should call onComplete when switch is toggled', async () => {
     const onComplete = vi.fn()
     const user = userEvent.setup()
     
@@ -80,11 +80,11 @@ describe('HabitCompletionCard', () => {
       />
     )
     
-    await user.click(screen.getByRole('button'))
+    await user.click(screen.getByRole('switch'))
     expect(onComplete).toHaveBeenCalledWith(mockBooleanHabit.id, true)
   })
 
-  it('should call onComplete with false when completed habit clicked', async () => {
+  it('should call onComplete with false when completed switch is toggled off', async () => {
     const onComplete = vi.fn()
     const user = userEvent.setup()
     
@@ -96,7 +96,7 @@ describe('HabitCompletionCard', () => {
       />
     )
     
-    await user.click(screen.getByRole('button'))
+    await user.click(screen.getByRole('switch'))
     expect(onComplete).toHaveBeenCalledWith(mockBooleanHabit.id, false)
   })
 
@@ -154,7 +154,7 @@ describe('HabitCompletionCard', () => {
     expect(onComplete).toHaveBeenCalledWith(mockNumericHabit.id, 0)
   })
 
-  it('should have proper CSS classes for touch targets', () => {
+  it('should have proper switch styling for touch targets', () => {
     render(
       <HabitCompletionCard 
         habit={mockBooleanHabit}
@@ -163,14 +163,31 @@ describe('HabitCompletionCard', () => {
       />
     )
     
-    const button = screen.getByRole('button')
+    const switchElement = screen.getByRole('switch')
     
-    // Should have CSS modules class that includes completeButton
-    expect(button.className).toMatch(/completeButton/)
+    // Verify switch is accessible and interactive
+    expect(switchElement).toBeEnabled()
+    expect(switchElement).toHaveAttribute('aria-label')
+    expect(switchElement).toHaveAttribute('aria-labelledby')
+  })
+
+  it('should meet accessibility requirements for switch', () => {
+    render(
+      <HabitCompletionCard 
+        habit={mockBooleanHabit}
+        isCompleted={false}
+        onComplete={vi.fn()}
+      />
+    )
     
-    // Verify button is accessible and interactive
-    expect(button).toBeEnabled()
-    expect(button).toHaveAttribute('aria-label')
+    const switchElement = screen.getByRole('switch')
+    
+    // Check for proper ARIA attributes
+    expect(switchElement).toHaveAttribute('aria-checked', 'false')
+    expect(switchElement).toHaveAttribute('aria-label')
+    
+    // Should be keyboard navigable (react-switch provides this automatically)
+    expect(switchElement).toHaveProperty('tabIndex')
   })
 
   it('should use semantic HTML structure', () => {

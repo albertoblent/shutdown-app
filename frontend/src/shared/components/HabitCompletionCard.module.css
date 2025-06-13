@@ -38,36 +38,43 @@
   gap: var(--space-3);
 }
 
-/* Boolean Habit Button */
-.completeButton {
-  background-color: var(--color-primary);
-  color: var(--color-text-primary);
-  border: none;
-  border-radius: var(--radius-md);
-  padding: var(--space-3) var(--space-6);
+/* Boolean Habit Switch Container */
+.switchContainer {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  
+  /* Ensure touch target for entire container */
+  min-height: var(--touch-target-min);
+  padding: var(--space-2) 0;
+}
+
+.switchLabel {
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-medium);
-  cursor: pointer;
-  transition: background-color var(--transition-normal);
+  color: var(--color-text-primary);
+  order: 2; /* Position label after switch */
+}
+
+/* Switch Wrapper - Ensure touch targets */
+.switch {
+  /* Create larger touch area around switch */
+  padding: var(--space-2);
   
   /* Accessibility - Touch Targets */
   min-height: var(--touch-target-min);
   min-width: var(--touch-target-min);
+  
+  /* Centering within touch area */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.completeButton:hover:not(:disabled) {
-  background-color: var(--color-primary-hover);
-}
-
-.completeButton:focus {
+.switch:focus {
   outline: 2px solid var(--color-border-focus);
   outline-offset: 2px;
-}
-
-.completeButton:disabled {
-  background-color: var(--color-success);
-  cursor: not-allowed;
-  opacity: 0.9;
+  border-radius: var(--radius-md);
 }
 
 /* Numeric Habit Input */
@@ -174,7 +181,8 @@
   }
   
   /* Desktop can use slightly smaller touch targets */
-  .completeButton,
+  .switchContainer,
+  .switch,
   .numericInput,
   .submitButton,
   .resetButton {

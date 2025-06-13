@@ -77,7 +77,7 @@ describe('DailyHabitList', () => {
       />
     )
     
-    await user.click(screen.getByRole('button'))
+    await user.click(screen.getByRole('switch'))
     expect(onHabitComplete).toHaveBeenCalledWith('habit-1', true)
   })
 

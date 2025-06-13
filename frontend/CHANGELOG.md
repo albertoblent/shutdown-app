@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **Boolean Habit Toggle Switch**: Replaced "Mark Complete"/"Completed" button with modern toggle switch for boolean habits
+  - Improved mobile touch experience with 48px minimum touch targets for accessibility
+  - Enhanced visual feedback with clear on/off states using react-switch library  
+  - Maintained existing functionality and accessibility features (aria-labels, keyboard navigation)
+  - Updated component tests to use switch role instead of button role
+  - Integrated with app's dark theme color scheme for consistent user experience
+
 ## [0.1.1] - 2025-01-06
 
 ### Added

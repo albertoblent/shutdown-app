@@ -4,6 +4,7 @@
  */
 
 import { useState, useEffect, useCallback, useRef } from 'react';
+import Switch from 'react-switch';
 import type { Habit, DailyEntry, HabitCompletion } from '../../../types/data';
 import { getHabitsSorted } from '../../habits/api/storage';
 import {
@@ -349,16 +350,53 @@ function HabitCard({
       case 'boolean':
         return (
           <div className={styles.booleanInput}>
-            <input
-              type="checkbox"
-              id={`habit-${habit.id}`}
-              checked={completionValue.boolean || false}
-              onChange={(e) => handleBooleanChange(e.target.checked)}
-              disabled={disabled}
-            />
-            <label htmlFor={`habit-${habit.id}`}>
+            <label htmlFor={`habit-${habit.id}`} className={styles.switchLabel}>
               {completionValue.boolean ? 'Completed' : 'Mark as complete'}
             </label>
+            <Switch
+              id={`habit-${habit.id}`}
+              checked={completionValue.boolean || false}
+              onChange={handleBooleanChange}
+              onColor="#4ade80"
+              offColor="#6b7280"
+              onHandleColor="#ffffff"
+              offHandleColor="#ffffff"
+              handleDiameter={24}
+              uncheckedIcon={
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    height: "100%",
+                    fontSize: 14,
+                    color: "#ffffff",
+                    paddingRight: 2
+                  }}
+                >
+                  ✕
+                </div>
+              }
+              checkedIcon={
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    height: "100%",
+                    fontSize: 14,
+                    color: "#ffffff",
+                    paddingLeft: 2
+                  }}
+                >
+                  ✓
+                </div>
+              }
+              height={32}
+              width={64}
+              disabled={disabled}
+              aria-label={completionValue.boolean ? `Mark ${habit.name} as incomplete` : `Complete ${habit.name}`}
+            />
           </div>
         );
 
