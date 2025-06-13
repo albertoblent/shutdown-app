@@ -1,0 +1,155 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+# MCP Usage Guidelines
+
+This rule provides clear guidance on when to use each available MCP (Model Context Protocol) or combinations of MCPs for common development scenarios.
+
+## **Available MCPs Overview**
+
+- **Playwright Browser**: Web automation, testing, screenshots, form handling
+- **Sequential Thinking**: Complex problem-solving, multi-step analysis, hypothesis testing
+- **Memory Bank**: Project-based persistent storage and retrieval
+- **Knowledge Graph**: Entity/relationship management, knowledge organization
+
+## **Single MCP Usage Scenarios**
+
+### **Use Playwright Browser When:**
+- **Testing web applications** - automate user interactions, form submissions
+- **Taking screenshots** - capture UI states, generate documentation images
+- **Web scraping or data extraction** - extract information from web pages
+- **Debugging frontend issues** - inspect network requests, console logs
+- **Generating test cases** - create automated test scripts from manual scenarios
+
+```typescript
+// ✅ DO: Use for web automation tasks
+await page.click('#submit-button');
+await page.screenshot({ path: 'feature-complete.png' });
+
+// ❌ DON'T: Use for non-browser tasks like file analysis
+```
+
+### **Use Sequential Thinking When:**
+- **Complex problem decomposition** - breaking down multi-step challenges
+- **Architecture decisions** - evaluating trade-offs with structured analysis
+- **Debugging complex issues** - systematic hypothesis testing
+- **Code refactoring planning** - analyzing impact and dependencies
+- **Requirements analysis** - structured exploration of unclear requirements
+
+```markdown
+// ✅ DO: Use for complex analysis requiring multiple perspectives
+Thought 1: Analyze current authentication flow
+Thought 2: Identify security vulnerabilities
+Thought 3: Evaluate alternative approaches
+Thought 4: Make recommendation with trade-offs
+
+// ❌ DON'T: Use for simple, straightforward tasks
+```
+
+### **Use Memory Bank When:**
+- **Storing project documentation** - persist findings, decisions, notes
+- **Caching research results** - save API responses, analysis outcomes
+- **Maintaining project context** - store configuration, patterns, learnings
+- **Cross-session continuity** - preserve work between development sessions
+- **Template management** - store reusable code patterns, configs
+
+### **Use Knowledge Graph When:**
+- **Mapping system relationships** - components, services, dependencies
+- **Tracking project entities** - features, bugs, users, requirements
+- **Building domain models** - business concepts and their relationships
+- **Code architecture documentation** - classes, functions, data flow
+- **Decision tracking** - link decisions to requirements and outcomes
+
+## **MCP Combination Patterns**
+
+### **Sequential Thinking + Memory Bank**
+**When:** Complex analysis that needs persistence
+```markdown
+// ✅ COMBO: Multi-session architectural planning
+1. Use Sequential Thinking to analyze system design options
+2. Store analysis results in Memory Bank for future reference
+3. Retrieve and build upon previous analysis in next session
+```
+
+### **Sequential Thinking + Knowledge Graph**
+**When:** Building understanding of complex systems
+```markdown
+// ✅ COMBO: System mapping and analysis
+1. Use Sequential Thinking to decompose system understanding
+2. Store entities and relationships in Knowledge Graph
+3. Query graph to inform continued analysis
+```
+
+### **Playwright + Memory Bank**
+**When:** Persistent web testing or monitoring
+```markdown
+// ✅ COMBO: Automated testing with result storage
+1. Use Playwright to run tests and capture screenshots
+2. Store test results, screenshots, and metrics in Memory Bank
+3. Compare results across test runs
+```
+
+### **Playwright + Sequential Thinking**
+**When:** Complex web application debugging
+```markdown
+// ✅ COMBO: Systematic UI/UX issue investigation
+1. Use Sequential Thinking to plan investigation approach
+2. Use Playwright to execute tests and gather evidence
+3. Return to Sequential Thinking to analyze findings
+```
+
+### **All MCPs Together**
+**When:** Comprehensive project analysis or documentation
+```markdown
+// ✅ FULL COMBO: Complete feature analysis workflow
+1. Sequential Thinking: Plan analysis approach
+2. Playwright: Test current implementation, capture states
+3. Knowledge Graph: Map feature relationships and dependencies
+4. Memory Bank: Store all findings for future reference
+```
+
+## **Common Development Scenarios**
+
+### **🐛 Bug Investigation**
+1. **Simple bugs**: Direct code inspection
+2. **UI bugs**: Playwright for reproduction + screenshots
+3. **Complex bugs**: Sequential Thinking for systematic debugging
+4. **Recurring bugs**: Memory Bank to track patterns
+
+### **🏗️ Feature Development**
+1. **Requirements gathering**: Sequential Thinking + Knowledge Graph
+2. **Implementation**: Memory Bank for tracking decisions
+3. **Testing**: Playwright for automation
+4. **Documentation**: All MCPs for comprehensive coverage
+
+### **🔍 Code Review & Refactoring**
+1. **Impact analysis**: Sequential Thinking + Knowledge Graph
+2. **Before/after comparisons**: Playwright for UI changes
+3. **Decision documentation**: Memory Bank for rationale
+
+### **📋 Project Planning**
+1. **Requirements analysis**: Sequential Thinking
+2. **System mapping**: Knowledge Graph
+3. **Progress tracking**: Memory Bank
+4. **Demo preparation**: Playwright for screenshots
+
+## **Anti-Patterns to Avoid**
+
+```markdown
+// ❌ DON'T: Use Sequential Thinking for simple questions
+// ❌ DON'T: Use Playwright for non-web tasks
+// ❌ DON'T: Use Knowledge Graph for temporary data
+// ❌ DON'T: Use Memory Bank for sensitive information
+// ❌ DON'T: Chain MCPs unnecessarily for simple tasks
+```
+
+## **Performance Considerations**
+
+- **Sequential Thinking**: Can be slow for complex analysis (up to 1 minute)
+- **Playwright**: Fast for simple actions, slower for complex workflows
+- **Memory Bank**: Fast read/write operations
+- **Knowledge Graph**: Efficient for relationship queries
+
+**💡 Tip**: Start with the simplest approach first, then combine MCPs as complexity requires.
