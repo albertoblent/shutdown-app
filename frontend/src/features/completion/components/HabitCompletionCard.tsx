@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import Switch from 'react-switch'
-import type { Habit } from '../../types/data'
+import type { Habit } from '../../../types/data'
 import styles from './HabitCompletionCard.module.css'
 
 interface HabitCompletionCardProps {

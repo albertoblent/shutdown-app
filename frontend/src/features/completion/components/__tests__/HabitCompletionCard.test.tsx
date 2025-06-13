@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { HabitCompletionCard } from '../HabitCompletionCard'
-import type { Habit } from '../../../types/data'
+import type { Habit } from '../../../../types/data'
 
 const mockBooleanHabit: Habit = {
   id: 'test-1',
