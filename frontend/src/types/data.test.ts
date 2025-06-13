@@ -100,7 +100,7 @@ describe('Data utilities', () => {
         const localFormatted = formatDate(testDate)
         
         // The old UTC-based approach would have been:
-        const utcFormatted = testDate.toISOString().split('T')[0]
+        // const utcFormatted = testDate.toISOString().split('T')[0]
         
         expect(localFormatted).toBe('2024-12-12') // Local date
         // UTC formatted might be different if local time zone isn't UTC
