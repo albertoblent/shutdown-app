@@ -1,6 +1,6 @@
-import type { Habit } from '../../types/data'
+import type { Habit } from '../../../types/data'
 import { HabitCompletionCard } from './HabitCompletionCard'
-import { ProgressIndicator } from './ProgressIndicator'
+import { ProgressIndicator } from '../../../shared/components/ProgressIndicator'
 import styles from './DailyHabitList.module.css'
 
 interface DailyHabitListProps {

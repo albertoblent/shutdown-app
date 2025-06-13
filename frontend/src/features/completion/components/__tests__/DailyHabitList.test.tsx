@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { DailyHabitList } from '../DailyHabitList'
-import type { Habit } from '../../../types/data'
+import type { Habit } from '../../../../types/data'
 
 const mockHabits: Habit[] = [
   {
@@ -77,7 +77,7 @@ describe('DailyHabitList', () => {
       />
     )
     
-    await user.click(screen.getByRole('button'))
+    await user.click(screen.getByRole('switch'))
     expect(onHabitComplete).toHaveBeenCalledWith('habit-1', true)
   })
 

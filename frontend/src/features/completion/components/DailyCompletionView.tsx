@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { DailyHabitList } from '../../../shared/components'
+import { DailyHabitList } from './DailyHabitList'
 import { getHabitsSorted } from '../../habits/api/storage'
 import type { Habit } from '../../../types/data'
 

@@ -141,18 +141,16 @@ describe('DailyCompletionView', () => {
         expect(screen.getByText('Read for 30 minutes')).toBeInTheDocument()
       })
 
-      // Find and click the boolean habit button
-      const completeButton = screen.getByRole('button', { 
-        name: /complete read for 30 minutes/i 
-      })
+      // Find and click the boolean habit switch
+      const completeSwitch = screen.getByRole('switch')
       
-      expect(completeButton).toHaveTextContent('Mark Complete')
+      expect(completeSwitch).not.toBeChecked()
       
-      await user.click(completeButton)
+      await user.click(completeSwitch)
       
-      // After completion, the button text should change
+      // After completion, the switch should be checked
       await waitFor(() => {
-        expect(completeButton).toHaveTextContent('Completed')
+        expect(completeSwitch).toBeChecked()
       })
     })
 
@@ -195,13 +193,11 @@ describe('DailyCompletionView', () => {
       })
 
       // Complete the boolean habit
-      const completeButton = screen.getByRole('button', { 
-        name: /complete read for 30 minutes/i 
-      })
-      await user.click(completeButton)
+      const completeSwitch = screen.getByRole('switch')
+      await user.click(completeSwitch)
       
       await waitFor(() => {
-        expect(completeButton).toHaveTextContent('Completed')
+        expect(completeSwitch).toBeChecked()
       })
 
       // Complete the numeric habit
@@ -229,13 +225,11 @@ describe('DailyCompletionView', () => {
       })
 
       // Complete a habit
-      const completeButton = screen.getByRole('button', { 
-        name: /complete read for 30 minutes/i 
-      })
-      await user.click(completeButton)
+      const completeSwitch = screen.getByRole('switch')
+      await user.click(completeSwitch)
       
       await waitFor(() => {
-        expect(completeButton).toHaveTextContent('Completed')
+        expect(completeSwitch).toBeChecked()
       })
 
       // Re-render the component
@@ -243,10 +237,8 @@ describe('DailyCompletionView', () => {
 
       // The completion state should be maintained
       await waitFor(() => {
-        const updatedButton = screen.getByRole('button', { 
-          name: /mark read for 30 minutes as incomplete/i 
-        })
-        expect(updatedButton).toHaveTextContent('Completed')
+        const updatedSwitch = screen.getByRole('switch')
+        expect(updatedSwitch).toBeChecked()
       })
     })
   })
@@ -278,15 +270,13 @@ describe('DailyCompletionView', () => {
       })
 
       // Verify the completion handler works by interacting with a habit
-      const completeButton = screen.getByRole('button', { 
-        name: /complete read for 30 minutes/i 
-      })
+      const completeSwitch = screen.getByRole('switch')
       
       // This interaction should work without errors, proving the handler is passed correctly
-      await user.click(completeButton)
+      await user.click(completeSwitch)
       
       await waitFor(() => {
-        expect(completeButton).toHaveTextContent('Completed')
+        expect(completeSwitch).toBeChecked()
       })
     })
 
@@ -298,14 +288,12 @@ describe('DailyCompletionView', () => {
       })
 
       // Complete a habit and verify the completion is tracked
-      const completeButton = screen.getByRole('button', { 
-        name: /complete read for 30 minutes/i 
-      })
-      await user.click(completeButton)
+      const completeSwitch = screen.getByRole('switch')
+      await user.click(completeSwitch)
       
-      // The fact that the button text changes proves the completions map is working
+      // The fact that the switch state changes proves the completions map is working
       await waitFor(() => {
-        expect(completeButton).toHaveTextContent('Completed')
+        expect(completeSwitch).toBeChecked()
       })
     })
   })
@@ -346,11 +334,9 @@ describe('DailyCompletionView', () => {
       render(<DailyCompletionView />)
 
       await waitFor(() => {
-        // Verify button is accessible
-        const completeButton = screen.getByRole('button', { 
-          name: /complete read for 30 minutes/i 
-        })
-        expect(completeButton).toBeInTheDocument()
+        // Verify switch is accessible
+        const completeSwitch = screen.getByRole('switch')
+        expect(completeSwitch).toBeInTheDocument()
 
         // Verify numeric input is accessible
         const numericInput = screen.getByLabelText(/enter value for exercise duration/i)
@@ -365,16 +351,14 @@ describe('DailyCompletionView', () => {
         expect(screen.getByText('Read for 30 minutes')).toBeInTheDocument()
       })
 
-      // Verify button can be activated with keyboard
-      const completeButton = screen.getByRole('button', { 
-        name: /complete read for 30 minutes/i 
-      })
+      // Verify switch can be activated with keyboard
+      const completeSwitch = screen.getByRole('switch')
       
-      completeButton.focus()
+      completeSwitch.focus()
       await user.keyboard('[Space]')
       
       await waitFor(() => {
-        expect(completeButton).toHaveTextContent('Completed')
+        expect(completeSwitch).toBeChecked()
       })
     })
   })
