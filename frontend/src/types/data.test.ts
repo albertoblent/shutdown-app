@@ -33,9 +33,79 @@ describe('Data utilities', () => {
     })
 
     it('should handle leap year', () => {
-      const date = new Date('2024-02-29T00:00:00Z')
+      // Use local date constructor instead of UTC to match our new implementation
+      const date = new Date(2024, 1, 29, 0, 0, 0) // Feb 29, 2024 local time
       const formatted = formatDate(date)
       expect(formatted).toBe('2024-02-29')
+    })
+
+    // TIMEZONE BUG TESTS - These test the core bug: UTC vs local time
+    describe('timezone handling (local time)', () => {
+      it('should use local date components not UTC', () => {
+        // Create a date that demonstrates the UTC vs local difference
+        // This represents 10pm EST on Dec 12th in local system time
+        const date = new Date(2024, 11, 12, 22, 0, 0) // Month is 0-indexed, so 11 = December
+        const formatted = formatDate(date)
+        expect(formatted).toBe('2024-12-12') // Should match local date components
+      })
+
+      it('should work with current Date() (always local)', () => {
+        // This tests that formatDate works with new Date() which is always in local timezone
+        const now = new Date()
+        const expected = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
+        expect(formatDate(now)).toBe(expected)
+      })
+
+      it('should handle date boundary correctly in local time', () => {
+        // Test midnight on a specific date
+        const midnightLocal = new Date(2024, 11, 13, 0, 0, 0) // Midnight Dec 13th local
+        const formatted = formatDate(midnightLocal)
+        expect(formatted).toBe('2024-12-13')
+      })
+
+      it('should handle end of day correctly in local time', () => {
+        // Test 11:59 PM on a specific date  
+        const endOfDay = new Date(2024, 11, 12, 23, 59, 59) // 11:59 PM Dec 12th local
+        const formatted = formatDate(endOfDay)
+        expect(formatted).toBe('2024-12-12') // Should still be Dec 12th
+      })
+
+      it('should handle DST transition dates', () => {
+        // Test a date during DST transition
+        const dstDate = new Date(2024, 2, 10, 1, 30, 0) // 1:30am Mar 10, 2024 local (DST starts)
+        const formatted = formatDate(dstDate)
+        expect(formatted).toBe('2024-03-10')
+      })
+
+      it('should handle leap year correctly', () => {
+        // Test Feb 29th in a leap year - this replaces the failing original test
+        const leapDay = new Date(2024, 1, 29, 12, 0, 0) // Feb 29th, 2024 at noon local
+        const formatted = formatDate(leapDay)
+        expect(formatted).toBe('2024-02-29')
+      })
+
+      it('should handle New Years Eve correctly', () => {
+        // December 31st late evening in local time
+        const newYearsEve = new Date(2024, 11, 31, 23, 0, 0) // 11pm Dec 31st local
+        const formatted = formatDate(newYearsEve)
+        expect(formatted).toBe('2024-12-31')
+      })
+
+      it('should demonstrate the original UTC bug was fixed', () => {
+        // This test demonstrates what the original bug would have produced
+        // Create a date and compare UTC vs local formatting
+        const testDate = new Date(2024, 11, 12, 22, 0, 0) // 10pm Dec 12th local
+        
+        // Our fixed formatDate should use local components
+        const localFormatted = formatDate(testDate)
+        
+        // The old UTC-based approach would have been:
+        const utcFormatted = testDate.toISOString().split('T')[0]
+        
+        expect(localFormatted).toBe('2024-12-12') // Local date
+        // UTC formatted might be different if local time zone isn't UTC
+        // This test ensures our fix works regardless of system timezone
+      })
     })
   })
 
