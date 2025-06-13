@@ -174,7 +174,7 @@ describe('Dashboard', () => {
     render(<Dashboard onManageHabits={mockOnManageHabits} />);
     
     // Test that boolean habit shows proper UI state
-    expect(screen.getByRole('checkbox')).not.toBeChecked();
+    expect(screen.getByRole('switch')).not.toBeChecked();
     expect(screen.getByText('Mark as complete')).toBeInTheDocument();
   });
 
