@@ -10,11 +10,11 @@ interface HabitCompletionCardProps {
   onComplete: (habitId: string, value: boolean | number) => void
 }
 
-export function HabitCompletionCard({ 
-  habit, 
-  isCompleted, 
+export function HabitCompletionCard({
+  habit,
+  isCompleted,
   completedValue,
-  onComplete 
+  onComplete
 }: HabitCompletionCardProps) {
   const [numericValue, setNumericValue] = useState<string>('')
 
@@ -87,7 +87,6 @@ export function HabitCompletionCard({
             width={64}
             className={styles.switch}
             aria-label={isCompleted ? `Mark ${habit.name} as incomplete` : `Complete ${habit.name}`}
-            aria-labelledby={`switch-label-${habit.id}`}
           />
         </div>
       )
