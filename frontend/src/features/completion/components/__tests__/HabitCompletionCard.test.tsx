@@ -167,7 +167,6 @@ describe('HabitCompletionCard', () => {
     
     // Verify switch is accessible and interactive
     expect(switchElement).toBeEnabled()
-    expect(switchElement).toHaveAttribute('aria-label')
     expect(switchElement).toHaveAttribute('aria-labelledby')
   })
 
@@ -184,7 +183,7 @@ describe('HabitCompletionCard', () => {
     
     // Check for proper ARIA attributes
     expect(switchElement).toHaveAttribute('aria-checked', 'false')
-    expect(switchElement).toHaveAttribute('aria-label')
+    expect(switchElement).toHaveAttribute('aria-labelledby')
     
     // Should be keyboard navigable (react-switch provides this automatically)
     expect(switchElement).toHaveProperty('tabIndex')

@@ -85,7 +85,7 @@ export function HabitCompletionCard({
             height={32}
             width={64}
             className={styles.switch}
-            aria-label={isCompleted ? `Mark ${habit.name} as incomplete` : `Complete ${habit.name}`}
+            aria-labelledby={`switch-label-${habit.id}`}
           />
         </div>
       )
