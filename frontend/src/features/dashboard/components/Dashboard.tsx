@@ -34,6 +34,9 @@ export function Dashboard({ onManageHabits }: DashboardProps) {
   // Track current date for detecting date changes
   const currentDateRef = useRef<string>(getDateString());
   const dateCheckIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  
+  // Ref for better scroll control
+  const habitListRef = useRef<HTMLElement | null>(null);
 
   // Load habits and daily entry
   const loadData = useCallback(async () => {
@@ -285,7 +288,7 @@ export function Dashboard({ onManageHabits }: DashboardProps) {
         )}
       </header>
 
-      <main className={styles.habitList}>
+      <main className={styles.habitList} ref={habitListRef}>
         {habits.map((habit) => {
           const completionValue = getCompletionValue(habit.id);
           return (

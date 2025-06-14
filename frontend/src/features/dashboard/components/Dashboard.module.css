@@ -158,18 +158,23 @@
   margin-top: 1rem;
 }
 
-/* Habit List - Horizontal Scrolling Carousel */
+/* Habit List - Controlled Horizontal Scrolling */
 .habitList {
   display: flex;
-  flex-direction: row; /* Horizontal layout */
+  flex-direction: row;
   gap: 0.75rem;
-  overflow-x: auto; /* Enable horizontal scrolling */
+  overflow-x: auto;
   overflow-y: hidden;
   scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch; /* iOS momentum scrolling */
-  scroll-snap-type: x mandatory; /* Snap to cards */
-  padding: 0 0.5rem 1rem 0.5rem; /* Padding for partial card visibility */
-  margin: 0 -0.5rem; /* Negative margin to offset padding */
+  /* IMPROVED SCROLL PHYSICS */
+  -webkit-overflow-scrolling: auto; /* Disable momentum to prevent overshooting */
+  scroll-snap-type: x mandatory; /* Strong snap to cards */
+  scroll-snap-stop: always; /* Force stop at each card - no skipping */
+  overscroll-behavior-x: contain; /* Prevent bounce/elastic effects */
+  /* Additional control for deliberate scrolling */
+  scroll-padding: 0.5rem; /* Padding around snap points */
+  padding: 0 0.5rem 1rem 0.5rem;
+  margin: 0 -0.5rem;
 }
 
 /* Custom scrollbar styling */
@@ -205,7 +210,8 @@
   /* Horizontal carousel properties */
   flex: 0 0 280px; /* Fixed width, no grow/shrink */
   min-height: 200px; /* Increased for beautiful visual layout */
-  scroll-snap-align: start; /* Snap alignment */
+  scroll-snap-align: center; /* Center alignment for better control */
+  scroll-snap-stop: always; /* Force stop at this card */
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Subtle depth */
 }
 
@@ -425,6 +431,10 @@
     gap: 0.5rem; /* Tighter spacing between cards on mobile */
     padding: 0 0.25rem 0.75rem 0.25rem; /* Reduced padding on mobile */
     margin: 0 -0.25rem; /* Adjust negative margin */
+    /* Enhanced mobile scroll control */
+    scroll-snap-type: x mandatory;
+    scroll-snap-stop: always;
+    -webkit-overflow-scrolling: auto; /* Disable momentum on mobile */
   }
 
   .habitCard {
