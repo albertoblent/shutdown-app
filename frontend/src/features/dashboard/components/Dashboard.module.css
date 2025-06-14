@@ -158,28 +158,30 @@
   margin-top: 1rem;
 }
 
-/* Habit List - Controlled Horizontal Scrolling */
+/* Habit List - TikTok/Instagram Style Vertical Scrolling */
 .habitList {
   display: flex;
-  flex-direction: row;
+  flex-direction: column; /* Changed to vertical layout */
   gap: 0.75rem;
-  overflow-x: auto;
-  overflow-y: hidden;
+  overflow-x: hidden; /* Prevent horizontal scroll */
+  overflow-y: auto; /* Enable vertical scroll */
   scroll-behavior: smooth;
-  /* IMPROVED SCROLL PHYSICS */
+  /* IMPROVED VERTICAL SCROLL PHYSICS */
   -webkit-overflow-scrolling: auto; /* Disable momentum to prevent overshooting */
-  scroll-snap-type: x mandatory; /* Strong snap to cards */
+  scroll-snap-type: y mandatory; /* Strong snap to cards vertically */
   scroll-snap-stop: always; /* Force stop at each card - no skipping */
-  overscroll-behavior-x: contain; /* Prevent bounce/elastic effects */
+  overscroll-behavior-y: contain; /* Prevent bounce/elastic effects */
+  /* Full height container like TikTok */
+  height: calc(100vh - 300px); /* Account for header and progress */
   /* Additional control for deliberate scrolling */
   scroll-padding: 0.5rem; /* Padding around snap points */
-  padding: 0 0.5rem 1rem 0.5rem;
-  margin: 0 -0.5rem;
+  padding: 0.5rem 1rem 1rem 1rem; /* Adjust padding for vertical layout */
+  margin: 0;
 }
 
-/* Custom scrollbar styling */
+/* Custom scrollbar styling for vertical scroll */
 .habitList::-webkit-scrollbar {
-  height: 6px;
+  width: 6px; /* Changed from height to width for vertical scrollbar */
 }
 
 .habitList::-webkit-scrollbar-track {
@@ -196,23 +198,25 @@
   background: var(--border-hover, #6b7280);
 }
 
-/* Habit Card - Beautiful Visual Layout */
+/* Habit Card - TikTok/Instagram Style Full-Screen Layout */
 .habitCard {
   background: linear-gradient(135deg, var(--background-secondary, #374151) 0%, #4a5568 100%);
   border: 2px solid transparent;
   border-radius: 0.75rem; /* Slightly more rounded for elegance */
-  padding: 1.25rem; /* Increased padding for better proportions */
+  padding: 1.5rem; /* Generous padding for full-screen cards */
   position: relative;
   transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
-  gap: 1rem; /* Increased gap for better visual breathing */
-  /* Horizontal carousel properties */
-  flex: 0 0 280px; /* Fixed width, no grow/shrink */
-  min-height: 200px; /* Increased for beautiful visual layout */
-  scroll-snap-align: center; /* Center alignment for better control */
+  gap: 1.5rem; /* Increased gap for full-screen layout */
+  /* TikTok-style full height properties */
+  width: 100%; /* Full width instead of fixed width */
+  min-height: calc(100vh - 350px); /* Near full-screen height like TikTok */
+  scroll-snap-align: start; /* Snap to top of card like TikTok */
   scroll-snap-stop: always; /* Force stop at this card */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Subtle depth */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); /* Stronger shadow for prominence */
+  /* Center content for better visual hierarchy */
+  justify-content: center;
 }
 
 .habitCard:hover {
@@ -245,19 +249,19 @@
   width: 100%;
 }
 
-/* Hero Emoji Container */
+/* Hero Emoji Container - Enhanced for Full-Screen Cards */
 .habitEmojiHero {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0.5rem 0; /* Breathing space around hero emoji */
+  margin: 1rem 0; /* More breathing space for full-screen layout */
 }
 
 .habitEmoji {
-  font-size: 3rem; /* LARGE hero emoji! */
+  font-size: 4rem; /* EXTRA LARGE hero emoji for full-screen impact */
   font-style: normal;
   line-height: 1;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2)); /* Subtle shadow for depth */
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3)); /* Stronger shadow for prominence */
   transition: transform 0.2s ease;
 }
 
@@ -394,7 +398,7 @@
   z-index: 1000;
 }
 
-/* Mobile Optimizations */
+/* Mobile Optimizations - TikTok Style */
 @media (max-width: 480px) {
   .container {
     padding: 0.5rem; /* Further reduced padding for max screen usage */
@@ -422,37 +426,33 @@
     font-size: 1.1rem;
   }
 
-  .habitCard {
-    padding: 0.75rem; /* Further reduced padding for mobile */
-    gap: 0.5rem; /* Tighter internal spacing on mobile */
-  }
-
   .habitList {
     gap: 0.5rem; /* Tighter spacing between cards on mobile */
-    padding: 0 0.25rem 0.75rem 0.25rem; /* Reduced padding on mobile */
-    margin: 0 -0.25rem; /* Adjust negative margin */
-    /* Enhanced mobile scroll control */
-    scroll-snap-type: x mandatory;
+    padding: 0.25rem 0.5rem 0.75rem 0.5rem; /* Adjust for vertical layout */
+    height: calc(100vh - 250px); /* More height on mobile for immersive experience */
+    /* Enhanced mobile vertical scroll control */
+    scroll-snap-type: y mandatory;
     scroll-snap-stop: always;
     -webkit-overflow-scrolling: auto; /* Disable momentum on mobile */
   }
 
   .habitCard {
-    flex: 0 0 260px; /* Slightly narrower cards on mobile */
-    min-height: 180px; /* Increased for beautiful visual layout on mobile */
-    padding: 1rem; /* Slightly less padding on mobile */
+    width: 100%; /* Full width on mobile */
+    min-height: calc(100vh - 300px); /* Near full-screen on mobile like TikTok */
+    padding: 1.25rem; /* Comfortable padding for mobile touch */
+    gap: 1.25rem; /* Good spacing for mobile */
   }
 
   .habitName {
-    font-size: 1.1rem; /* Clean proportions on mobile */
+    font-size: 1.3rem; /* Larger for full-screen mobile experience */
   }
 
   .habitPrompt {
-    font-size: 0.85rem; /* Smaller to emphasize the hero emoji */
+    font-size: 1rem; /* Larger and more readable on full-screen mobile */
   }
 
   .habitEmoji {
-    font-size: 2.5rem; /* Large but proportional hero emoji on mobile */
+    font-size: 3.5rem; /* Large impactful emoji on mobile full-screen */
   }
 
   .numericControls {
@@ -460,53 +460,73 @@
   }
 
   .numericControls button {
-    width: 40px; /* Smaller buttons on mobile */
-    height: 40px;
+    width: 44px; /* Larger buttons for better touch targets */
+    height: 44px;
   }
 
   .numericControls input[type="number"] {
-    width: 60px; /* Smaller input on mobile */
-    min-height: 40px;
+    width: 70px; /* Larger input for better usability */
+    min-height: 44px;
   }
 }
 
-/* Desktop Enhancements */
+/* Desktop Enhancements - Vertical TikTok Style */
 @media (min-width: 768px) {
   .container {
     padding: 1.5rem;
   }
 
   .habitList {
-    gap: 0.75rem;
-    /* Keep horizontal on desktop but with larger cards */
+    gap: 1rem; /* More generous spacing on desktop */
+    height: calc(100vh - 350px); /* Full height experience on desktop */
+    padding: 1rem 2rem; /* More generous padding on desktop */
   }
 
   .habitCard {
-    padding: 1.5rem; /* More luxurious padding on desktop */
-    flex: 0 0 320px; /* Wider cards on desktop */
-    min-height: 220px; /* Tall beautiful cards on desktop */
+    padding: 2rem; /* Luxurious padding on desktop */
+    width: 100%; /* Full width for immersive experience */
+    min-height: calc(100vh - 400px); /* Near full-screen on desktop */
+    gap: 2rem; /* More generous spacing between elements */
   }
 
   .habitEmoji {
-    font-size: 3.5rem; /* Even larger hero emoji on desktop */
+    font-size: 5rem; /* MASSIVE hero emoji on desktop for impact */
+  }
+
+  .habitName {
+    font-size: 1.5rem; /* Larger title on desktop */
+  }
+
+  .habitPrompt {
+    font-size: 1.1rem; /* Larger prompt text on desktop */
   }
 
   .numericControls button {
-    width: 44px;
-    height: 44px;
+    width: 48px; /* Larger buttons on desktop */
+    height: 48px;
   }
 
   .numericControls input[type="number"] {
-    width: 70px;
-    min-height: 44px;
+    width: 80px; /* Larger input on desktop */
+    min-height: 48px;
   }
 }
 
-/* Large Desktop - Consider reverting to vertical layout */
+/* Large Desktop - Enhanced TikTok Experience */
 @media (min-width: 1200px) {
   .habitList {
-    /* For very large screens, we could revert to vertical or grid layout */
-    /* flex-direction: column; */
-    /* or implement a 2-column horizontal layout */
+    /* Maintain vertical layout but with even more luxurious spacing */
+    gap: 1.5rem;
+    padding: 1.5rem 3rem; /* Extra generous padding on large screens */
+  }
+  
+  .habitCard {
+    max-width: 600px; /* Limit card width for better readability */
+    margin: 0 auto; /* Center cards on large screens */
+    padding: 2.5rem; /* Maximum luxury padding */
+  }
+  
+  .habitEmoji {
+    font-size: 6rem; /* ENORMOUS emoji for large screens */
   }
 }
