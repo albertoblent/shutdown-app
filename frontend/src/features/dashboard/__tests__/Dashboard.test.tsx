@@ -121,18 +121,8 @@ describe('Dashboard', () => {
     vi.useRealTimers();
   });
 
-  it('should display empty state when no habits exist', () => {
-    mockHabitStorage.getHabitsSorted.mockReturnValue({
-      success: true,
-      data: [],
-    });
-
-    render(<Dashboard onManageHabits={mockOnManageHabits} />);
-
-    expect(screen.getByText('Welcome to your Shutdown Routine')).toBeInTheDocument();
-    expect(screen.getByText('You don\'t have any habits set up yet. Let\'s get started!')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Set Up Your Habits' })).toBeInTheDocument();
-  });
+  // Note: Empty state test removed as Dashboard now assumes habits exist
+  // App component routes directly to HabitManager when no habits are present
 
   it.skip('should call onManageHabits when Set Up Your Habits button is clicked', async () => {
     mockHabitStorage.getHabitsSorted.mockReturnValue({
@@ -167,7 +157,7 @@ describe('Dashboard', () => {
     expect(screen.getByText('Morning Exercise')).toBeInTheDocument();
     expect(screen.getByText('Read Pages')).toBeInTheDocument();
     expect(screen.getByText('0 of 2 habits completed')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Manage Habits' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Manage habits' })).toBeInTheDocument();
   });
 
   it('should handle boolean habit completion and unchecking', () => {
