@@ -291,10 +291,7 @@ export function HabitManager({ onHabitsChange, onBackToDashboard }: HabitManager
       )}
 
       {habits.length === 0 ? (
-        <div className={styles.emptyState}>
-          <h3>No habits yet</h3>
-          <p>Get started by adding a habit or loading a template</p>
-        </div>
+        <></>
       ) : (
         <DndContext
           sensors={sensors}
