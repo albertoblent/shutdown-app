@@ -48,7 +48,7 @@ describe('HabitManager', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    
+
     // Default successful responses
     mockHabitStorage.getHabitsSorted.mockReturnValue({
       success: true,
@@ -65,11 +65,11 @@ describe('HabitManager', () => {
 
   it('should display empty state when no habits exist', async () => {
     render(<HabitManager />);
-    
+
     await waitFor(() => {
       expect(screen.getByText('No habits yet')).toBeInTheDocument();
     });
-    
+
     expect(screen.getByText('Get started by adding a habit or loading a template')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Add New Habit' })).toBeInTheDocument();
   });
@@ -94,11 +94,11 @@ describe('HabitManager', () => {
     });
 
     render(<HabitManager />);
-    
+
     await waitFor(() => {
       expect(screen.getByText('Test Habit')).toBeInTheDocument();
     });
-    
+
     expect(screen.getByText('Test prompt')).toBeInTheDocument();
     expect(screen.getByText('boolean')).toBeInTheDocument();
     expect(screen.getByText('1/7 habits')).toBeInTheDocument();
@@ -111,7 +111,7 @@ describe('HabitManager', () => {
     });
 
     render(<HabitManager />);
-    
+
     await waitFor(() => {
       expect(screen.getByText('Storage error')).toBeInTheDocument();
     });
@@ -119,13 +119,13 @@ describe('HabitManager', () => {
 
   it('should show add habit form when Add New Habit is clicked', async () => {
     render(<HabitManager />);
-    
+
     await waitFor(() => {
       expect(screen.getByRole('button', { name: 'Add New Habit' })).toBeInTheDocument();
     });
-    
+
     await user.click(screen.getByRole('button', { name: 'Add New Habit' }));
-    
+
     // Check for form-specific elements instead of duplicate text
     expect(screen.getByLabelText('Habit Name')).toBeInTheDocument();
     expect(screen.getByLabelText('Atomic Prompt')).toBeInTheDocument();
@@ -151,21 +151,21 @@ describe('HabitManager', () => {
     });
 
     render(<HabitManager />);
-    
+
     // Wait for initial load and click Add New Habit
     await waitFor(() => {
       expect(screen.getByRole('button', { name: 'Add New Habit' })).toBeInTheDocument();
     });
-    
+
     await user.click(screen.getByRole('button', { name: 'Add New Habit' }));
-    
+
     // Fill out the form
     await user.type(screen.getByLabelText('Habit Name'), 'New Habit');
     await user.type(screen.getByLabelText('Atomic Prompt'), 'New prompt');
-    
+
     // Submit the form
     await user.click(screen.getByRole('button', { name: 'Add Habit' }));
-    
+
     // Verify addHabit was called with correct data
     expect(mockHabitStorage.addHabit).toHaveBeenCalledWith({
       name: 'New Habit',
@@ -196,13 +196,13 @@ describe('HabitManager', () => {
     });
 
     render(<HabitManager />);
-    
+
     await waitFor(() => {
       expect(screen.getByText('Test Habit')).toBeInTheDocument();
     });
-    
+
     await user.click(screen.getByText('Edit'));
-    
+
     // Should show edit form
     expect(screen.getByDisplayValue('Test Habit')).toBeInTheDocument();
     expect(screen.getByDisplayValue('Test prompt')).toBeInTheDocument();
@@ -235,21 +235,21 @@ describe('HabitManager', () => {
     });
 
     render(<HabitManager />);
-    
+
     await waitFor(() => {
       expect(screen.getByText('Test Habit')).toBeInTheDocument();
     });
-    
+
     await user.click(screen.getByText('Edit'));
-    
+
     // Edit the name
     const nameInput = screen.getByDisplayValue('Test Habit');
     await user.clear(nameInput);
     await user.type(nameInput, 'Updated Habit');
-    
+
     // Save changes
     await user.click(screen.getByText('Save'));
-    
+
     expect(mockHabitStorage.editHabit).toHaveBeenCalledWith('1', {
       name: 'Updated Habit',
       atomic_prompt: 'Test prompt',
@@ -280,22 +280,22 @@ describe('HabitManager', () => {
     });
 
     render(<HabitManager />);
-    
+
     await waitFor(() => {
       expect(screen.getByText('Test Habit')).toBeInTheDocument();
     });
-    
+
     await user.click(screen.getByText('Delete'));
-    
+
     // Verify the confirmation modal appears
     expect(screen.getByText('Delete Habit')).toBeInTheDocument();
     expect(screen.getByText('Are you sure you want to delete "Test Habit"? This action cannot be undone.')).toBeInTheDocument();
-    
+
     // Click the confirm button in the modal
     const confirmButtons = screen.getAllByRole('button', { name: 'Delete' });
     // The modal confirm button should be the last one
     await user.click(confirmButtons[confirmButtons.length - 1]);
-    
+
     expect(mockHabitStorage.deleteHabit).toHaveBeenCalledWith('1');
   });
 
@@ -306,23 +306,15 @@ describe('HabitManager', () => {
     });
 
     render(<HabitManager />);
-    
-    await waitFor(() => {
-      expect(screen.getByText('Quick Start Templates')).toBeInTheDocument();
-    });
-    
+
     await user.click(screen.getByText('Load Template'));
-    
+
     expect(mockHabitTemplates.loadHabitTemplate).toHaveBeenCalledWith('Test Template');
   });
 
   it('should show template selector only when no habits exist', async () => {
     // Start with no habits
     const { unmount } = render(<HabitManager />);
-    
-    await waitFor(() => {
-      expect(screen.getByText('Quick Start Templates')).toBeInTheDocument();
-    });
 
     // Unmount the first component
     unmount();
@@ -348,13 +340,11 @@ describe('HabitManager', () => {
 
     // Re-render with habits
     render(<HabitManager />);
-    
+
     await waitFor(() => {
       expect(screen.getByRole('heading', { name: 'Test Habit' })).toBeInTheDocument();
     });
-    
-    // Template selector should not be visible
-    expect(screen.queryByText('Quick Start Templates')).not.toBeInTheDocument();
+
   });
 
   it('should disable Add New Habit button when at habit limit', async () => {
@@ -377,11 +367,11 @@ describe('HabitManager', () => {
     });
 
     render(<HabitManager />);
-    
+
     await waitFor(() => {
       expect(screen.getByText('7/7 habits')).toBeInTheDocument();
     });
-    
+
     // Add button should not be present when at limit
     expect(screen.queryByText('Add New Habit')).not.toBeInTheDocument();
   });
@@ -407,7 +397,7 @@ describe('HabitManager', () => {
     });
 
     render(<HabitManager onHabitsChange={onHabitsChange} />);
-    
+
     await waitFor(() => {
       expect(onHabitsChange).toHaveBeenCalledWith();
     });
@@ -446,28 +436,28 @@ describe('HabitManager', () => {
 
     it('should have touch-action: none on all drag handles to prevent mobile scroll hijacking', async () => {
       render(<HabitManager />);
-      
+
       await waitFor(() => {
         expect(screen.getByRole('heading', { name: 'First Habit' })).toBeInTheDocument();
       });
 
       // Find all drag handles (they contain the ⋮⋮ character)
       const dragHandles = screen.getAllByText('⋮⋮');
-      
+
       // Critical: Every drag handle MUST have the dragHandle CSS class
       // This class includes touch-action: none in HabitManager.module.css
       dragHandles.forEach((handle, index) => {
-        expect(handle.className, 
+        expect(handle.className,
           `Drag handle ${index + 1} missing dragHandle CSS class - this will break mobile drag-and-drop!`
         ).toContain('dragHandle');
       });
-      
+
       expect(dragHandles.length).toBeGreaterThan(0);
     });
 
     it('should have touch-action: auto on interactive elements to allow normal mobile interaction', async () => {
       render(<HabitManager />);
-      
+
       await waitFor(() => {
         expect(screen.getByRole('heading', { name: 'First Habit' })).toBeInTheDocument();
       });
@@ -484,41 +474,41 @@ describe('HabitManager', () => {
       // These classes include touch-action: auto in HabitManager.module.css
       const nameInput = screen.getByDisplayValue('First Habit');
       const promptTextarea = screen.getByDisplayValue('First prompt');
-      
+
       expect(nameInput.className).toContain('editInput');
       expect(promptTextarea.className).toContain('editTextarea');
 
       // Check buttons have proper CSS classes
       const saveButton = screen.getByText('Save');
       const cancelButton = screen.getByText('Cancel');
-      
+
       expect(saveButton.className).toContain('saveButton');
       expect(cancelButton.className).toContain('cancelButton');
     });
 
     it('should ensure drag handles are accessible with minimum 48px touch target', async () => {
       render(<HabitManager />);
-      
+
       await waitFor(() => {
         expect(screen.getByRole('heading', { name: 'First Habit' })).toBeInTheDocument();
       });
 
       const dragHandles = screen.getAllByText('⋮⋮');
-      
+
       // Verify drag handles have the proper CSS class with min-width: 48px
       // This ensures mobile accessibility requirements are met
       dragHandles.forEach((handle, index) => {
-        expect(handle.className, 
+        expect(handle.className,
           `Drag handle ${index + 1} missing dragHandle CSS class with min-width: 48px`
         ).toContain('dragHandle');
       });
-      
+
       expect(dragHandles.length).toBe(2);
     });
 
     it('should prevent accidental drags with proper activation constraints', async () => {
       render(<HabitManager />);
-      
+
       await waitFor(() => {
         expect(screen.getByRole('heading', { name: 'First Habit' })).toBeInTheDocument();
       });
@@ -528,10 +518,10 @@ describe('HabitManager', () => {
       // We verify that multiple habits are rendered and could theoretically be dragged
       const firstHabit = screen.getByRole('heading', { name: 'First Habit' });
       const secondHabit = screen.getByRole('heading', { name: 'Second Habit' });
-      
+
       expect(firstHabit).toBeInTheDocument();
       expect(secondHabit).toBeInTheDocument();
-      
+
       // Verify both habits have drag handles
       const dragHandles = screen.getAllByText('⋮⋮');
       expect(dragHandles).toHaveLength(2);

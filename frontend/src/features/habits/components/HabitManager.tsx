@@ -249,7 +249,7 @@ export function HabitManager({ onHabitsChange, onBackToDashboard }: HabitManager
     <div className={styles.container}>
       <div className={styles.header}>
         {habits.length > 0 && (
-          <button 
+          <button
             onClick={onBackToDashboard}
             className={styles.backButton}
             aria-label="Back to dashboard"
@@ -499,16 +499,16 @@ function HabitItem({
 
       {!isEditing && (
         <div className={styles.habitActions}>
-          <button 
-            onClick={onEdit} 
+          <button
+            onClick={onEdit}
             className={styles.editIconButton}
             aria-label="Edit habit"
             title="Edit habit"
           >
             ✏️
           </button>
-          <button 
-            onClick={onDelete} 
+          <button
+            onClick={onDelete}
             className={styles.deleteIconButton}
             aria-label="Delete habit"
             title="Delete habit"
@@ -657,8 +657,7 @@ function TemplateSelector({ onLoadTemplate }: TemplateSelectorProps) {
   return (
     <div className={styles.templateSelector}>
       <div className={styles.templateIntro}>
-        <h3>Quick Start Templates</h3>
-        <p>Swipe through templates to get started quickly</p>
+        <p>Choose a template to get started quickly</p>
       </div>
 
       <div className={styles.templateContainer}>
@@ -668,10 +667,10 @@ function TemplateSelector({ onLoadTemplate }: TemplateSelectorProps) {
               <h4 className={styles.templateName}>
                 {template.icon} {template.name}
               </h4>
-              
+
               <p className={styles.templateDescription}>{template.description}</p>
             </div>
-            
+
             <button
               onClick={() => onLoadTemplate(template.name)}
               className={styles.loadTemplateButton}
