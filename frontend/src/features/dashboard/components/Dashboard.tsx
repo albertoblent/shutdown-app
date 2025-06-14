@@ -339,10 +339,7 @@ function HabitCard({
     }
   }, [numericValue, habit.type]);
 
-  // Handle input focus for better UX
-  const handleInputFocus = () => {
-    // Input focus no longer needs to show prompt since it's always visible
-  };
+  // Input focus handling removed since prompts are always visible
 
   const handleBooleanChange = (checked: boolean) => {
     // When unchecked, pass empty object to clear the completion
