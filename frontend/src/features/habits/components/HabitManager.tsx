@@ -665,25 +665,11 @@ function TemplateSelector({ onLoadTemplate }: TemplateSelectorProps) {
         {HABIT_TEMPLATES.map((template) => (
           <div key={template.name} className={styles.templateCard}>
             <div className={styles.templateInfo}>
-              <h4 className={styles.templateName}>{template.name}</h4>
-              
-              {template.icon && (
-                <div className={styles.templateEmojiHero}>
-                  <span className={styles.templateEmoji} role="img" aria-hidden="true">
-                    {template.icon}
-                  </span>
-                </div>
-              )}
+              <h4 className={styles.templateName}>
+                {template.icon} {template.name}
+              </h4>
               
               <p className={styles.templateDescription}>{template.description}</p>
-              
-              <div className={styles.templateHabits}>
-                {template.habits.map((habit, index) => (
-                  <span key={index} className={styles.templateHabit}>
-                    {habit.configuration.icon || '•'} {habit.name}
-                  </span>
-                ))}
-              </div>
             </div>
             
             <button
