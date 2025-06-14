@@ -137,25 +137,26 @@
   margin-top: 1rem;
 }
 
-/* Habit List - TikTok/Instagram Style Vertical Scrolling */
+/* Habit List - Consistent Vertical Scrolling */
 .habitList {
   display: flex;
-  flex-direction: column; /* Changed to vertical layout */
-  gap: 0.75rem;
-  overflow-x: hidden; /* Prevent horizontal scroll */
-  overflow-y: auto; /* Enable vertical scroll */
+  flex-direction: column;
+  gap: 1rem; /* Consistent spacing between all cards */
+  overflow-x: hidden;
+  overflow-y: auto;
   scroll-behavior: smooth;
-  /* IMPROVED VERTICAL SCROLL PHYSICS */
-  -webkit-overflow-scrolling: auto; /* Disable momentum to prevent overshooting */
-  scroll-snap-type: y mandatory; /* Strong snap to cards vertically */
-  scroll-snap-stop: always; /* Force stop at each card - no skipping */
+
+  /* Improved scroll physics without aggressive snapping */
+  -webkit-overflow-scrolling: touch; /* Smooth momentum scrolling */
+  scroll-snap-type: y proximity; /* Gentle snap - less aggressive than mandatory */
   overscroll-behavior-y: contain; /* Prevent bounce/elastic effects */
-  /* Fixed height instead of flex: 1 to prevent overflow */
-  height: calc(100vh - 200px); /* Account for header + progress + padding */
-  max-height: calc(100dvh - 200px); /* Account for dynamic viewport */
-  /* Additional control for deliberate scrolling */
-  scroll-padding: 0.5rem; /* Padding around snap points */
-  padding: 0.5rem 1rem 4rem 1rem; /* Increased bottom padding to prevent cutoff */
+
+  /* Container sizing */
+  height: calc(100vh - 200px);
+  max-height: calc(100dvh - 200px);
+
+  /* Clean padding without scroll interference */
+  padding: 1rem; /* Consistent padding all around */
   margin: 0;
 }
 
@@ -178,37 +179,295 @@
   background: var(--border-hover, #6b7280);
 }
 
-/* Habit Card - TikTok/Instagram Style Full-Screen Layout */
+/* Habit Card - Premium Glassmorphic Design */
 .habitCard {
+  /* Fallback for browsers without backdrop-filter support */
   background: linear-gradient(135deg, var(--background-secondary, #374151) 0%, #4a5568 100%);
-  border: 2px solid transparent;
-  border-radius: 0.75rem; /* Slightly more rounded for elegance */
-  padding: 1.5rem; /* Generous padding for full-screen cards */
+
+  /* Glassmorphic Foundation - Multi-layer background system */
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%),
+    linear-gradient(135deg, var(--background-secondary, #374151) 0%, #4a5568 100%);
+
+  /* Premium glassmorphic effect */
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px); /* Safari support */
+
+  /* Sophisticated border system */
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 1rem; /* More pronounced rounding for premium feel */
+
+  /* Enhanced padding for luxury */
+  padding: 2rem;
+
   position: relative;
-  transition: all 0.3s ease;
+
+  /* Smooth premium transitions */
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
   display: flex;
   flex-direction: column;
-  gap: 1.5rem; /* Increased gap for full-screen layout */
-  /* TikTok-style full height properties */
-  width: 100%; /* Full width instead of fixed width */
-  min-height: calc(100vh - 300px); /* Reduced height to account for header/progress */
-  scroll-snap-align: start; /* Snap to top of card like TikTok */
-  scroll-snap-stop: always; /* Force stop at this card */
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); /* Stronger shadow for prominence */
+  gap: 1.5rem;
+
+  /* Entrance animation properties */
+  opacity: 0;
+  transform: translateY(20px) scale(0.95);
+  animation: cardEntrance 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+
+  /* Card sizing for consistent layout */
+  width: 100%;
+  min-height: calc(100vh - 300px);
+  scroll-snap-align: start; /* Keep gentle snap alignment */
+
+  /* Premium multi-layer shadow system */
+  box-shadow:
+    0 8px 32px rgba(0,0,0,0.4),
+    0 2px 8px rgba(0,0,0,0.15),
+    inset 0 1px 0 rgba(255,255,255,0.1);
+
   /* Center content for better visual hierarchy */
   justify-content: center;
+
+  /* Overflow management for pseudo-elements */
+  overflow: hidden;
+}
+
+/* Glassmorphic highlight overlay */
+.habitCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%);
+  pointer-events: none;
+  border-radius: inherit;
 }
 
 .habitCard:hover {
-  border-color: var(--border-hover, #4b5563);
-  transform: translateY(-2px); /* Gentle lift effect */
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+  /* Enhanced glassmorphic border on hover */
+  border-color: rgba(255,255,255,0.4);
+
+  /* Premium lift with enhanced shadows */
+  transform: translateY(-4px) scale(1.01);
+
+  /* Spectacular multi-layer hover shadows */
+  box-shadow:
+    0 12px 48px rgba(0,0,0,0.5),
+    0 4px 16px rgba(0,0,0,0.25),
+    inset 0 1px 0 rgba(255,255,255,0.15),
+    0 0 40px rgba(255,255,255,0.1);
 }
 
+/* Dynamic Color Intelligence System */
+
+/* Incomplete State - Cool Blue/Teal for calm, approachable feel */
+.habitCard:not(.completed) {
+  /* Cool blue glassmorphic styling for incomplete habits */
+  background:
+    linear-gradient(135deg, rgba(59,130,246,0.12) 0%, rgba(6,182,212,0.08) 100%),
+    linear-gradient(135deg, #1e40af 0%, #0891b2 100%);
+
+  border-color: rgba(59,130,246,0.3);
+
+  box-shadow:
+    0 8px 32px rgba(59,130,246,0.25),
+    0 2px 8px rgba(59,130,246,0.15),
+    inset 0 1px 0 rgba(255,255,255,0.1),
+    0 0 16px rgba(59,130,246,0.2);
+}
+
+/* Completed State - Success Green with celebration effect */
 .habitCard.completed {
-  border-color: var(--success-color, #10b981);
-  background: linear-gradient(135deg, var(--success-background, #065f46) 0%, #047857 100%);
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); /* Success-colored shadow */
+  /* Success state glassmorphic styling */
+  background:
+    linear-gradient(135deg, rgba(16,185,129,0.15) 0%, rgba(16,185,129,0.08) 100%),
+    linear-gradient(135deg, #059669 0%, #047857 100%);
+
+  /* Success state glassmorphic border */
+  border-color: rgba(16,185,129,0.4);
+
+  /* Success celebration shadows with green glow */
+  box-shadow:
+    0 8px 32px rgba(16,185,129,0.4),
+    0 2px 8px rgba(16,185,129,0.2),
+    inset 0 1px 0 rgba(255,255,255,0.15),
+    0 0 20px rgba(16,185,129,0.3);
+
+  /* Subtle completion glow animation */
+  animation: completionGlow 3s ease-out;
+}
+
+/* Enhanced Color Intelligence - Type + Position Based */
+
+/* Primary type: Numeric habits always get purple */
+.habitCard[data-habit-type="numeric"]:not(.completed) {
+  /* Numeric habits - Purple theme */
+  background:
+    linear-gradient(135deg, rgba(139,92,246,0.12) 0%, rgba(139,92,246,0.08) 100%),
+    linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%);
+  border-color: rgba(139,92,246,0.3);
+
+  box-shadow:
+    0 8px 32px rgba(139,92,246,0.25),
+    0 2px 8px rgba(139,92,246,0.15),
+    inset 0 1px 0 rgba(255,255,255,0.1),
+    0 0 16px rgba(139,92,246,0.2);
+}
+
+/* Boolean habits get varied colors for visual interest */
+.habitCard[data-habit-type="boolean"]:not(.completed):nth-child(odd) {
+  /* Odd boolean habits - Blue theme */
+  background:
+    linear-gradient(135deg, rgba(59,130,246,0.12) 0%, rgba(59,130,246,0.08) 100%),
+    linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+  border-color: rgba(59,130,246,0.3);
+
+  box-shadow:
+    0 8px 32px rgba(59,130,246,0.25),
+    0 2px 8px rgba(59,130,246,0.15),
+    inset 0 1px 0 rgba(255,255,255,0.1),
+    0 0 16px rgba(59,130,246,0.2);
+}
+
+.habitCard[data-habit-type="boolean"]:not(.completed):nth-child(even) {
+  /* Even boolean habits - Teal theme for contrast */
+  background:
+    linear-gradient(135deg, rgba(20,184,166,0.12) 0%, rgba(20,184,166,0.08) 100%),
+    linear-gradient(135deg, #0f766e 0%, #14b8a6 100%);
+  border-color: rgba(20,184,166,0.3);
+
+  box-shadow:
+    0 8px 32px rgba(20,184,166,0.25),
+    0 2px 8px rgba(20,184,166,0.15),
+    inset 0 1px 0 rgba(255,255,255,0.1),
+    0 0 16px rgba(20,184,166,0.2);
+}
+
+/* Choice habits get cyan */
+.habitCard[data-habit-type="choice"]:not(.completed) {
+  /* Choice habits - Cyan theme */
+  background:
+    linear-gradient(135deg, rgba(6,182,212,0.12) 0%, rgba(6,182,212,0.08) 100%),
+    linear-gradient(135deg, #0891b2 0%, #06b6d4 100%);
+  border-color: rgba(6,182,212,0.3);
+
+  box-shadow:
+    0 8px 32px rgba(6,182,212,0.25),
+    0 2px 8px rgba(6,182,212,0.15),
+    inset 0 1px 0 rgba(255,255,255,0.1),
+    0 0 16px rgba(6,182,212,0.2);
+}
+
+/* Micro-Interaction Animations */
+
+/* Card entrance animation with staggered timing */
+@keyframes cardEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Staggered entrance for multiple cards */
+.habitCard:nth-child(1) { animation-delay: 0ms; }
+.habitCard:nth-child(2) { animation-delay: 100ms; }
+.habitCard:nth-child(3) { animation-delay: 200ms; }
+.habitCard:nth-child(4) { animation-delay: 300ms; }
+.habitCard:nth-child(5) { animation-delay: 400ms; }
+.habitCard:nth-child(6) { animation-delay: 500ms; }
+.habitCard:nth-child(7) { animation-delay: 600ms; }
+
+/* Premium touch feedback - spring-like response */
+.habitCard:active {
+  transform: translateY(-2px) scale(0.98);
+  transition: transform 0.1s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Completion celebration animation */
+@keyframes completionGlow {
+  0% {
+    box-shadow:
+      0 8px 32px rgba(16,185,129,0.4),
+      0 2px 8px rgba(16,185,129,0.2),
+      inset 0 1px 0 rgba(255,255,255,0.15),
+      0 0 20px rgba(16,185,129,0.3);
+  }
+  50% {
+    box-shadow:
+      0 12px 48px rgba(16,185,129,0.6),
+      0 4px 16px rgba(16,185,129,0.3),
+      inset 0 1px 0 rgba(255,255,255,0.2),
+      0 0 40px rgba(16,185,129,0.5);
+  }
+  100% {
+    box-shadow:
+      0 8px 32px rgba(16,185,129,0.4),
+      0 2px 8px rgba(16,185,129,0.2),
+      inset 0 1px 0 rgba(255,255,255,0.15),
+      0 0 20px rgba(16,185,129,0.3);
+  }
+}
+
+/* Toggle switch enhancement for satisfaction */
+.booleanInput {
+  /* Enhanced container for the magnificent toggle */
+  position: relative;
+}
+
+/* Enhanced switch animations - Simple approach */
+.switch {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Celebration animation class applied programmatically */
+.switch.celebrating {
+  animation: toggleCelebration 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes toggleCelebration {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.25); }
+  60% { transform: scale(0.95); }
+  100% { transform: scale(1); }
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .habitCard {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .habitCard:nth-child(n) {
+    animation-delay: 0ms;
+  }
+
+  .habitCard:active {
+    transform: scale(0.99);
+    transition: transform 0.1s ease;
+  }
+
+  @keyframes completionGlow {
+    0%, 100% {
+      box-shadow:
+        0 8px 32px rgba(16,185,129,0.4),
+        0 2px 8px rgba(16,185,129,0.2),
+        inset 0 1px 0 rgba(255,255,255,0.15),
+        0 0 20px rgba(16,185,129,0.3);
+    }
+  }
+
+  @keyframes toggleCelebration {
+    0%, 100% { transform: scale(1); }
+  }
 }
 
 .habitInfo {
@@ -417,14 +676,13 @@
   }
 
   .habitList {
-    gap: 0.5rem; /* Tighter spacing between cards on mobile */
-    padding: 0.25rem 0.5rem 0.75rem 0.5rem; /* Adjust for vertical layout */
+    gap: 1rem; /* Keep consistent spacing on mobile */
+    padding: 1rem; /* Consistent padding like desktop */
     height: calc(100vh - 180px); /* Reduced height to prevent cutoff on mobile */
     max-height: calc(100dvh - 180px); /* Account for dynamic viewport on mobile */
-    /* Enhanced mobile vertical scroll control */
-    scroll-snap-type: y mandatory;
-    scroll-snap-stop: always;
-    -webkit-overflow-scrolling: auto; /* Disable momentum on mobile */
+    /* Consistent scroll behavior */
+    scroll-snap-type: y proximity; /* Gentle snap like desktop */
+    -webkit-overflow-scrolling: touch; /* Smooth momentum on mobile */
   }
 
   .habitCard {
@@ -519,8 +777,8 @@
 /* Large Desktop - Enhanced TikTok Experience */
 @media (min-width: 1200px) {
   .habitList {
-    /* Maintain vertical layout but with even more luxurious spacing */
-    gap: 1.5rem;
+    /* Maintain vertical layout with consistent spacing */
+    gap: 1rem; /* Keep consistent gap across all breakpoints */
     padding: 1.5rem 3rem; /* Extra generous padding on large screens */
   }
 

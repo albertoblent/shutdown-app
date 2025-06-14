@@ -318,6 +318,7 @@ function HabitCard({
   disabled = false
 }: HabitCardProps) {
   const [localNumericValue, setLocalNumericValue] = useState<string>('');
+  const [isCelebrating, setIsCelebrating] = useState(false);
 
   // Sync local state with completion value - use stable reference
   const numericValue = completionValue.numeric;
@@ -331,6 +332,10 @@ function HabitCard({
   // Input focus handling removed since prompts are always visible
 
   const handleBooleanChange = (checked: boolean) => {
+    // Trigger celebration animation
+    setIsCelebrating(true);
+    setTimeout(() => setIsCelebrating(false), 600);
+    
     // When unchecked, pass empty object to clear the completion
     onComplete(checked ? { boolean: true } : {});
   };
@@ -389,6 +394,7 @@ function HabitCard({
               {completionValue.boolean ? 'Completed' : 'Mark as complete'}
             </label>
             <Switch
+              className={`${styles.switch} ${isCelebrating ? styles.celebrating : ''}`}
               id={`habit-${habit.id}`}
               checked={completionValue.boolean || false}
               onChange={handleBooleanChange}
@@ -496,6 +502,7 @@ function HabitCard({
   return (
     <article
       className={`${styles.habitCard} ${isCompleted ? styles.completed : ''}`}
+      data-habit-type={habit.type}
       role="region"
       aria-label={`${habit.name} habit`}
     >
