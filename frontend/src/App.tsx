@@ -20,11 +20,8 @@ function App() {
       const habitsExist = result.success && (result.data?.length || 0) > 0;
       setHasHabits(habitsExist);
 
-      // If no habits exist, show habit management
-      if (!habitsExist) {
-        setCurrentView('manage');
-      }
-
+      // Always start with dashboard view - let Dashboard handle empty state
+      setCurrentView('dashboard');
       setIsLoading(false);
     };
 
@@ -90,7 +87,7 @@ function App() {
 
       <main className={styles.main}>
         <Suspense fallback={<div className={styles.loading}>Loading...</div>}>
-          {currentView === 'dashboard' && hasHabits ? (
+          {currentView === 'dashboard' ? (
             <Dashboard onManageHabits={handleManageHabits} />
           ) : (
             <>

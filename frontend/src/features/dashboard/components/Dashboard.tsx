@@ -16,6 +16,7 @@ import {
 } from '../api/completion';
 import styles from './Dashboard.module.css';
 import { ResetNotification } from './ResetNotification';
+import { STORAGE_KEYS } from '../../../types/data';
 
 interface DashboardProps {
   onManageHabits?: () => void;
@@ -172,6 +173,29 @@ export function Dashboard({ onManageHabits }: DashboardProps) {
   const isComplete = dailyEntry ? isDailyEntryComplete(dailyEntry) : false;
   const progressPercentage = totalCount > 0 ? (completedCount / totalCount) * 100 : 0;
 
+  // Temporary debug function to clear localStorage and reset app
+  const handleDebugReset = () => {
+    if (import.meta.env.DEV) {
+      // Clear all app-related localStorage entries
+      localStorage.removeItem(STORAGE_KEYS.HABITS);
+      localStorage.removeItem(STORAGE_KEYS.SETTINGS);
+      localStorage.removeItem(STORAGE_KEYS.LAST_EXPORT);
+
+      // Clear all daily entries (they start with ENTRY_PREFIX)
+      const keysToRemove: string[] = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key?.startsWith(STORAGE_KEYS.ENTRY_PREFIX)) {
+          keysToRemove.push(key);
+        }
+      }
+      keysToRemove.forEach(key => localStorage.removeItem(key));
+
+      // Reload the page to reset React state
+      window.location.reload();
+    }
+  };
+
   if (isLoading) {
     return (
       <div className={styles.container}>
@@ -220,9 +244,16 @@ export function Dashboard({ onManageHabits }: DashboardProps) {
           <h1 className={styles.title}>
             {isToday(dailyEntry?.date || '') ? 'Today' : dailyEntry?.date}
           </h1>
-          <button onClick={onManageHabits} className={styles.manageButton}>
-            Manage Habits
-          </button>
+          <div className={styles.headerButtons}>
+            <button onClick={onManageHabits} className={styles.manageButton}>
+              Manage Habits
+            </button>
+            {import.meta.env.DEV && (
+              <button onClick={handleDebugReset} className={styles.debugButton}>
+                🔄 Reset App
+              </button>
+            )}
+          </div>
         </div>
 
         <div className={styles.progress}>

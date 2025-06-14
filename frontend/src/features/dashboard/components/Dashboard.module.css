@@ -83,6 +83,12 @@
   margin-bottom: 1.5rem;
 }
 
+.headerButtons {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
 .title {
   font-size: 2rem;
   font-weight: 700;
@@ -104,6 +110,22 @@
 
 .manageButton:hover {
   background: var(--secondary-hover, #4b5563);
+}
+
+.debugButton {
+  background: var(--error-color, #ef4444);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.8rem;
+  min-height: 48px;
+  min-width: 100px;
+}
+
+.debugButton:hover {
+  background: #dc2626;
 }
 
 /* Progress */
@@ -320,8 +342,20 @@
     align-items: stretch;
   }
 
-  .manageButton {
+  .headerButtons {
+    flex-direction: column;
+    gap: 0.5rem;
     width: 100%;
+  }
+
+  .manageButton,
+  .debugButton {
+    width: 100%;
+  }
+
+  .debugButton {
+    font-size: 0.7rem;
+    padding: 0.5rem 0.75rem;
   }
 
   .habitCard {
