@@ -496,6 +496,7 @@ function HabitCard({
   return (
     <article
       className={`${styles.habitCard} ${isCompleted ? styles.completed : ''}`}
+      data-habit-type={habit.type}
       role="region"
       aria-label={`${habit.name} habit`}
     >
