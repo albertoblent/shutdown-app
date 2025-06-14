@@ -420,24 +420,13 @@
   position: relative;
 }
 
-/* Enhanced switch animations */
+/* Enhanced switch animations - Simple approach */
 .switch {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Target the switch handle for smooth animation */
-.switch .react-switch-handle {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Celebration animation when switch is toggled to checked */
-/* Target the entire switch container when checked */
-.switch input:checked + .react-switch-bg {
-  animation: toggleCelebration 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-/* Alternative: Apply celebration to the handle specifically when checked */
-.switch input:checked + .react-switch-bg .react-switch-handle {
+/* Celebration animation class applied programmatically */
+.switch.celebrating {
   animation: toggleCelebration 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
