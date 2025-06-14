@@ -248,14 +248,16 @@ export function HabitManager({ onHabitsChange, onBackToDashboard }: HabitManager
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <button 
-          onClick={onBackToDashboard}
-          className={styles.backButton}
-          aria-label="Back to dashboard"
-          title="Back to dashboard"
-        >
-          ←
-        </button>
+        {habits.length > 0 && (
+          <button 
+            onClick={onBackToDashboard}
+            className={styles.backButton}
+            aria-label="Back to dashboard"
+            title="Back to dashboard"
+          >
+            ←
+          </button>
+        )}
         <h2>Habits</h2>
         <div className={styles.headerActions}>
           {validateHabitLimit(habits.length) && (
