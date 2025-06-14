@@ -244,13 +244,23 @@ export function Dashboard({ onManageHabits }: DashboardProps) {
           <h1 className={styles.title}>
             {isToday(dailyEntry?.date || '') ? 'Today' : dailyEntry?.date}
           </h1>
-          <div className={styles.headerButtons}>
-            <button onClick={onManageHabits} className={styles.manageButton}>
-              Manage Habits
+          <div className={styles.headerIcons}>
+            <button 
+              onClick={onManageHabits} 
+              className={styles.iconButton}
+              aria-label="Manage habits"
+              title="Manage habits"
+            >
+              ⚙️
             </button>
             {import.meta.env.DEV && (
-              <button onClick={handleDebugReset} className={styles.debugButton}>
-                🔄 Reset App
+              <button 
+                onClick={handleDebugReset} 
+                className={styles.iconButton}
+                aria-label="Reset app"
+                title="Reset app"
+              >
+                🔄
               </button>
             )}
           </div>

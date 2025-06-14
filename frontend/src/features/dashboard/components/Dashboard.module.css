@@ -83,7 +83,7 @@
   margin-bottom: 1.5rem;
 }
 
-.headerButtons {
+.headerIcons {
   display: flex;
   gap: 0.5rem;
   align-items: center;
@@ -96,36 +96,29 @@
   margin: 0;
 }
 
-.manageButton {
-  background: var(--secondary-color, #6b7280);
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
+.iconButton {
+  background: var(--background-secondary, #374151);
+  border: 2px solid var(--border-color, #4b5563);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  font-size: 0.9rem;
-  min-height: 48px;
-  min-width: 120px;
+  font-size: 1.2rem;
+  transition: all 0.2s ease;
+  color: var(--text-primary, #fff);
 }
 
-.manageButton:hover {
-  background: var(--secondary-hover, #4b5563);
+.iconButton:hover {
+  background: var(--background-tertiary, #4b5563);
+  border-color: var(--border-hover, #6b7280);
+  transform: scale(1.05);
 }
 
-.debugButton {
-  background: var(--error-color, #ef4444);
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  font-size: 0.8rem;
-  min-height: 48px;
-  min-width: 100px;
-}
-
-.debugButton:hover {
-  background: #dc2626;
+.iconButton:active {
+  transform: scale(0.95);
 }
 
 /* Progress */
@@ -345,26 +338,21 @@
   }
 
   .headerTop {
-    flex-direction: column;
-    gap: 0.75rem; /* Reduced gap */
-    align-items: stretch;
-  }
-
-  .headerButtons {
-    flex-direction: column;
+    flex-direction: row; /* Keep horizontal layout with icons */
+    justify-content: space-between;
+    align-items: center;
     gap: 0.5rem;
-    width: 100%;
   }
 
-  .manageButton,
-  .debugButton {
-    width: 100%;
-    min-height: 44px; /* Slightly reduced but still accessible */
+  .headerIcons {
+    flex-direction: row; /* Keep icons horizontal */
+    gap: 0.4rem; /* Tighter spacing on mobile */
   }
 
-  .debugButton {
-    font-size: 0.7rem;
-    padding: 0.5rem 0.75rem;
+  .iconButton {
+    width: 40px; /* Slightly smaller on mobile but still accessible */
+    height: 40px;
+    font-size: 1.1rem;
   }
 
   .habitCard {
