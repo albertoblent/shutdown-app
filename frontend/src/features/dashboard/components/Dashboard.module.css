@@ -137,25 +137,26 @@
   margin-top: 1rem;
 }
 
-/* Habit List - TikTok/Instagram Style Vertical Scrolling */
+/* Habit List - Consistent Vertical Scrolling */
 .habitList {
   display: flex;
-  flex-direction: column; /* Changed to vertical layout */
-  gap: 0.75rem;
-  overflow-x: hidden; /* Prevent horizontal scroll */
-  overflow-y: auto; /* Enable vertical scroll */
+  flex-direction: column;
+  gap: 1rem; /* Consistent spacing between all cards */
+  overflow-x: hidden;
+  overflow-y: auto;
   scroll-behavior: smooth;
-  /* IMPROVED VERTICAL SCROLL PHYSICS */
-  -webkit-overflow-scrolling: auto; /* Disable momentum to prevent overshooting */
-  scroll-snap-type: y mandatory; /* Strong snap to cards vertically */
-  scroll-snap-stop: always; /* Force stop at each card - no skipping */
+  
+  /* Improved scroll physics without aggressive snapping */
+  -webkit-overflow-scrolling: touch; /* Smooth momentum scrolling */
+  scroll-snap-type: y proximity; /* Gentle snap - less aggressive than mandatory */
   overscroll-behavior-y: contain; /* Prevent bounce/elastic effects */
-  /* Fixed height instead of flex: 1 to prevent overflow */
-  height: calc(100vh - 200px); /* Account for header + progress + padding */
-  max-height: calc(100dvh - 200px); /* Account for dynamic viewport */
-  /* Additional control for deliberate scrolling */
-  scroll-padding: 0.5rem; /* Padding around snap points */
-  padding: 0.5rem 1rem 4rem 1rem; /* Increased bottom padding to prevent cutoff */
+  
+  /* Container sizing */
+  height: calc(100vh - 200px);
+  max-height: calc(100dvh - 200px);
+  
+  /* Clean padding without scroll interference */
+  padding: 1rem; /* Consistent padding all around */
   margin: 0;
 }
 
@@ -213,11 +214,10 @@
   transform: translateY(20px) scale(0.95);
   animation: cardEntrance 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   
-  /* TikTok-style full height properties */
+  /* Card sizing for consistent layout */
   width: 100%;
   min-height: calc(100vh - 300px);
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
+  scroll-snap-align: start; /* Keep gentle snap alignment */
   
   /* Premium multi-layer shadow system */
   box-shadow: 
@@ -675,14 +675,13 @@
   }
 
   .habitList {
-    gap: 0.5rem; /* Tighter spacing between cards on mobile */
-    padding: 0.25rem 0.5rem 0.75rem 0.5rem; /* Adjust for vertical layout */
+    gap: 1rem; /* Keep consistent spacing on mobile */
+    padding: 1rem; /* Consistent padding like desktop */
     height: calc(100vh - 180px); /* Reduced height to prevent cutoff on mobile */
     max-height: calc(100dvh - 180px); /* Account for dynamic viewport on mobile */
-    /* Enhanced mobile vertical scroll control */
-    scroll-snap-type: y mandatory;
-    scroll-snap-stop: always;
-    -webkit-overflow-scrolling: auto; /* Disable momentum on mobile */
+    /* Consistent scroll behavior */
+    scroll-snap-type: y proximity; /* Gentle snap like desktop */
+    -webkit-overflow-scrolling: touch; /* Smooth momentum on mobile */
   }
 
   .habitCard {
@@ -777,8 +776,8 @@
 /* Large Desktop - Enhanced TikTok Experience */
 @media (min-width: 1200px) {
   .habitList {
-    /* Maintain vertical layout but with even more luxurious spacing */
-    gap: 1.5rem;
+    /* Maintain vertical layout with consistent spacing */
+    gap: 1rem; /* Keep consistent gap across all breakpoints */
     padding: 1.5rem 3rem; /* Extra generous padding on large screens */
   }
 
