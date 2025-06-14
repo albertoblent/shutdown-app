@@ -299,15 +299,9 @@
   animation: completionGlow 3s ease-out;
 }
 
-/* Habit Type Accent Colors */
-.habitCard[data-habit-type="boolean"]:not(.completed) {
-  /* Boolean habits - Blue theme */
-  background: 
-    linear-gradient(135deg, rgba(59,130,246,0.12) 0%, rgba(59,130,246,0.08) 100%),
-    linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
-  border-color: rgba(59,130,246,0.3);
-}
+/* Enhanced Color Intelligence - Type + Position Based */
 
+/* Primary type: Numeric habits always get purple */
 .habitCard[data-habit-type="numeric"]:not(.completed) {
   /* Numeric habits - Purple theme */
   background: 
@@ -322,6 +316,36 @@
     0 0 16px rgba(139,92,246,0.2);
 }
 
+/* Boolean habits get varied colors for visual interest */
+.habitCard[data-habit-type="boolean"]:not(.completed):nth-child(odd) {
+  /* Odd boolean habits - Blue theme */
+  background: 
+    linear-gradient(135deg, rgba(59,130,246,0.12) 0%, rgba(59,130,246,0.08) 100%),
+    linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+  border-color: rgba(59,130,246,0.3);
+  
+  box-shadow: 
+    0 8px 32px rgba(59,130,246,0.25),
+    0 2px 8px rgba(59,130,246,0.15),
+    inset 0 1px 0 rgba(255,255,255,0.1),
+    0 0 16px rgba(59,130,246,0.2);
+}
+
+.habitCard[data-habit-type="boolean"]:not(.completed):nth-child(even) {
+  /* Even boolean habits - Teal theme for contrast */
+  background: 
+    linear-gradient(135deg, rgba(20,184,166,0.12) 0%, rgba(20,184,166,0.08) 100%),
+    linear-gradient(135deg, #0f766e 0%, #14b8a6 100%);
+  border-color: rgba(20,184,166,0.3);
+  
+  box-shadow: 
+    0 8px 32px rgba(20,184,166,0.25),
+    0 2px 8px rgba(20,184,166,0.15),
+    inset 0 1px 0 rgba(255,255,255,0.1),
+    0 0 16px rgba(20,184,166,0.2);
+}
+
+/* Choice habits get cyan */
 .habitCard[data-habit-type="choice"]:not(.completed) {
   /* Choice habits - Cyan theme */
   background: 
