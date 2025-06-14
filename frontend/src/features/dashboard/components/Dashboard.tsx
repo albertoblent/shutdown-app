@@ -389,6 +389,7 @@ function HabitCard({
               {completionValue.boolean ? 'Completed' : 'Mark as complete'}
             </label>
             <Switch
+              className={styles.switch}
               id={`habit-${habit.id}`}
               checked={completionValue.boolean || false}
               onChange={handleBooleanChange}
