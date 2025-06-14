@@ -334,7 +334,7 @@ function HabitCard({
   const handleBooleanChange = (checked: boolean) => {
     // Trigger celebration animation
     setIsCelebrating(true);
-    setTimeout(() => setIsCelebrating(false), 400);
+    setTimeout(() => setIsCelebrating(false), 600);
     
     // When unchecked, pass empty object to clear the completion
     onComplete(checked ? { boolean: true } : {});
