@@ -7,7 +7,11 @@
   max-width: 600px;
   margin: 0 auto;
   padding: 1rem;
-  min-height: calc(100vh - 200px);
+  height: 100vh;
+  max-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .loading,
@@ -43,37 +47,11 @@
   background: var(--primary-hover, #2563eb);
 }
 
-.emptyState {
-  text-align: center;
-  padding: 2rem;
-  color: var(--text-secondary, #888);
-}
-
-.emptyState h2 {
-  color: var(--text-primary, #fff);
-  margin-bottom: 1rem;
-}
-
-.setupButton {
-  background: var(--primary-color, #3b82f6);
-  color: white;
-  border: none;
-  padding: 1rem 2rem;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  font-size: 1.1rem;
-  margin-top: 1rem;
-  min-height: 48px;
-  min-width: 160px;
-}
-
-.setupButton:hover {
-  background: var(--primary-hover, #2563eb);
-}
 
 /* Header */
 .header {
   margin-bottom: 2rem;
+  flex-shrink: 0;
 }
 
 .headerTop {
@@ -83,6 +61,12 @@
   margin-bottom: 1.5rem;
 }
 
+.headerIcons {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
 .title {
   font-size: 2rem;
   font-weight: 700;
@@ -90,25 +74,35 @@
   margin: 0;
 }
 
-.manageButton {
-  background: var(--secondary-color, #6b7280);
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
+.iconButton {
+  background: var(--background-secondary, #374151);
+  border: 2px solid var(--border-color, #4b5563);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  font-size: 0.9rem;
-  min-height: 48px;
-  min-width: 120px;
+  font-size: 1.2rem;
+  transition: all 0.2s ease;
+  color: var(--text-primary, #fff);
 }
 
-.manageButton:hover {
-  background: var(--secondary-hover, #4b5563);
+.iconButton:hover {
+  background: var(--background-tertiary, #4b5563);
+  border-color: var(--border-hover, #6b7280);
+  transform: scale(1.05);
+}
+
+.iconButton:active {
+  transform: scale(0.95);
 }
 
 /* Progress */
 .progress {
   margin-bottom: 1rem;
+  flex-shrink: 0;
 }
 
 .progressBar {
@@ -143,116 +137,212 @@
   margin-top: 1rem;
 }
 
-/* Habit List */
+/* Habit List - TikTok/Instagram Style Vertical Scrolling */
 .habitList {
   display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  flex-direction: column; /* Changed to vertical layout */
+  gap: 0.75rem;
+  overflow-x: hidden; /* Prevent horizontal scroll */
+  overflow-y: auto; /* Enable vertical scroll */
+  scroll-behavior: smooth;
+  /* IMPROVED VERTICAL SCROLL PHYSICS */
+  -webkit-overflow-scrolling: auto; /* Disable momentum to prevent overshooting */
+  scroll-snap-type: y mandatory; /* Strong snap to cards vertically */
+  scroll-snap-stop: always; /* Force stop at each card - no skipping */
+  overscroll-behavior-y: contain; /* Prevent bounce/elastic effects */
+  /* Fixed height instead of flex: 1 to prevent overflow */
+  height: calc(100vh - 200px); /* Account for header + progress + padding */
+  max-height: calc(100dvh - 200px); /* Account for dynamic viewport */
+  /* Additional control for deliberate scrolling */
+  scroll-padding: 0.5rem; /* Padding around snap points */
+  padding: 0.5rem 1rem 4rem 1rem; /* Increased bottom padding to prevent cutoff */
+  margin: 0;
 }
 
-/* Habit Card */
+/* Custom scrollbar styling for vertical scroll */
+.habitList::-webkit-scrollbar {
+  width: 6px; /* Changed from height to width for vertical scrollbar */
+}
+
+.habitList::-webkit-scrollbar-track {
+  background: var(--background-primary, #111827);
+  border-radius: 3px;
+}
+
+.habitList::-webkit-scrollbar-thumb {
+  background: var(--border-color, #4b5563);
+  border-radius: 3px;
+}
+
+.habitList::-webkit-scrollbar-thumb:hover {
+  background: var(--border-hover, #6b7280);
+}
+
+/* Habit Card - TikTok/Instagram Style Full-Screen Layout */
 .habitCard {
-  background: var(--background-secondary, #374151);
+  background: linear-gradient(135deg, var(--background-secondary, #374151) 0%, #4a5568 100%);
   border: 2px solid transparent;
-  border-radius: 0.75rem;
-  padding: 1.5rem;
+  border-radius: 0.75rem; /* Slightly more rounded for elegance */
+  padding: 1.5rem; /* Generous padding for full-screen cards */
   position: relative;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; /* Increased gap for full-screen layout */
+  /* TikTok-style full height properties */
+  width: 100%; /* Full width instead of fixed width */
+  min-height: calc(100vh - 300px); /* Reduced height to account for header/progress */
+  scroll-snap-align: start; /* Snap to top of card like TikTok */
+  scroll-snap-stop: always; /* Force stop at this card */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); /* Stronger shadow for prominence */
+  /* Center content for better visual hierarchy */
+  justify-content: center;
 }
 
 .habitCard:hover {
   border-color: var(--border-hover, #4b5563);
+  transform: translateY(-2px); /* Gentle lift effect */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
 }
 
 .habitCard.completed {
   border-color: var(--success-color, #10b981);
-  background: var(--success-background, #065f46);
+  background: linear-gradient(135deg, var(--success-background, #065f46) 0%, #047857 100%);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); /* Success-colored shadow */
 }
 
 .habitInfo {
-  margin-bottom: 1rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center all content */
+  text-align: center; /* Center text */
+  gap: 0.75rem;
 }
 
 .habitName {
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: 2.6rem; /* Larger title for full-screen impact */
+  font-weight: 700; /* Bolder for prominence */
   color: var(--text-primary, #fff);
-  margin: 0 0 0.5rem 0;
+  margin: 0;
+  line-height: 1.2; /* Tighter line height for impact */
+  width: 100%;
+  letter-spacing: -0.01em; /* Subtle tracking for premium feel */
+}
+
+/* Hero Emoji Container - Enhanced for Full-Screen Cards */
+.habitEmojiHero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem 0; /* More breathing space for full-screen layout */
+}
+
+.habitEmoji {
+  font-size: 5rem; /* MASSIVE hero emoji for full-screen impact */
+  font-style: normal;
+  line-height: 1;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.4)); /* Strong shadow for depth */
+  transition: transform 0.3s ease;
+}
+
+.habitCard:hover .habitEmoji {
+  transform: scale(1.1); /* Gentle hover animation */
 }
 
 .habitPrompt {
-  color: var(--text-secondary, #888);
+  color: var(--text-secondary, #cccccc); /* Lighter for better contrast */
   margin: 0;
-  line-height: 1.5;
+  line-height: 1.5; /* More relaxed line height */
+  font-size: 1.1rem; /* Larger for full-screen readability */
+  width: 100%;
+  font-weight: 400; /* Normal weight for balance */
+  opacity: 0.9; /* Subtle transparency for hierarchy */
 }
 
 /* Habit Inputs */
 .habitInput {
-  margin-top: 1rem;
+  /* Removed margin-top since we're using flexbox gap for spacing */
 }
 
 .booleanInput {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  min-height: 48px; /* Touch target accessibility */
+  justify-content: center; /* Center the toggle button */
+  gap: 0; /* Remove gap since we're hiding the label */
+  min-height: 120px; /* Large area for the big toggle */
+  margin: 1rem 0; /* Extra breathing space */
 }
 
 .booleanInput .switchLabel {
-  color: var(--text-primary, #fff);
-  font-weight: 500;
-  order: 2; /* Position label after switch */
+  display: none; /* Hide the text label completely */
 }
 
 .numericInput label {
   display: block;
   color: var(--text-primary, #fff);
-  margin-bottom: 0.5rem;
-  font-weight: 500;
+  margin-bottom: 0.75rem; /* More space for full-screen layout */
+  font-weight: 600; /* Bolder for prominence */
+  font-size: 1.1rem; /* Larger for better readability */
+  text-align: center; /* Center align for better layout */
 }
 
 .numericControls {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: center; /* Center the controls */
+  gap: 1rem; /* Generous spacing for full-screen layout */
+  margin: 1rem 0; /* Extra breathing space */
 }
 
 .numericControls button {
   background: var(--primary-color, #3b82f6);
   color: white;
   border: none;
-  width: 48px;
-  height: 48px;
-  border-radius: 0.5rem;
+  width: 56px; /* Larger buttons for better touch targets */
+  height: 56px; /* Larger buttons for better touch targets */
+  border-radius: 50%; /* Circular buttons for modern feel */
   cursor: pointer;
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: 1.5rem; /* Larger font for visibility */
+  font-weight: 700; /* Bolder for prominence */
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3); /* Subtle glow */
+  transition: all 0.2s ease; /* Smooth transitions */
 }
 
 .numericControls button:hover:not(:disabled) {
   background: var(--primary-hover, #2563eb);
+  transform: scale(1.05); /* Subtle scale on hover */
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4); /* Enhanced glow */
+}
+
+.numericControls button:active {
+  transform: scale(0.95); /* Press feedback */
 }
 
 .numericControls button:disabled {
   background: var(--background-tertiary, #1f2937);
   color: var(--text-disabled, #6b7280);
   cursor: not-allowed;
+  box-shadow: none; /* Remove glow when disabled */
 }
 
 .numericControls input[type="number"] {
   background: var(--background-primary, #111827);
   color: var(--text-primary, #fff);
   border: 2px solid var(--border-color, #4b5563);
-  border-radius: 0.5rem;
-  padding: 0.75rem;
+  border-radius: 0.75rem; /* More rounded to match modern design */
+  padding: 1rem; /* Generous padding for full-screen */
   text-align: center;
-  font-size: 1.1rem;
-  width: 80px;
-  min-height: 48px;
+  font-size: 1.3rem; /* Larger font for prominence */
+  font-weight: 600; /* Bolder for better visibility */
+  width: 90px; /* Wider for better usability */
+  min-height: 56px; /* Match button height */
   -moz-appearance: textfield; /* Remove spinner for Firefox */
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle inner shadow */
+  transition: all 0.2s ease; /* Smooth transitions */
 }
 
 /* Remove spinner for Webkit browsers (Chrome, Safari, Edge) */
@@ -265,6 +355,7 @@
 .numericControls input[type="number"]:focus {
   outline: none;
   border-color: var(--primary-color, #3b82f6);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2), inset 0 2px 4px rgba(0, 0, 0, 0.1); /* Focus ring + inner shadow */
 }
 
 .choiceInput {
@@ -272,21 +363,14 @@
   font-style: italic;
 }
 
-/* Completion Indicator */
-.completionIndicator {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  width: 32px;
-  height: 32px;
-  background: var(--success-color, #10b981);
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 1.1rem;
+
+/* Phantom Spacer - Ensures last habit card is fully viewable */
+.phantomSpacer {
+  min-height: 200px; /* Enough space to push last card into view */
+  flex-shrink: 0;
+  scroll-snap-align: start; /* Participates in scroll snap like other cards */
+  pointer-events: none; /* Invisible to user interaction */
+  background: transparent;
 }
 
 /* Saving Indicator */
@@ -304,47 +388,157 @@
   z-index: 1000;
 }
 
-/* Mobile Optimizations */
+/* Mobile Optimizations - TikTok Style */
 @media (max-width: 480px) {
   .container {
-    padding: 0.75rem;
+    padding: 0.5rem; /* Further reduced padding for max screen usage */
   }
 
   .title {
-    font-size: 1.75rem;
+    font-size: 1.5rem; /* Smaller title to save vertical space */
   }
 
   .headerTop {
-    flex-direction: column;
-    gap: 1rem;
-    align-items: stretch;
+    flex-direction: row; /* Keep horizontal layout with icons */
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
   }
 
-  .manageButton {
-    width: 100%;
+  .headerIcons {
+    flex-direction: row; /* Keep icons horizontal */
+    gap: 0.4rem; /* Tighter spacing on mobile */
+  }
+
+  .iconButton {
+    width: 40px; /* Slightly smaller on mobile but still accessible */
+    height: 40px;
+    font-size: 1.1rem;
+  }
+
+  .habitList {
+    gap: 0.5rem; /* Tighter spacing between cards on mobile */
+    padding: 0.25rem 0.5rem 0.75rem 0.5rem; /* Adjust for vertical layout */
+    height: calc(100vh - 180px); /* Reduced height to prevent cutoff on mobile */
+    max-height: calc(100dvh - 180px); /* Account for dynamic viewport on mobile */
+    /* Enhanced mobile vertical scroll control */
+    scroll-snap-type: y mandatory;
+    scroll-snap-stop: always;
+    -webkit-overflow-scrolling: auto; /* Disable momentum on mobile */
   }
 
   .habitCard {
-    padding: 1rem;
+    width: 100%; /* Full width on mobile */
+    min-height: calc(100vh - 350px); /* More conservative height on mobile */
+    padding: 1.25rem; /* Comfortable padding for mobile touch */
+    gap: 1.25rem; /* Good spacing for mobile */
+  }
+
+  .phantomSpacer {
+    min-height: 150px; /* Smaller spacer on mobile */
+  }
+
+  .habitName {
+    font-size: 1.8rem; /* Larger for full-screen mobile experience */
+  }
+
+  .habitPrompt {
+    font-size: 1.2rem; /* Larger and more readable on full-screen mobile */
+  }
+
+  .habitEmoji {
+    font-size: 4.5rem; /* Large impactful emoji on mobile full-screen */
   }
 
   .numericControls {
     justify-content: center;
   }
-}
-
-/* Desktop Enhancements */
-@media (min-width: 768px) {
-  .container {
-    padding: 2rem;
-  }
 
   .numericControls button {
-    width: 40px;
-    height: 40px;
+    width: 52px; /* Larger buttons for better touch targets */
+    height: 52px;
+    font-size: 1.4rem; /* Larger font on mobile */
   }
 
   .numericControls input[type="number"] {
-    min-height: 40px;
+    width: 80px; /* Larger input for better usability */
+    min-height: 52px;
+    font-size: 1.2rem; /* Appropriate size for mobile */
+  }
+}
+
+/* Desktop Enhancements - Vertical TikTok Style */
+@media (min-width: 768px) {
+  .container {
+    padding: 1.5rem;
+  }
+
+  .habitList {
+    gap: 1rem; /* More generous spacing on desktop */
+    height: calc(100vh - 250px); /* Reduced height to prevent cutoff on desktop */
+    max-height: calc(100dvh - 250px); /* Account for dynamic viewport on desktop */
+    padding: 1rem 2rem; /* More generous padding on desktop */
+  }
+
+  .habitCard {
+    padding: 2rem; /* Luxurious padding on desktop */
+    width: 100%; /* Full width for immersive experience */
+    min-height: calc(100vh - 450px); /* More conservative height on desktop */
+    gap: 2rem; /* More generous spacing between elements */
+  }
+
+  .phantomSpacer {
+    min-height: 250px; /* Larger spacer on desktop */
+  }
+
+  .habitEmoji {
+    font-size: 6rem; /* MASSIVE hero emoji on desktop for impact */
+  }
+
+  .habitName {
+    font-size: 1.8rem; /* Larger title on desktop */
+  }
+
+  .habitPrompt {
+    font-size: 1.2rem; /* Larger prompt text on desktop */
+  }
+
+  .numericControls button {
+    width: 60px; /* Larger buttons on desktop */
+    height: 60px;
+    font-size: 1.6rem; /* Larger font on desktop */
+  }
+
+  .numericControls input[type="number"] {
+    width: 100px; /* Larger input on desktop */
+    min-height: 60px;
+    font-size: 1.4rem; /* Larger font on desktop */
+  }
+}
+
+/* Large Desktop - Enhanced TikTok Experience */
+@media (min-width: 1200px) {
+  .habitList {
+    /* Maintain vertical layout but with even more luxurious spacing */
+    gap: 1.5rem;
+    padding: 1.5rem 3rem; /* Extra generous padding on large screens */
+  }
+
+  .habitCard {
+    max-width: 600px; /* Limit card width for better readability */
+    margin: 0 auto; /* Center cards on large screens */
+    padding: 2.5rem; /* Maximum luxury padding */
+  }
+
+  .habitEmoji {
+    font-size: 7rem; /* ENORMOUS emoji for large screens */
+  }
+
+  .habitName {
+    font-size: 2rem; /* Maximum impact on large screens */
+  }
+
+  .habitPrompt {
+    font-size: 1.3rem; /* Generous size for large screens */
   }
 }

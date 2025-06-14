@@ -16,6 +16,7 @@ import {
 } from '../api/completion';
 import styles from './Dashboard.module.css';
 import { ResetNotification } from './ResetNotification';
+import { STORAGE_KEYS } from '../../../types/data';
 
 interface DashboardProps {
   onManageHabits?: () => void;
@@ -33,6 +34,9 @@ export function Dashboard({ onManageHabits }: DashboardProps) {
   // Track current date for detecting date changes
   const currentDateRef = useRef<string>(getDateString());
   const dateCheckIntervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Ref for better scroll control
+  const habitListRef = useRef<HTMLElement | null>(null);
 
   // Load habits and daily entry
   const loadData = useCallback(async () => {
@@ -172,6 +176,29 @@ export function Dashboard({ onManageHabits }: DashboardProps) {
   const isComplete = dailyEntry ? isDailyEntryComplete(dailyEntry) : false;
   const progressPercentage = totalCount > 0 ? (completedCount / totalCount) * 100 : 0;
 
+  // Temporary debug function to clear localStorage and reset app
+  const handleDebugReset = () => {
+    if (import.meta.env.DEV) {
+      // Clear all app-related localStorage entries
+      localStorage.removeItem(STORAGE_KEYS.HABITS);
+      localStorage.removeItem(STORAGE_KEYS.SETTINGS);
+      localStorage.removeItem(STORAGE_KEYS.LAST_EXPORT);
+
+      // Clear all daily entries (they start with ENTRY_PREFIX)
+      const keysToRemove: string[] = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key?.startsWith(STORAGE_KEYS.ENTRY_PREFIX)) {
+          keysToRemove.push(key);
+        }
+      }
+      keysToRemove.forEach(key => localStorage.removeItem(key));
+
+      // Reload the page to reset React state
+      window.location.reload();
+    }
+  };
+
   if (isLoading) {
     return (
       <div className={styles.container}>
@@ -193,19 +220,6 @@ export function Dashboard({ onManageHabits }: DashboardProps) {
     );
   }
 
-  if (habits.length === 0) {
-    return (
-      <div className={styles.container}>
-        <div className={styles.emptyState}>
-          <h2>Welcome to your Shutdown Routine</h2>
-          <p>You don't have any habits set up yet. Let's get started!</p>
-          <button onClick={onManageHabits} className={styles.setupButton}>
-            Set Up Your Habits
-          </button>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className={styles.container}>
@@ -220,9 +234,26 @@ export function Dashboard({ onManageHabits }: DashboardProps) {
           <h1 className={styles.title}>
             {isToday(dailyEntry?.date || '') ? 'Today' : dailyEntry?.date}
           </h1>
-          <button onClick={onManageHabits} className={styles.manageButton}>
-            Manage Habits
-          </button>
+          <div className={styles.headerIcons}>
+            <button
+              onClick={onManageHabits}
+              className={styles.iconButton}
+              aria-label="Manage habits"
+              title="Manage habits"
+            >
+              ⚙️
+            </button>
+            {import.meta.env.DEV && (
+              <button
+                onClick={handleDebugReset}
+                className={styles.iconButton}
+                aria-label="Reset app"
+                title="Reset app"
+              >
+                🔄
+              </button>
+            )}
+          </div>
         </div>
 
         <div className={styles.progress}>
@@ -244,7 +275,7 @@ export function Dashboard({ onManageHabits }: DashboardProps) {
         )}
       </header>
 
-      <main className={styles.habitList}>
+      <main className={styles.habitList} ref={habitListRef}>
         {habits.map((habit) => {
           const completionValue = getCompletionValue(habit.id);
           return (
@@ -258,6 +289,8 @@ export function Dashboard({ onManageHabits }: DashboardProps) {
             />
           );
         })}
+        {/* Phantom spacer card to ensure last habit is fully viewable */}
+        <div className={styles.phantomSpacer} aria-hidden="true" />
       </main>
 
       {isSaving && (
@@ -294,6 +327,8 @@ function HabitCard({
       setLocalNumericValue(newValue);
     }
   }, [numericValue, habit.type]);
+
+  // Input focus handling removed since prompts are always visible
 
   const handleBooleanChange = (checked: boolean) => {
     // When unchecked, pass empty object to clear the completion
@@ -357,11 +392,11 @@ function HabitCard({
               id={`habit-${habit.id}`}
               checked={completionValue.boolean || false}
               onChange={handleBooleanChange}
-              onColor="#4ade80"
-              offColor="#6b7280"
+              onColor="#10b981"
+              offColor="#374151"
               onHandleColor="#ffffff"
               offHandleColor="#ffffff"
-              handleDiameter={24}
+              handleDiameter={56}
               uncheckedIcon={
                 <div
                   style={{
@@ -369,9 +404,9 @@ function HabitCard({
                     justifyContent: "center",
                     alignItems: "center",
                     height: "100%",
-                    fontSize: 14,
+                    fontSize: 28,
                     color: "#ffffff",
-                    paddingRight: 2
+                    paddingRight: 6
                   }}
                 >
                   ✕
@@ -384,16 +419,16 @@ function HabitCard({
                     justifyContent: "center",
                     alignItems: "center",
                     height: "100%",
-                    fontSize: 14,
+                    fontSize: 28,
                     color: "#ffffff",
-                    paddingLeft: 2
+                    paddingLeft: 6
                   }}
                 >
                   ✓
                 </div>
               }
-              height={32}
-              width={64}
+              height={64}
+              width={140}
               disabled={disabled}
               aria-label={completionValue.boolean ? `Mark ${habit.name} as incomplete` : `Complete ${habit.name}`}
             />
@@ -459,21 +494,31 @@ function HabitCard({
   };
 
   return (
-    <article className={`${styles.habitCard} ${isCompleted ? styles.completed : ''}`}>
+    <article
+      className={`${styles.habitCard} ${isCompleted ? styles.completed : ''}`}
+      role="region"
+      aria-label={`${habit.name} habit`}
+    >
       <div className={styles.habitInfo}>
-        <h3 className={styles.habitName}>{habit.name}</h3>
-        <p className={styles.habitPrompt}>{habit.atomic_prompt}</p>
+        <h3 className={styles.habitName}>
+          {habit.name}
+        </h3>
+        {habit.configuration.icon && (
+          <div className={styles.habitEmojiHero}>
+            <span className={styles.habitEmoji} role="img" aria-hidden="true">
+              {habit.configuration.icon}
+            </span>
+          </div>
+        )}
+        <p className={styles.habitPrompt}>
+          {habit.atomic_prompt}
+        </p>
       </div>
 
       <div className={styles.habitInput}>
         {renderInput()}
       </div>
 
-      {isCompleted && (
-        <div className={styles.completionIndicator}>
-          ✓
-        </div>
-      )}
     </article>
   );
 }

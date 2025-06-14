@@ -45,9 +45,10 @@ import styles from './HabitManager.module.css';
 
 interface HabitManagerProps {
   onHabitsChange?: () => void;
+  onBackToDashboard?: () => void;
 }
 
-export function HabitManager({ onHabitsChange }: HabitManagerProps) {
+export function HabitManager({ onHabitsChange, onBackToDashboard }: HabitManagerProps) {
   const [habits, setHabits] = useState<Habit[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -247,9 +248,39 @@ export function HabitManager({ onHabitsChange }: HabitManagerProps) {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h2>Habit Management</h2>
-        <div className={styles.habitCount}>
-          {habits.length}/7 habits
+        {habits.length > 0 && (
+          <button
+            onClick={onBackToDashboard}
+            className={styles.backButton}
+            aria-label="Back to dashboard"
+            title="Back to dashboard"
+          >
+            ←
+          </button>
+        )}
+        <h2>Habits</h2>
+        <div className={styles.headerActions}>
+          {validateHabitLimit(habits.length) && (
+            <button
+              className={styles.addIconButton}
+              onClick={() => setIsAddingNew(true)}
+              disabled={isAddingNew}
+              aria-label="Add new habit"
+              title="Add new habit"
+            >
+              +
+            </button>
+          )}
+          {habits.length > 0 && (
+            <button
+              className={styles.clearIconButton}
+              onClick={handleClearAll}
+              aria-label="Clear all habits"
+              title="Clear all habits"
+            >
+              🗑️
+            </button>
+          )}
         </div>
       </div>
 
@@ -260,10 +291,7 @@ export function HabitManager({ onHabitsChange }: HabitManagerProps) {
       )}
 
       {habits.length === 0 ? (
-        <div className={styles.emptyState}>
-          <h3>No habits yet</h3>
-          <p>Get started by adding a habit or loading a template</p>
-        </div>
+        <></>
       ) : (
         <DndContext
           sensors={sensors}
@@ -292,27 +320,6 @@ export function HabitManager({ onHabitsChange }: HabitManagerProps) {
         </DndContext>
       )}
 
-      <div className={styles.actions}>
-        {validateHabitLimit(habits.length) && (
-          <button
-            className={styles.addButton}
-            onClick={() => setIsAddingNew(true)}
-            disabled={isAddingNew}
-          >
-            Add New Habit
-          </button>
-        )}
-
-
-        {habits.length > 0 && (
-          <button
-            className={styles.clearButton}
-            onClick={handleClearAll}
-          >
-            Clear All
-          </button>
-        )}
-      </div>
 
       {isAddingNew && (
         <HabitForm
@@ -492,11 +499,21 @@ function HabitItem({
 
       {!isEditing && (
         <div className={styles.habitActions}>
-          <button onClick={onEdit} className={styles.editButton}>
-            Edit
+          <button
+            onClick={onEdit}
+            className={styles.editIconButton}
+            aria-label="Edit habit"
+            title="Edit habit"
+          >
+            ✏️
           </button>
-          <button onClick={onDelete} className={styles.deleteButton}>
-            Delete
+          <button
+            onClick={onDelete}
+            className={styles.deleteIconButton}
+            aria-label="Delete habit"
+            title="Delete habit"
+          >
+            🗑️
           </button>
         </div>
       )}
@@ -637,31 +654,106 @@ interface TemplateSelectorProps {
 }
 
 function TemplateSelector({ onLoadTemplate }: TemplateSelectorProps) {
+  const [showAllTemplates, setShowAllTemplates] = useState(false);
+
+  // Featured template (Productivity Focus - most universally applicable)
+  const featuredTemplate = HABIT_TEMPLATES.find(t => t.name === 'Productivity Focus') || HABIT_TEMPLATES[0];
+  const otherTemplates = HABIT_TEMPLATES.filter(t => t.name !== featuredTemplate.name);
+
+  if (showAllTemplates) {
+    // Show all templates in original grid format
+    return (
+      <div className={styles.templateSelector}>
+        <div className={styles.templateIntro}>
+          <button
+            onClick={() => setShowAllTemplates(false)}
+            className={styles.backToFeatured}
+          >
+            ← Back to recommended
+          </button>
+          <p>Choose any template to get started</p>
+        </div>
+
+        <div className={styles.templateContainer}>
+          {HABIT_TEMPLATES.map((template) => (
+            <div key={template.name} className={styles.templateCard}>
+              <div className={styles.templateInfo}>
+                <h4 className={styles.templateName}>
+                  {template.icon} {template.name}
+                </h4>
+                <p className={styles.templateDescription}>{template.description}</p>
+              </div>
+              <button
+                onClick={() => onLoadTemplate(template.name)}
+                className={styles.loadTemplateButton}
+              >
+                Load Template
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  // Default view: Featured template with escape hatches
   return (
     <div className={styles.templateSelector}>
-      <h3>Quick Start Templates</h3>
-      <p>Choose a preset template to get started quickly:</p>
+      <div className={styles.templateIntro}>
+        <p>Ready to build your shutdown routine?</p>
+      </div>
 
-      <div className={styles.templateGrid}>
-        {HABIT_TEMPLATES.map((template) => (
-          <div key={template.name} className={styles.templateCard}>
-            <h4>{template.name}</h4>
-            <p>{template.description}</p>
-            <div className={styles.templateHabits}>
-              {template.habits.map((habit, index) => (
-                <span key={index} className={styles.templateHabit}>
-                  {habit.name}
-                </span>
+      {/* Featured Template Card */}
+      <div className={styles.featuredTemplateContainer}>
+        <div className={styles.featuredTemplate}>
+          <div className={styles.featuredBadge}>
+            ✨ Recommended for Beginners
+          </div>
+
+          <div className={styles.templateInfo}>
+            <h4 className={styles.featuredTemplateName}>
+              {featuredTemplate.icon} {featuredTemplate.name}
+            </h4>
+            <p className={styles.featuredTemplateDescription}>
+              {featuredTemplate.description}
+            </p>
+
+            {/* Show habit preview */}
+            <div className={styles.habitPreview}>
+              {featuredTemplate.habits.slice(0, 3).map((habit, index) => (
+                <div key={index} className={styles.habitPreviewItem}>
+                  <span className={styles.habitPreviewIcon}>{habit.configuration.icon}</span>
+                  <span className={styles.habitPreviewName}>{habit.name}</span>
+                </div>
               ))}
             </div>
-            <button
-              onClick={() => onLoadTemplate(template.name)}
-              className={styles.loadTemplateButton}
-            >
-              Load Template
-            </button>
           </div>
-        ))}
+
+          <button
+            onClick={() => onLoadTemplate(featuredTemplate.name)}
+            className={styles.featuredTemplateButton}
+          >
+            ✨ Start with This Template
+          </button>
+        </div>
+
+        {/* Escape Hatches */}
+        <div className={styles.escapeHatches}>
+          <button
+            onClick={() => setShowAllTemplates(true)}
+            className={styles.escapeHatchButton}
+          >
+            Other templates ({otherTemplates.length})
+          </button>
+          <span className={styles.escapeDivider}>|</span>
+          <button
+            onClick={() => {/* Will be handled by parent - this triggers the + button flow */}}
+            className={styles.escapeHatchButton}
+            title="Use the + button above to create your own habits"
+          >
+            Start from scratch
+          </button>
+        </div>
       </div>
     </div>
   );

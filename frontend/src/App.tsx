@@ -20,11 +20,8 @@ function App() {
       const habitsExist = result.success && (result.data?.length || 0) > 0;
       setHasHabits(habitsExist);
 
-      // If no habits exist, show habit management
-      if (!habitsExist) {
-        setCurrentView('manage');
-      }
-
+      // Go directly to habit management if no habits exist, otherwise dashboard
+      setCurrentView(habitsExist ? 'dashboard' : 'manage');
       setIsLoading(false);
     };
 
@@ -90,31 +87,10 @@ function App() {
 
       <main className={styles.main}>
         <Suspense fallback={<div className={styles.loading}>Loading...</div>}>
-          {currentView === 'dashboard' && hasHabits ? (
+          {currentView === 'dashboard' ? (
             <Dashboard onManageHabits={handleManageHabits} />
           ) : (
-            <>
-              <section className={styles.welcomeSection}>
-                <h1 className={styles.welcomeTitle}>
-                  {hasHabits ? 'Manage Your Habits' : 'Daily Shutdown Routine'}
-                </h1>
-                <p className={styles.welcomeSubtitle}>
-                  {hasHabits
-                    ? 'Add, edit, or remove habits from your daily routine.'
-                    : 'Build healthy habits and end your day with intention. Track your progress and create a meaningful routine.'
-                  }
-                </p>
-                {hasHabits && (
-                  <button onClick={handleBackToDashboard} className={styles.backButton}>
-                    ← Back to Dashboard
-                  </button>
-                )}
-              </section>
-
-              <section className={styles.habitSection}>
-                <HabitManager onHabitsChange={handleHabitsChange} />
-              </section>
-            </>
+            <HabitManager onHabitsChange={handleHabitsChange} onBackToDashboard={handleBackToDashboard} />
           )}
         </Suspense>
       </main>

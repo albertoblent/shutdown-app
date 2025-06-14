@@ -62,10 +62,10 @@ jobs:
           GZIP_SIZE=$(find dist -name "*.js" -o -name "*.css" | xargs gzip -c | wc -c)
           echo "Build size: $BUILD_SIZE bytes"
           echo "Gzipped JS/CSS: $GZIP_SIZE bytes"
-          # Updated to 115KB (117760 bytes) to account for PWA overhead - Issue #26 final implementation
-          # Core app: ~103KB + PWA infrastructure: ~12KB = 115KB total
-          if [ "$GZIP_SIZE" -gt 117760 ]; then
-            echo "Bundle size exceeds 115KB limit (includes PWA overhead)"
+          # Updated to 150KB (153600 bytes) to account for feature-rich PWA with modern UX
+          # Core app + React 19 + drag-and-drop + scroll-snap + PWA infrastructure
+          if [ "$GZIP_SIZE" -gt 153600 ]; then
+            echo "Bundle size exceeds 150KB limit (includes modern UX features)"
             exit 1
           fi
 
