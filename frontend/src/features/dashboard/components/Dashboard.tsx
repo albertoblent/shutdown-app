@@ -326,7 +326,6 @@ function HabitCard({
   disabled = false
 }: HabitCardProps) {
   const [localNumericValue, setLocalNumericValue] = useState<string>('');
-  const [showPrompt, setShowPrompt] = useState<boolean>(false);
 
   // Sync local state with completion value - use stable reference
   const numericValue = completionValue.numeric;
@@ -337,23 +336,9 @@ function HabitCard({
     }
   }, [numericValue, habit.type]);
 
-  // Handle card focus to show atomic prompt
-  const handleCardFocus = () => {
-    setShowPrompt(true);
-  };
-
-  const handleCardBlur = () => {
-    setShowPrompt(false);
-  };
-
-  // Handle card click to toggle atomic prompt
-  const handleCardClick = () => {
-    setShowPrompt(prev => !prev);
-  };
-
-  // Handle input focus - also show prompt for context
+  // Handle input focus for better UX
   const handleInputFocus = () => {
-    setShowPrompt(true);
+    // Input focus no longer needs to show prompt since it's always visible
   };
 
   const handleBooleanChange = (checked: boolean) => {
@@ -389,7 +374,6 @@ function HabitCard({
   const handleNumericFocus = (e: React.FocusEvent<HTMLInputElement>) => {
     // Select all text on focus to prevent leading zeros
     e.target.select();
-    handleInputFocus(); // Show prompt when numeric input is focused
   };
 
   const handleNumericButtonChange = (newValue: number) => {
@@ -523,20 +507,23 @@ function HabitCard({
   return (
     <article
       className={`${styles.habitCard} ${isCompleted ? styles.completed : ''}`}
-      tabIndex={0}
-      onFocus={handleCardFocus}
-      onBlur={handleCardBlur}
-      onClick={handleCardClick}
       role="region"
       aria-label={`${habit.name} habit`}
     >
       <div className={styles.habitInfo}>
-        <h3 className={styles.habitName}>{habit.name}</h3>
-        {showPrompt && (
-          <p className={styles.habitPrompt} aria-live="polite">
-            {habit.atomic_prompt}
-          </p>
+        <h3 className={styles.habitName}>
+          {habit.name}
+        </h3>
+        {habit.configuration.icon && (
+          <div className={styles.habitEmojiHero}>
+            <span className={styles.habitEmoji} role="img" aria-hidden="true">
+              {habit.configuration.icon}
+            </span>
+          </div>
         )}
+        <p className={styles.habitPrompt}>
+          {habit.atomic_prompt}
+        </p>
       </div>
 
       <div className={styles.habitInput}>

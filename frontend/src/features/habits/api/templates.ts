@@ -27,6 +27,7 @@ export const HABIT_TEMPLATES: HabitTemplate[] = [
         configuration: {
           numeric_unit: 'hours',
           numeric_range: [0, 12],
+          icon: '🧠',
         },
         is_active: true,
       },
@@ -34,14 +35,18 @@ export const HABIT_TEMPLATES: HabitTemplate[] = [
         name: 'Budget Reviewed',
         type: 'boolean',
         atomic_prompt: 'Did you check your budget or financial situation today?',
-        configuration: {},
+        configuration: {
+          icon: '💰',
+        },
         is_active: true,
       },
       {
         name: 'Exercise Completed',
         type: 'boolean',
         atomic_prompt: 'Did you complete at least 30 minutes of physical exercise?',
-        configuration: {},
+        configuration: {
+          icon: '🏃',
+        },
         is_active: true,
       },
     ],
@@ -57,6 +62,7 @@ export const HABIT_TEMPLATES: HabitTemplate[] = [
         configuration: {
           numeric_unit: 'steps',
           numeric_range: [0, 30000],
+          icon: '👟',
         },
         is_active: true,
       },
@@ -67,6 +73,7 @@ export const HABIT_TEMPLATES: HabitTemplate[] = [
         configuration: {
           numeric_unit: 'glasses',
           numeric_range: [0, 15],
+          icon: '💧',
         },
         is_active: true,
       },
@@ -77,6 +84,7 @@ export const HABIT_TEMPLATES: HabitTemplate[] = [
         configuration: {
           numeric_unit: 'hours',
           numeric_range: [0, 12],
+          icon: '😴',
         },
         is_active: true,
       },
@@ -90,21 +98,27 @@ export const HABIT_TEMPLATES: HabitTemplate[] = [
         name: 'Family Time',
         type: 'boolean',
         atomic_prompt: 'Did you spend quality time with family or loved ones today?',
-        configuration: {},
+        configuration: {
+          icon: '👨‍👩‍👧‍👦',
+        },
         is_active: true,
       },
       {
         name: 'Learning Activity',
         type: 'boolean',
         atomic_prompt: 'Did you engage in learning something new today?',
-        configuration: {},
+        configuration: {
+          icon: '📚',
+        },
         is_active: true,
       },
       {
         name: 'Gratitude Practice',
         type: 'boolean',
         atomic_prompt: 'Did you practice gratitude or mindfulness today?',
-        configuration: {},
+        configuration: {
+          icon: '🙏',
+        },
         is_active: true,
       },
     ],
