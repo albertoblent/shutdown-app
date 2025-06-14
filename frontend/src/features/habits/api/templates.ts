@@ -127,6 +127,42 @@ export const HABIT_TEMPLATES: HabitTemplate[] = [
       },
     ],
   },
+  {
+    name: 'Creative & Social',
+    description: 'Creativity, social connections, and personal expression',
+    icon: '🎨',
+    habits: [
+      {
+        name: 'Creative Project',
+        type: 'boolean',
+        atomic_prompt: 'Did you work on a creative project or hobby today?',
+        configuration: {
+          icon: '🎭',
+        },
+        is_active: true,
+      },
+      {
+        name: 'Social Connection',
+        type: 'boolean',
+        atomic_prompt: 'Did you connect with friends or community today?',
+        configuration: {
+          icon: '🤝',
+        },
+        is_active: true,
+      },
+      {
+        name: 'Music Practice',
+        type: 'numeric',
+        atomic_prompt: 'How many minutes did you spend playing or listening to music?',
+        configuration: {
+          numeric_unit: 'minutes',
+          numeric_range: [0, 120],
+          icon: '🎵',
+        },
+        is_active: true,
+      },
+    ],
+  },
 ];
 
 export const loadHabitTemplate = (templateName: string): StorageResult<Habit[]> => {

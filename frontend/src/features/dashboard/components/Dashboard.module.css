@@ -7,7 +7,11 @@
   max-width: 600px;
   margin: 0 auto;
   padding: 1rem;
-  min-height: calc(100vh - 200px);
+  height: 100vh;
+  max-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .loading,
@@ -74,6 +78,7 @@
 /* Header */
 .header {
   margin-bottom: 2rem;
+  flex-shrink: 0;
 }
 
 .headerTop {
@@ -124,6 +129,7 @@
 /* Progress */
 .progress {
   margin-bottom: 1rem;
+  flex-shrink: 0;
 }
 
 .progressBar {
@@ -171,11 +177,12 @@
   scroll-snap-type: y mandatory; /* Strong snap to cards vertically */
   scroll-snap-stop: always; /* Force stop at each card - no skipping */
   overscroll-behavior-y: contain; /* Prevent bounce/elastic effects */
-  /* Full height container like TikTok */
-  height: calc(100vh - 300px); /* Account for header and progress */
+  /* Fixed height instead of flex: 1 to prevent overflow */
+  height: calc(100vh - 200px); /* Account for header + progress + padding */
+  max-height: calc(100dvh - 200px); /* Account for dynamic viewport */
   /* Additional control for deliberate scrolling */
   scroll-padding: 0.5rem; /* Padding around snap points */
-  padding: 0.5rem 1rem 1rem 1rem; /* Adjust padding for vertical layout */
+  padding: 0.5rem 1rem 4rem 1rem; /* Increased bottom padding to prevent cutoff */
   margin: 0;
 }
 
@@ -211,7 +218,7 @@
   gap: 1.5rem; /* Increased gap for full-screen layout */
   /* TikTok-style full height properties */
   width: 100%; /* Full width instead of fixed width */
-  min-height: calc(100vh - 350px); /* Near full-screen height like TikTok */
+  min-height: calc(100vh - 300px); /* Reduced height to account for header/progress */
   scroll-snap-align: start; /* Snap to top of card like TikTok */
   scroll-snap-stop: always; /* Force stop at this card */
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); /* Stronger shadow for prominence */
@@ -384,6 +391,15 @@
 }
 
 
+/* Phantom Spacer - Ensures last habit card is fully viewable */
+.phantomSpacer {
+  min-height: 200px; /* Enough space to push last card into view */
+  flex-shrink: 0;
+  scroll-snap-align: start; /* Participates in scroll snap like other cards */
+  pointer-events: none; /* Invisible to user interaction */
+  background: transparent;
+}
+
 /* Saving Indicator */
 .savingIndicator {
   position: fixed;
@@ -430,7 +446,8 @@
   .habitList {
     gap: 0.5rem; /* Tighter spacing between cards on mobile */
     padding: 0.25rem 0.5rem 0.75rem 0.5rem; /* Adjust for vertical layout */
-    height: calc(100vh - 250px); /* More height on mobile for immersive experience */
+    height: calc(100vh - 180px); /* Reduced height to prevent cutoff on mobile */
+    max-height: calc(100dvh - 180px); /* Account for dynamic viewport on mobile */
     /* Enhanced mobile vertical scroll control */
     scroll-snap-type: y mandatory;
     scroll-snap-stop: always;
@@ -439,9 +456,13 @@
 
   .habitCard {
     width: 100%; /* Full width on mobile */
-    min-height: calc(100vh - 300px); /* Near full-screen on mobile like TikTok */
+    min-height: calc(100vh - 350px); /* More conservative height on mobile */
     padding: 1.25rem; /* Comfortable padding for mobile touch */
     gap: 1.25rem; /* Good spacing for mobile */
+  }
+
+  .phantomSpacer {
+    min-height: 150px; /* Smaller spacer on mobile */
   }
 
   .habitName {
@@ -481,15 +502,20 @@
 
   .habitList {
     gap: 1rem; /* More generous spacing on desktop */
-    height: calc(100vh - 350px); /* Full height experience on desktop */
+    height: calc(100vh - 250px); /* Reduced height to prevent cutoff on desktop */
+    max-height: calc(100dvh - 250px); /* Account for dynamic viewport on desktop */
     padding: 1rem 2rem; /* More generous padding on desktop */
   }
 
   .habitCard {
     padding: 2rem; /* Luxurious padding on desktop */
     width: 100%; /* Full width for immersive experience */
-    min-height: calc(100vh - 400px); /* Near full-screen on desktop */
+    min-height: calc(100vh - 450px); /* More conservative height on desktop */
     gap: 2rem; /* More generous spacing between elements */
+  }
+
+  .phantomSpacer {
+    min-height: 250px; /* Larger spacer on desktop */
   }
 
   .habitEmoji {

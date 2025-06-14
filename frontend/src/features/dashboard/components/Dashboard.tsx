@@ -302,6 +302,8 @@ export function Dashboard({ onManageHabits }: DashboardProps) {
             />
           );
         })}
+        {/* Phantom spacer card to ensure last habit is fully viewable */}
+        <div className={styles.phantomSpacer} aria-hidden="true" />
       </main>
 
       {isSaving && (

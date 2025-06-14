@@ -1,11 +1,12 @@
 /* App Shell Layout */
 .app {
-  min-height: 100%;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   background-color: var(--color-background);
   color: var(--color-text-primary);
   font-family: var(--font-family-base);
+  overflow: hidden;
 }
 
 .header {
@@ -15,6 +16,7 @@
   position: sticky;
   top: 0;
   z-index: var(--z-sticky);
+  flex-shrink: 0;
 }
 
 .headerContent {
@@ -58,15 +60,16 @@
 
 .main {
   flex: 1;
-  padding: var(--space-8) var(--space-4);
+  padding: 0;
   width: 100%;
+  overflow: hidden;
 }
 
 @media (min-width: 768px) {
   .main {
     max-width: 800px;
     margin: 0 auto;
-    padding: var(--space-8);
+    padding: 0;
   }
 }
 

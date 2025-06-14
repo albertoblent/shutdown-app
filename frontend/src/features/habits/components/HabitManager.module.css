@@ -4,6 +4,10 @@
   padding: 1rem;
   max-width: 800px;
   margin: 0 auto;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .header {
@@ -17,6 +21,7 @@
   margin-right: -1rem;
   padding-left: 1rem;
   padding-right: 1rem;
+  flex-shrink: 0;
 }
 
 .header h2 {
@@ -199,6 +204,8 @@
 /* Habit List */
 .habitList {
   margin-bottom: 1.5rem;
+  flex: 1;
+  overflow-y: auto;
 }
 
 .habitItem {
@@ -493,10 +500,10 @@
 .templateSelector {
   margin: 0.5rem 0;
   padding: 0;
-  height: auto;
-  max-height: calc(100vh - 180px);
   display: flex;
   flex-direction: column;
+  flex: 1;
+  overflow: hidden;
 }
 
 .templateIntro {
@@ -505,6 +512,7 @@
   background: var(--background-elevated, #111111);
   border-radius: 0.5rem;
   margin-bottom: 0.75rem;
+  flex-shrink: 0;
 }
 
 .templateIntro h3 {
@@ -525,12 +533,17 @@
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  -webkit-overflow-scrolling: auto;
+  scroll-behavior: smooth;
   gap: 0.75rem;
   padding: 0;
   margin-left: -1rem;
   margin-right: -1rem;
   padding-left: 1rem;
   padding-right: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 4rem;
 }
 
 .templateCard {
@@ -551,6 +564,8 @@
   position: relative;
   overflow: hidden;
   flex-shrink: 0;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
 }
 
 .templateCard::before {
