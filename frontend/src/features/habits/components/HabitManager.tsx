@@ -45,9 +45,10 @@ import styles from './HabitManager.module.css';
 
 interface HabitManagerProps {
   onHabitsChange?: () => void;
+  onBackToDashboard?: () => void;
 }
 
-export function HabitManager({ onHabitsChange }: HabitManagerProps) {
+export function HabitManager({ onHabitsChange, onBackToDashboard }: HabitManagerProps) {
   const [habits, setHabits] = useState<Habit[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -247,9 +248,37 @@ export function HabitManager({ onHabitsChange }: HabitManagerProps) {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h2>Habit Management</h2>
-        <div className={styles.habitCount}>
-          {habits.length}/7 habits
+        <button 
+          onClick={onBackToDashboard}
+          className={styles.backButton}
+          aria-label="Back to dashboard"
+          title="Back to dashboard"
+        >
+          ←
+        </button>
+        <h2>Habits</h2>
+        <div className={styles.headerActions}>
+          {validateHabitLimit(habits.length) && (
+            <button
+              className={styles.addIconButton}
+              onClick={() => setIsAddingNew(true)}
+              disabled={isAddingNew}
+              aria-label="Add new habit"
+              title="Add new habit"
+            >
+              +
+            </button>
+          )}
+          {habits.length > 0 && (
+            <button
+              className={styles.clearIconButton}
+              onClick={handleClearAll}
+              aria-label="Clear all habits"
+              title="Clear all habits"
+            >
+              🗑️
+            </button>
+          )}
         </div>
       </div>
 
@@ -292,27 +321,6 @@ export function HabitManager({ onHabitsChange }: HabitManagerProps) {
         </DndContext>
       )}
 
-      <div className={styles.actions}>
-        {validateHabitLimit(habits.length) && (
-          <button
-            className={styles.addButton}
-            onClick={() => setIsAddingNew(true)}
-            disabled={isAddingNew}
-          >
-            Add New Habit
-          </button>
-        )}
-
-
-        {habits.length > 0 && (
-          <button
-            className={styles.clearButton}
-            onClick={handleClearAll}
-          >
-            Clear All
-          </button>
-        )}
-      </div>
 
       {isAddingNew && (
         <HabitForm
@@ -492,11 +500,21 @@ function HabitItem({
 
       {!isEditing && (
         <div className={styles.habitActions}>
-          <button onClick={onEdit} className={styles.editButton}>
-            Edit
+          <button 
+            onClick={onEdit} 
+            className={styles.editIconButton}
+            aria-label="Edit habit"
+            title="Edit habit"
+          >
+            ✏️
           </button>
-          <button onClick={onDelete} className={styles.deleteButton}>
-            Delete
+          <button 
+            onClick={onDelete} 
+            className={styles.deleteIconButton}
+            aria-label="Delete habit"
+            title="Delete habit"
+          >
+            🗑️
           </button>
         </div>
       )}

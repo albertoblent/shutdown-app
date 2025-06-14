@@ -20,15 +20,69 @@
   color: var(--text-primary, #e0e0e0);
   font-size: 1.5rem;
   font-weight: 600;
+  flex: 1;
+  text-align: center;
 }
 
-.habitCount {
-  background: var(--accent-color, #4a90e2);
-  color: var(--text-on-accent, #ffffff);
-  padding: 0.375rem 0.75rem;
-  border-radius: 1rem;
-  font-size: 0.875rem;
-  font-weight: 500;
+.backButton {
+  background: var(--background-secondary, #374151);
+  border: 2px solid var(--border-color, #4b5563);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: all 0.2s ease;
+  color: var(--text-primary, #fff);
+}
+
+.backButton:hover {
+  background: var(--background-tertiary, #4b5563);
+  border-color: var(--border-hover, #6b7280);
+  transform: scale(1.05);
+}
+
+.headerActions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.addIconButton,
+.clearIconButton {
+  background: var(--background-secondary, #374151);
+  border: 2px solid var(--border-color, #4b5563);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: all 0.2s ease;
+  color: var(--text-primary, #fff);
+}
+
+.addIconButton:hover {
+  background: var(--primary-color, #3b82f6);
+  border-color: var(--primary-color, #3b82f6);
+  transform: scale(1.05);
+}
+
+.addIconButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.clearIconButton:hover {
+  background: var(--error-color, #ef4444);
+  border-color: var(--error-color, #ef4444);
+  transform: scale(1.05);
 }
 
 .loading {
@@ -182,8 +236,37 @@
   gap: 0.5rem;
 }
 
-/* Buttons */
-.editButton, .deleteButton, .saveButton, .cancelButton {
+/* Icon Buttons for Habit Actions */
+.editIconButton,
+.deleteIconButton {
+  background: var(--background-secondary, #374151);
+  border: 2px solid var(--border-color, #4b5563);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  color: var(--text-primary, #fff);
+}
+
+.editIconButton:hover {
+  background: var(--primary-color, #3b82f6);
+  border-color: var(--primary-color, #3b82f6);
+  transform: scale(1.1);
+}
+
+.deleteIconButton:hover {
+  background: var(--error-color, #ef4444);
+  border-color: var(--error-color, #ef4444);
+  transform: scale(1.1);
+}
+
+/* Text Buttons (for edit form) */
+.saveButton, .cancelButton {
   padding: 0.375rem 0.75rem;
   border: 1px solid;
   border-radius: 0.25rem;
@@ -194,29 +277,6 @@
   min-height: 32px;
   min-width: 48px; /* Accessibility */
   touch-action: auto; /* Allow button taps */
-}
-
-.editButton {
-  background: var(--secondary-bg, #2a2a2a);
-  color: var(--text-primary, #e0e0e0);
-  border-color: var(--border-color, #333);
-}
-
-.editButton:hover {
-  background: var(--accent-color, #4a90e2);
-  border-color: var(--accent-color, #4a90e2);
-  color: var(--text-on-accent, #ffffff);
-}
-
-.deleteButton {
-  background: transparent;
-  color: var(--error-text, #ff6b6b);
-  border-color: var(--error-border, #ff6b6b);
-}
-
-.deleteButton:hover {
-  background: var(--error-text, #ff6b6b);
-  color: var(--text-on-accent, #ffffff);
 }
 
 .saveButton {
