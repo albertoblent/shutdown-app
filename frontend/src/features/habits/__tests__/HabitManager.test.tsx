@@ -60,18 +60,18 @@ describe('HabitManager', () => {
   it('should render loading state initially', async () => {
     // Due to the synchronous nature of the mock, we test that component renders correctly
     render(<HabitManager />);
-    expect(screen.getByText('Habit Management')).toBeInTheDocument();
+    expect(screen.getByText('Habits')).toBeInTheDocument();
   });
 
-  it('should display empty state when no habits exist', async () => {
+  it('should display template selector when no habits exist', async () => {
     render(<HabitManager />);
 
     await waitFor(() => {
-      expect(screen.getByText('No habits yet')).toBeInTheDocument();
+      expect(screen.getByText('Ready to build your shutdown routine?')).toBeInTheDocument();
     });
 
-    expect(screen.getByText('Get started by adding a habit or loading a template')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Add New Habit' })).toBeInTheDocument();
+    expect(screen.getByText('✨ Recommended for Beginners')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Add new habit' })).toBeInTheDocument();
   });
 
   it('should display habit list when habits exist', async () => {
@@ -101,7 +101,6 @@ describe('HabitManager', () => {
 
     expect(screen.getByText('Test prompt')).toBeInTheDocument();
     expect(screen.getByText('boolean')).toBeInTheDocument();
-    expect(screen.getByText('1/7 habits')).toBeInTheDocument();
   });
 
   it('should display error message when loading fails', async () => {
@@ -121,10 +120,10 @@ describe('HabitManager', () => {
     render(<HabitManager />);
 
     await waitFor(() => {
-      expect(screen.getByRole('button', { name: 'Add New Habit' })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Add new habit' })).toBeInTheDocument();
     });
 
-    await user.click(screen.getByRole('button', { name: 'Add New Habit' }));
+    await user.click(screen.getByRole('button', { name: 'Add new habit' }));
 
     // Check for form-specific elements instead of duplicate text
     expect(screen.getByLabelText('Habit Name')).toBeInTheDocument();
@@ -154,10 +153,10 @@ describe('HabitManager', () => {
 
     // Wait for initial load and click Add New Habit
     await waitFor(() => {
-      expect(screen.getByRole('button', { name: 'Add New Habit' })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Add new habit' })).toBeInTheDocument();
     });
 
-    await user.click(screen.getByRole('button', { name: 'Add New Habit' }));
+    await user.click(screen.getByRole('button', { name: 'Add new habit' }));
 
     // Fill out the form
     await user.type(screen.getByLabelText('Habit Name'), 'New Habit');
@@ -201,7 +200,7 @@ describe('HabitManager', () => {
       expect(screen.getByText('Test Habit')).toBeInTheDocument();
     });
 
-    await user.click(screen.getByText('Edit'));
+    await user.click(screen.getByRole('button', { name: 'Edit habit' }));
 
     // Should show edit form
     expect(screen.getByDisplayValue('Test Habit')).toBeInTheDocument();
@@ -240,7 +239,7 @@ describe('HabitManager', () => {
       expect(screen.getByText('Test Habit')).toBeInTheDocument();
     });
 
-    await user.click(screen.getByText('Edit'));
+    await user.click(screen.getByRole('button', { name: 'Edit habit' }));
 
     // Edit the name
     const nameInput = screen.getByDisplayValue('Test Habit');
@@ -285,7 +284,7 @@ describe('HabitManager', () => {
       expect(screen.getByText('Test Habit')).toBeInTheDocument();
     });
 
-    await user.click(screen.getByText('Delete'));
+    await user.click(screen.getByRole('button', { name: 'Delete habit' }));
 
     // Verify the confirmation modal appears
     expect(screen.getByText('Delete Habit')).toBeInTheDocument();
@@ -307,7 +306,7 @@ describe('HabitManager', () => {
 
     render(<HabitManager />);
 
-    await user.click(screen.getByText('Load Template'));
+    await user.click(screen.getByText('✨ Start with This Template'));
 
     expect(mockHabitTemplates.loadHabitTemplate).toHaveBeenCalledWith('Test Template');
   });
@@ -347,7 +346,7 @@ describe('HabitManager', () => {
 
   });
 
-  it('should disable Add New Habit button when at habit limit', async () => {
+  it('should disable add new habit button when at habit limit', async () => {
     mockHabitStorage.validateHabitLimit.mockReturnValue(false);
 
     const mockHabits = Array.from({ length: 7 }, (_, i) => ({
@@ -369,11 +368,11 @@ describe('HabitManager', () => {
     render(<HabitManager />);
 
     await waitFor(() => {
-      expect(screen.getByText('7/7 habits')).toBeInTheDocument();
+      expect(screen.getByText('Habit 1')).toBeInTheDocument();
     });
 
     // Add button should not be present when at limit
-    expect(screen.queryByText('Add New Habit')).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Add new habit' })).not.toBeInTheDocument();
   });
 
   it('should call onHabitsChange when habits change', async () => {
@@ -463,7 +462,7 @@ describe('HabitManager', () => {
       });
 
       // Click edit to show form inputs
-      const editButtons = screen.getAllByText('Edit');
+      const editButtons = screen.getAllByRole('button', { name: 'Edit habit' });
       await user.click(editButtons[0]);
 
       await waitFor(() => {

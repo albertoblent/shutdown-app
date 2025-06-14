@@ -25,7 +25,7 @@ describe('HabitManager CSS Mobile Requirements', () => {
 
   it('should have touch-action: auto on buttons to allow tap interactions', () => {
     // Buttons need touch-action: auto for normal mobile interaction
-    expect(cssContent).toMatch(/\.editButton[^}]*touch-action:\s*auto/);
+    expect(cssContent).toMatch(/\.saveButton, \.cancelButton\s*\{[^}]*touch-action:\s*auto/);
   });
 
   it('should ensure drag handles have minimum 48px width for mobile accessibility', () => {

@@ -16,12 +16,13 @@ describe('Habit Templates', () => {
   });
 
   describe('HABIT_TEMPLATES', () => {
-    it('should have 3 preset templates', () => {
-      expect(HABIT_TEMPLATES).toHaveLength(3);
+    it('should have 4 preset templates', () => {
+      expect(HABIT_TEMPLATES).toHaveLength(4);
       expect(HABIT_TEMPLATES.map(t => t.name)).toEqual([
         'Productivity Focus',
         'Health & Wellness',
         'Work-Life Balance',
+        'Creative & Social',
       ]);
     });
 
