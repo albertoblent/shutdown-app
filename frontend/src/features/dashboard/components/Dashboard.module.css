@@ -145,16 +145,16 @@
   overflow-x: hidden;
   overflow-y: auto;
   scroll-behavior: smooth;
-  
+
   /* Improved scroll physics without aggressive snapping */
   -webkit-overflow-scrolling: touch; /* Smooth momentum scrolling */
   scroll-snap-type: y proximity; /* Gentle snap - less aggressive than mandatory */
   overscroll-behavior-y: contain; /* Prevent bounce/elastic effects */
-  
+
   /* Container sizing */
   height: calc(100vh - 200px);
   max-height: calc(100dvh - 200px);
-  
+
   /* Clean padding without scroll interference */
   padding: 1rem; /* Consistent padding all around */
   margin: 0;
@@ -183,51 +183,51 @@
 .habitCard {
   /* Fallback for browsers without backdrop-filter support */
   background: linear-gradient(135deg, var(--background-secondary, #374151) 0%, #4a5568 100%);
-  
+
   /* Glassmorphic Foundation - Multi-layer background system */
-  background: 
+  background:
     linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%),
     linear-gradient(135deg, var(--background-secondary, #374151) 0%, #4a5568 100%);
-  
+
   /* Premium glassmorphic effect */
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px); /* Safari support */
-  
+
   /* Sophisticated border system */
   border: 1px solid rgba(255,255,255,0.2);
   border-radius: 1rem; /* More pronounced rounding for premium feel */
-  
+
   /* Enhanced padding for luxury */
   padding: 2rem;
-  
+
   position: relative;
-  
+
   /* Smooth premium transitions */
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  
+
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  
+
   /* Entrance animation properties */
   opacity: 0;
   transform: translateY(20px) scale(0.95);
   animation: cardEntrance 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-  
+
   /* Card sizing for consistent layout */
   width: 100%;
   min-height: calc(100vh - 300px);
   scroll-snap-align: start; /* Keep gentle snap alignment */
-  
+
   /* Premium multi-layer shadow system */
-  box-shadow: 
+  box-shadow:
     0 8px 32px rgba(0,0,0,0.4),
     0 2px 8px rgba(0,0,0,0.15),
     inset 0 1px 0 rgba(255,255,255,0.1);
-  
+
   /* Center content for better visual hierarchy */
   justify-content: center;
-  
+
   /* Overflow management for pseudo-elements */
   overflow: hidden;
 }
@@ -248,12 +248,12 @@
 .habitCard:hover {
   /* Enhanced glassmorphic border on hover */
   border-color: rgba(255,255,255,0.4);
-  
+
   /* Premium lift with enhanced shadows */
   transform: translateY(-4px) scale(1.01);
-  
+
   /* Spectacular multi-layer hover shadows */
-  box-shadow: 
+  box-shadow:
     0 12px 48px rgba(0,0,0,0.5),
     0 4px 16px rgba(0,0,0,0.25),
     inset 0 1px 0 rgba(255,255,255,0.15),
@@ -265,13 +265,13 @@
 /* Incomplete State - Cool Blue/Teal for calm, approachable feel */
 .habitCard:not(.completed) {
   /* Cool blue glassmorphic styling for incomplete habits */
-  background: 
+  background:
     linear-gradient(135deg, rgba(59,130,246,0.12) 0%, rgba(6,182,212,0.08) 100%),
     linear-gradient(135deg, #1e40af 0%, #0891b2 100%);
-  
+
   border-color: rgba(59,130,246,0.3);
-  
-  box-shadow: 
+
+  box-shadow:
     0 8px 32px rgba(59,130,246,0.25),
     0 2px 8px rgba(59,130,246,0.15),
     inset 0 1px 0 rgba(255,255,255,0.1),
@@ -281,20 +281,20 @@
 /* Completed State - Success Green with celebration effect */
 .habitCard.completed {
   /* Success state glassmorphic styling */
-  background: 
+  background:
     linear-gradient(135deg, rgba(16,185,129,0.15) 0%, rgba(16,185,129,0.08) 100%),
     linear-gradient(135deg, #059669 0%, #047857 100%);
-  
+
   /* Success state glassmorphic border */
   border-color: rgba(16,185,129,0.4);
-  
+
   /* Success celebration shadows with green glow */
-  box-shadow: 
+  box-shadow:
     0 8px 32px rgba(16,185,129,0.4),
     0 2px 8px rgba(16,185,129,0.2),
     inset 0 1px 0 rgba(255,255,255,0.15),
     0 0 20px rgba(16,185,129,0.3);
-  
+
   /* Subtle completion glow animation */
   animation: completionGlow 3s ease-out;
 }
@@ -304,12 +304,12 @@
 /* Primary type: Numeric habits always get purple */
 .habitCard[data-habit-type="numeric"]:not(.completed) {
   /* Numeric habits - Purple theme */
-  background: 
+  background:
     linear-gradient(135deg, rgba(139,92,246,0.12) 0%, rgba(139,92,246,0.08) 100%),
     linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%);
   border-color: rgba(139,92,246,0.3);
-  
-  box-shadow: 
+
+  box-shadow:
     0 8px 32px rgba(139,92,246,0.25),
     0 2px 8px rgba(139,92,246,0.15),
     inset 0 1px 0 rgba(255,255,255,0.1),
@@ -319,12 +319,12 @@
 /* Boolean habits get varied colors for visual interest */
 .habitCard[data-habit-type="boolean"]:not(.completed):nth-child(odd) {
   /* Odd boolean habits - Blue theme */
-  background: 
+  background:
     linear-gradient(135deg, rgba(59,130,246,0.12) 0%, rgba(59,130,246,0.08) 100%),
     linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
   border-color: rgba(59,130,246,0.3);
-  
-  box-shadow: 
+
+  box-shadow:
     0 8px 32px rgba(59,130,246,0.25),
     0 2px 8px rgba(59,130,246,0.15),
     inset 0 1px 0 rgba(255,255,255,0.1),
@@ -333,12 +333,12 @@
 
 .habitCard[data-habit-type="boolean"]:not(.completed):nth-child(even) {
   /* Even boolean habits - Teal theme for contrast */
-  background: 
+  background:
     linear-gradient(135deg, rgba(20,184,166,0.12) 0%, rgba(20,184,166,0.08) 100%),
     linear-gradient(135deg, #0f766e 0%, #14b8a6 100%);
   border-color: rgba(20,184,166,0.3);
-  
-  box-shadow: 
+
+  box-shadow:
     0 8px 32px rgba(20,184,166,0.25),
     0 2px 8px rgba(20,184,166,0.15),
     inset 0 1px 0 rgba(255,255,255,0.1),
@@ -348,12 +348,12 @@
 /* Choice habits get cyan */
 .habitCard[data-habit-type="choice"]:not(.completed) {
   /* Choice habits - Cyan theme */
-  background: 
+  background:
     linear-gradient(135deg, rgba(6,182,212,0.12) 0%, rgba(6,182,212,0.08) 100%),
     linear-gradient(135deg, #0891b2 0%, #06b6d4 100%);
   border-color: rgba(6,182,212,0.3);
-  
-  box-shadow: 
+
+  box-shadow:
     0 8px 32px rgba(6,182,212,0.25),
     0 2px 8px rgba(6,182,212,0.15),
     inset 0 1px 0 rgba(255,255,255,0.1),
@@ -364,13 +364,13 @@
 
 /* Card entrance animation with staggered timing */
 @keyframes cardEntrance {
-  from { 
-    opacity: 0; 
-    transform: translateY(20px) scale(0.95); 
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
   }
-  to { 
-    opacity: 1; 
-    transform: translateY(0) scale(1); 
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
 
@@ -391,22 +391,22 @@
 
 /* Completion celebration animation */
 @keyframes completionGlow {
-  0% { 
-    box-shadow: 
+  0% {
+    box-shadow:
       0 8px 32px rgba(16,185,129,0.4),
       0 2px 8px rgba(16,185,129,0.2),
       inset 0 1px 0 rgba(255,255,255,0.15),
       0 0 20px rgba(16,185,129,0.3);
   }
-  50% { 
-    box-shadow: 
+  50% {
+    box-shadow:
       0 12px 48px rgba(16,185,129,0.6),
       0 4px 16px rgba(16,185,129,0.3),
       inset 0 1px 0 rgba(255,255,255,0.2),
       0 0 40px rgba(16,185,129,0.5);
   }
-  100% { 
-    box-shadow: 
+  100% {
+    box-shadow:
       0 8px 32px rgba(16,185,129,0.4),
       0 2px 8px rgba(16,185,129,0.2),
       inset 0 1px 0 rgba(255,255,255,0.15),
@@ -431,12 +431,13 @@
 }
 
 /* Celebration animation when switch is toggled to checked */
-.switch input[aria-checked="true"] ~ .react-switch-handle {
+/* Target the entire switch container when checked */
+.switch input:checked + .react-switch-bg {
   animation: toggleCelebration 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* Alternative: Apply celebration to entire switch when checked */
-.switch input[aria-checked="true"] {
+/* Alternative: Apply celebration to the handle specifically when checked */
+.switch input:checked + .react-switch-bg .react-switch-handle {
   animation: toggleCelebration 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
@@ -454,26 +455,26 @@
     transform: none;
     transition: opacity 0.2s ease;
   }
-  
+
   .habitCard:nth-child(n) {
     animation-delay: 0ms;
   }
-  
+
   .habitCard:active {
     transform: scale(0.99);
     transition: transform 0.1s ease;
   }
-  
+
   @keyframes completionGlow {
-    0%, 100% { 
-      box-shadow: 
+    0%, 100% {
+      box-shadow:
         0 8px 32px rgba(16,185,129,0.4),
         0 2px 8px rgba(16,185,129,0.2),
         inset 0 1px 0 rgba(255,255,255,0.15),
         0 0 20px rgba(16,185,129,0.3);
     }
   }
-  
+
   @keyframes toggleCelebration {
     0%, 100% { transform: scale(1); }
   }
