@@ -25,14 +25,29 @@ vi.mock('../api/templates', () => ({
   loadHabitTemplate: vi.fn(),
   HABIT_TEMPLATES: [
     {
-      name: 'Test Template',
-      description: 'A test template',
+      name: 'Productivity Focus',
+      description: 'A test template for productivity',
+      icon: '🎯',
       habits: [
         {
           name: 'Test Habit',
           type: 'boolean',
           atomic_prompt: 'Test prompt',
-          configuration: {},
+          configuration: { icon: '✅' },
+          is_active: true,
+        },
+      ],
+    },
+    {
+      name: 'Health & Wellness',
+      description: 'A test template for health',
+      icon: '🌿',
+      habits: [
+        {
+          name: 'Health Habit',
+          type: 'boolean',
+          atomic_prompt: 'Health prompt',
+          configuration: { icon: '💚' },
           is_active: true,
         },
       ],
@@ -308,7 +323,7 @@ describe('HabitManager', () => {
 
     await user.click(screen.getByText('✨ Start with This Template'));
 
-    expect(mockHabitTemplates.loadHabitTemplate).toHaveBeenCalledWith('Test Template');
+    expect(mockHabitTemplates.loadHabitTemplate).toHaveBeenCalledWith('Productivity Focus');
   });
 
   it('should show template selector only when no habits exist', async () => {
@@ -524,6 +539,89 @@ describe('HabitManager', () => {
       // Verify both habits have drag handles
       const dragHandles = screen.getAllByText('⋮⋮');
       expect(dragHandles).toHaveLength(2);
+    });
+  });
+
+  describe('Numeric Habit Creation', () => {
+    it('should handle numeric habit creation with units and ranges', async () => {
+      render(<HabitManager />);
+
+      // Click add button to show form
+      await user.click(screen.getByRole('button', { name: 'Add new habit' }));
+
+      // Fill out basic form
+      await user.type(screen.getByLabelText('Habit Name'), 'Water Intake');
+      await user.type(screen.getByLabelText('Atomic Prompt'), 'How many glasses of water did you drink?');
+      
+      // Change to numeric type
+      await user.selectOptions(screen.getByLabelText('Type'), 'numeric');
+
+      // Fill out numeric-specific fields
+      await user.type(screen.getByLabelText('Unit (optional)'), 'glasses');
+      await user.clear(screen.getByLabelText('Max Value'));
+      await user.type(screen.getByLabelText('Max Value'), '12');
+
+      // Submit form
+      await user.click(screen.getByRole('button', { name: 'Add Habit' }));
+
+      expect(mockHabitStorage.addHabit).toHaveBeenCalledWith({
+        name: 'Water Intake',
+        type: 'numeric',
+        atomic_prompt: 'How many glasses of water did you drink?',
+        configuration: {
+          numeric_unit: 'glasses',
+          numeric_range: [0, 12],
+        },
+        is_active: true,
+      });
+    });
+  });
+
+  describe('Template Navigation', () => {
+    it('should show all templates when "Other templates" is clicked', async () => {
+      render(<HabitManager />);
+
+      // Should start with featured template
+      expect(screen.getByText('✨ Recommended for Beginners')).toBeInTheDocument();
+
+      // Click "Other templates" to show all  
+      await user.click(screen.getByText(/Other templates \(1\)/));
+
+      // Should now show all templates view
+      expect(screen.getByText('← Back to recommended')).toBeInTheDocument();
+      expect(screen.getByText('Choose any template to get started')).toBeInTheDocument();
+      
+      // Should show all templates including the featured one
+      expect(screen.getByText('🎯 Productivity Focus')).toBeInTheDocument();
+      expect(screen.getAllByText('Load Template')).toHaveLength(2); // All 2 mock templates
+    });
+
+    it('should return to featured template view when back button is clicked', async () => {
+      render(<HabitManager />);
+
+      // Go to all templates view
+      await user.click(screen.getByText(/Other templates \(1\)/));
+      expect(screen.getByText('← Back to recommended')).toBeInTheDocument();
+
+      // Click back button
+      await user.click(screen.getByText('← Back to recommended'));
+
+      // Should be back to featured template view
+      expect(screen.getByText('✨ Recommended for Beginners')).toBeInTheDocument();
+      expect(screen.queryByText('← Back to recommended')).not.toBeInTheDocument();
+    });
+
+    it('should load template from all templates view', async () => {
+      render(<HabitManager />);
+
+      // Go to all templates view
+      await user.click(screen.getByText(/Other templates \(1\)/));
+
+      // Click on a specific template's Load Template button
+      const loadButtons = screen.getAllByText('Load Template');
+      await user.click(loadButtons[1]); // Click second template
+
+      expect(mockHabitTemplates.loadHabitTemplate).toHaveBeenCalledWith('Health & Wellness');
     });
   });
 });
