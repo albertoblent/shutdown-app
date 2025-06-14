@@ -20,8 +20,8 @@ function App() {
       const habitsExist = result.success && (result.data?.length || 0) > 0;
       setHasHabits(habitsExist);
 
-      // Always start with dashboard view - let Dashboard handle empty state
-      setCurrentView('dashboard');
+      // Go directly to habit management if no habits exist, otherwise dashboard
+      setCurrentView(habitsExist ? 'dashboard' : 'manage');
       setIsLoading(false);
     };
 

@@ -220,19 +220,6 @@ export function Dashboard({ onManageHabits }: DashboardProps) {
     );
   }
 
-  if (habits.length === 0) {
-    return (
-      <div className={styles.container}>
-        <div className={styles.emptyState}>
-          <h2>Welcome to your Shutdown Routine</h2>
-          <p>You don't have any habits set up yet. Let's get started!</p>
-          <button onClick={onManageHabits} className={styles.setupButton}>
-            Set Up Your Habits
-          </button>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className={styles.container}>

@@ -654,31 +654,106 @@ interface TemplateSelectorProps {
 }
 
 function TemplateSelector({ onLoadTemplate }: TemplateSelectorProps) {
+  const [showAllTemplates, setShowAllTemplates] = useState(false);
+
+  // Featured template (Productivity Focus - most universally applicable)
+  const featuredTemplate = HABIT_TEMPLATES.find(t => t.name === 'Productivity Focus') || HABIT_TEMPLATES[0];
+  const otherTemplates = HABIT_TEMPLATES.filter(t => t.name !== featuredTemplate.name);
+
+  if (showAllTemplates) {
+    // Show all templates in original grid format
+    return (
+      <div className={styles.templateSelector}>
+        <div className={styles.templateIntro}>
+          <button
+            onClick={() => setShowAllTemplates(false)}
+            className={styles.backToFeatured}
+          >
+            ← Back to recommended
+          </button>
+          <p>Choose any template to get started</p>
+        </div>
+
+        <div className={styles.templateContainer}>
+          {HABIT_TEMPLATES.map((template) => (
+            <div key={template.name} className={styles.templateCard}>
+              <div className={styles.templateInfo}>
+                <h4 className={styles.templateName}>
+                  {template.icon} {template.name}
+                </h4>
+                <p className={styles.templateDescription}>{template.description}</p>
+              </div>
+              <button
+                onClick={() => onLoadTemplate(template.name)}
+                className={styles.loadTemplateButton}
+              >
+                Load Template
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  // Default view: Featured template with escape hatches
   return (
     <div className={styles.templateSelector}>
       <div className={styles.templateIntro}>
-        <p>Choose a template to get started quickly</p>
+        <p>Ready to build your shutdown routine?</p>
       </div>
 
-      <div className={styles.templateContainer}>
-        {HABIT_TEMPLATES.map((template) => (
-          <div key={template.name} className={styles.templateCard}>
-            <div className={styles.templateInfo}>
-              <h4 className={styles.templateName}>
-                {template.icon} {template.name}
-              </h4>
-
-              <p className={styles.templateDescription}>{template.description}</p>
-            </div>
-
-            <button
-              onClick={() => onLoadTemplate(template.name)}
-              className={styles.loadTemplateButton}
-            >
-              Load Template
-            </button>
+      {/* Featured Template Card */}
+      <div className={styles.featuredTemplateContainer}>
+        <div className={styles.featuredTemplate}>
+          <div className={styles.featuredBadge}>
+            ✨ Recommended for Beginners
           </div>
-        ))}
+
+          <div className={styles.templateInfo}>
+            <h4 className={styles.featuredTemplateName}>
+              {featuredTemplate.icon} {featuredTemplate.name}
+            </h4>
+            <p className={styles.featuredTemplateDescription}>
+              {featuredTemplate.description}
+            </p>
+
+            {/* Show habit preview */}
+            <div className={styles.habitPreview}>
+              {featuredTemplate.habits.slice(0, 3).map((habit, index) => (
+                <div key={index} className={styles.habitPreviewItem}>
+                  <span className={styles.habitPreviewIcon}>{habit.configuration.icon}</span>
+                  <span className={styles.habitPreviewName}>{habit.name}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <button
+            onClick={() => onLoadTemplate(featuredTemplate.name)}
+            className={styles.featuredTemplateButton}
+          >
+            ✨ Start with This Template
+          </button>
+        </div>
+
+        {/* Escape Hatches */}
+        <div className={styles.escapeHatches}>
+          <button
+            onClick={() => setShowAllTemplates(true)}
+            className={styles.escapeHatchButton}
+          >
+            Other templates ({otherTemplates.length})
+          </button>
+          <span className={styles.escapeDivider}>|</span>
+          <button
+            onClick={() => {/* Will be handled by parent - this triggers the + button flow */}}
+            className={styles.escapeHatchButton}
+            title="Use the + button above to create your own habits"
+          >
+            Start from scratch
+          </button>
+        </div>
       </div>
     </div>
   );
