@@ -336,6 +336,11 @@ function HabitCard({
     setShowPrompt(false);
   };
 
+  // Handle card click to toggle atomic prompt
+  const handleCardClick = () => {
+    setShowPrompt(prev => !prev);
+  };
+
   // Handle input focus - also show prompt for context
   const handleInputFocus = () => {
     setShowPrompt(true);
@@ -511,7 +516,7 @@ function HabitCard({
       tabIndex={0}
       onFocus={handleCardFocus}
       onBlur={handleCardBlur}
-      onClick={handleCardFocus}
+      onClick={handleCardClick}
       role="region"
       aria-label={`${habit.name} habit`}
     >
