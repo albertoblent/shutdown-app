@@ -12,6 +12,7 @@ import { getHabits, saveHabits, type StorageResult, StorageError } from '../../.
 export interface HabitTemplate {
   name: string;
   description: string;
+  icon: string;
   habits: Omit<Habit, 'id' | 'created_at' | 'position'>[];
 }
 
@@ -19,6 +20,7 @@ export const HABIT_TEMPLATES: HabitTemplate[] = [
   {
     name: 'Productivity Focus',
     description: 'Deep work, financial awareness, and physical health',
+    icon: '🎯',
     habits: [
       {
         name: 'Deep Work Hours',
@@ -54,6 +56,7 @@ export const HABIT_TEMPLATES: HabitTemplate[] = [
   {
     name: 'Health & Wellness',
     description: 'Physical health tracking and wellness metrics',
+    icon: '💪',
     habits: [
       {
         name: 'Daily Steps',
@@ -93,6 +96,7 @@ export const HABIT_TEMPLATES: HabitTemplate[] = [
   {
     name: 'Work-Life Balance',
     description: 'Personal relationships, growth, and mindfulness',
+    icon: '⚖️',
     habits: [
       {
         name: 'Family Time',

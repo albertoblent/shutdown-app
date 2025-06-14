@@ -411,91 +411,181 @@
   margin-top: 1.5rem;
 }
 
-/* Template Selector */
+/* Template Selector - TikTok/Instagram Style Vertical Cards */
 .templateSelector {
-  margin: 2rem 0;
-  padding: 1.5rem;
-  background: var(--card-bg, #1a1a1a);
-  border: 1px solid var(--border-color, #333);
-  border-radius: 0.5rem;
+  margin: 1rem 0;
+  padding: 0;
+  height: calc(100vh - 300px);
+  display: flex;
+  flex-direction: column;
 }
 
-.templateSelector h3 {
+.templateIntro {
+  padding: 1rem;
+  text-align: center;
+  background: var(--background-elevated, #111111);
+  border-radius: 0.75rem 0.75rem 0 0;
+  margin-bottom: 1rem;
+}
+
+.templateIntro h3 {
   margin: 0 0 0.5rem 0;
-  color: var(--text-primary, #e0e0e0);
-  font-size: 1.125rem;
+  color: var(--text-primary, #ffffff);
+  font-size: 1.75rem;
+  font-weight: 700;
 }
 
-.templateSelector p {
-  margin: 0 0 1.5rem 0;
-  color: var(--text-secondary, #b0b0b0);
-  font-size: 0.875rem;
+.templateIntro p {
+  margin: 0;
+  color: var(--text-secondary, #cccccc);
+  font-size: 1rem;
 }
 
-.templateGrid {
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: 1fr;
+.templateContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  -webkit-overflow-scrolling: auto;
+  scroll-behavior: smooth;
+  gap: 0.75rem;
 }
 
 .templateCard {
-  background: var(--secondary-bg, #2a2a2a);
-  border: 1px solid var(--border-color, #333);
-  border-radius: 0.5rem;
-  padding: 1rem;
-  transition: all 0.2s ease;
+  min-height: calc(100vh - 400px);
+  background: linear-gradient(135deg, var(--background-secondary, #374151) 0%, #4a5568 100%);
+  border: 2px solid var(--border-color, #333);
+  border-radius: 1rem;
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    0 2px 8px rgba(0, 0, 0, 0.2);
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.templateCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.05) 100%);
+  pointer-events: none;
 }
 
 .templateCard:hover {
-  border-color: var(--accent-color, #4a90e2);
-  box-shadow: 0 2px 4px rgba(74, 144, 226, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.4),
+    0 4px 12px rgba(0, 0, 0, 0.3);
+  border-color: var(--primary-color, #ae0100);
 }
 
-.templateCard h4 {
-  margin: 0 0 0.5rem 0;
-  color: var(--text-primary, #e0e0e0);
-  font-size: 1rem;
-  font-weight: 600;
+.templateInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 320px;
+  margin-bottom: 1.5rem;
 }
 
-.templateCard p {
+.templateName {
   margin: 0 0 1rem 0;
-  color: var(--text-secondary, #b0b0b0);
-  font-size: 0.875rem;
-  line-height: 1.4;
+  color: var(--text-primary, #ffffff);
+  font-size: 2rem;
+  font-weight: 800;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.templateEmojiHero {
+  margin: 1rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.templateEmoji {
+  font-size: 4rem;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+.templateDescription {
+  margin: 1rem 0 1.5rem 0;
+  color: var(--text-secondary, #cccccc);
+  font-size: 1.125rem;
+  line-height: 1.5;
+  text-align: center;
+  max-width: 280px;
 }
 
 .templateHabits {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.375rem;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 300px;
   margin-bottom: 1rem;
 }
 
 .templateHabit {
-  background: var(--tag-bg, #0a0a0a);
-  color: var(--tag-text, #a0a0a0);
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.25rem;
-  font-size: 0.75rem;
+  background: rgba(0, 0, 0, 0.3);
+  color: var(--text-primary, #ffffff);
+  padding: 0.75rem 1rem;
+  border-radius: 2rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
 }
 
 .loadTemplateButton {
-  background: var(--accent-color, #4a90e2);
-  color: var(--text-on-accent, #ffffff);
+  background: linear-gradient(135deg, var(--primary-color, #ae0100) 0%, #c41e3a 100%);
+  color: var(--text-primary, #ffffff);
   border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 0.25rem;
-  font-size: 0.875rem;
-  font-weight: 500;
+  padding: 1rem 2rem;
+  border-radius: 2rem;
+  font-size: 1.125rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s ease;
-  min-height: 44px; /* Accessibility */
-  width: 100%;
+  transition: all 0.3s ease;
+  min-height: 56px;
+  min-width: 200px;
+  box-shadow: 0 4px 16px rgba(174, 1, 0, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .loadTemplateButton:hover {
-  background: var(--accent-hover, #357abd);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(174, 1, 0, 0.4);
+  background: linear-gradient(135deg, #c41e3a 0%, var(--primary-color, #ae0100) 100%);
+}
+
+.loadTemplateButton:active {
+  transform: translateY(0px);
+  box-shadow: 0 4px 16px rgba(174, 1, 0, 0.3);
 }
 
 /* Desktop Responsive */
@@ -513,8 +603,50 @@
     grid-template-columns: 1fr 1fr;
   }
 
-  .templateGrid {
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  .templateSelector {
+    height: calc(100vh - 250px);
+  }
+
+  .templateIntro h3 {
+    font-size: 2rem;
+  }
+
+  .templateIntro p {
+    font-size: 1.125rem;
+  }
+
+  .templateCard {
+    min-height: calc(100vh - 350px);
+    padding: 3rem 2rem;
+  }
+
+  .templateName {
+    font-size: 2.5rem;
+  }
+
+  .templateEmoji {
+    font-size: 5rem;
+  }
+
+  .templateDescription {
+    font-size: 1.25rem;
+    max-width: 400px;
+  }
+
+  .templateHabits {
+    max-width: 400px;
+  }
+
+  .templateHabit {
+    font-size: 1rem;
+    padding: 1rem 1.25rem;
+  }
+
+  .loadTemplateButton {
+    font-size: 1.25rem;
+    padding: 1.25rem 2.5rem;
+    min-height: 64px;
+    min-width: 240px;
   }
 
   .actions {

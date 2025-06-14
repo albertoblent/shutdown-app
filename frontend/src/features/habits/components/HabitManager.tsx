@@ -657,21 +657,36 @@ interface TemplateSelectorProps {
 function TemplateSelector({ onLoadTemplate }: TemplateSelectorProps) {
   return (
     <div className={styles.templateSelector}>
-      <h3>Quick Start Templates</h3>
-      <p>Choose a preset template to get started quickly:</p>
+      <div className={styles.templateIntro}>
+        <h3>Quick Start Templates</h3>
+        <p>Swipe through templates to get started quickly</p>
+      </div>
 
-      <div className={styles.templateGrid}>
+      <div className={styles.templateContainer}>
         {HABIT_TEMPLATES.map((template) => (
           <div key={template.name} className={styles.templateCard}>
-            <h4>{template.name}</h4>
-            <p>{template.description}</p>
-            <div className={styles.templateHabits}>
-              {template.habits.map((habit, index) => (
-                <span key={index} className={styles.templateHabit}>
-                  {habit.name}
-                </span>
-              ))}
+            <div className={styles.templateInfo}>
+              <h4 className={styles.templateName}>{template.name}</h4>
+              
+              {template.icon && (
+                <div className={styles.templateEmojiHero}>
+                  <span className={styles.templateEmoji} role="img" aria-hidden="true">
+                    {template.icon}
+                  </span>
+                </div>
+              )}
+              
+              <p className={styles.templateDescription}>{template.description}</p>
+              
+              <div className={styles.templateHabits}>
+                {template.habits.map((habit, index) => (
+                  <span key={index} className={styles.templateHabit}>
+                    {habit.configuration.icon || '•'} {habit.name}
+                  </span>
+                ))}
+              </div>
             </div>
+            
             <button
               onClick={() => onLoadTemplate(template.name)}
               className={styles.loadTemplateButton}
