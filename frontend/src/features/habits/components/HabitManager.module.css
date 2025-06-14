@@ -792,8 +792,8 @@
 }
 
 .featuredTemplate {
-  background: linear-gradient(135deg, var(--primary-color, #ae0100) 0%, #c41e3a 100%);
-  border: 2px solid var(--primary-color, #ae0100);
+  background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+  border: 2px solid #4a5568;
   border-radius: 1rem;
   padding: 2rem;
   display: flex;
@@ -801,8 +801,8 @@
   gap: 1.5rem;
   text-align: center;
   box-shadow: 
-    0 8px 32px rgba(174, 1, 0, 0.3),
-    0 4px 16px rgba(174, 1, 0, 0.2);
+    0 8px 32px rgba(74, 85, 104, 0.3),
+    0 4px 16px rgba(74, 85, 104, 0.2);
   position: relative;
   overflow: hidden;
 }
