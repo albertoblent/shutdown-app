@@ -34,7 +34,7 @@ export function Dashboard({ onManageHabits }: DashboardProps) {
   // Track current date for detecting date changes
   const currentDateRef = useRef<string>(getDateString());
   const dateCheckIntervalRef = useRef<NodeJS.Timeout | null>(null);
-  
+
   // Ref for better scroll control
   const habitListRef = useRef<HTMLElement | null>(null);
 
@@ -248,8 +248,8 @@ export function Dashboard({ onManageHabits }: DashboardProps) {
             {isToday(dailyEntry?.date || '') ? 'Today' : dailyEntry?.date}
           </h1>
           <div className={styles.headerIcons}>
-            <button 
-              onClick={onManageHabits} 
+            <button
+              onClick={onManageHabits}
               className={styles.iconButton}
               aria-label="Manage habits"
               title="Manage habits"
@@ -257,8 +257,8 @@ export function Dashboard({ onManageHabits }: DashboardProps) {
               ⚙️
             </button>
             {import.meta.env.DEV && (
-              <button 
-                onClick={handleDebugReset} 
+              <button
+                onClick={handleDebugReset}
                 className={styles.iconButton}
                 aria-label="Reset app"
                 title="Reset app"
@@ -406,11 +406,11 @@ function HabitCard({
               id={`habit-${habit.id}`}
               checked={completionValue.boolean || false}
               onChange={handleBooleanChange}
-              onColor="#4ade80"
-              offColor="#6b7280"
+              onColor="#10b981"
+              offColor="#374151"
               onHandleColor="#ffffff"
               offHandleColor="#ffffff"
-              handleDiameter={24}
+              handleDiameter={56}
               uncheckedIcon={
                 <div
                   style={{
@@ -418,9 +418,9 @@ function HabitCard({
                     justifyContent: "center",
                     alignItems: "center",
                     height: "100%",
-                    fontSize: 14,
+                    fontSize: 28,
                     color: "#ffffff",
-                    paddingRight: 2
+                    paddingRight: 6
                   }}
                 >
                   ✕
@@ -433,16 +433,16 @@ function HabitCard({
                     justifyContent: "center",
                     alignItems: "center",
                     height: "100%",
-                    fontSize: 14,
+                    fontSize: 28,
                     color: "#ffffff",
-                    paddingLeft: 2
+                    paddingLeft: 6
                   }}
                 >
                   ✓
                 </div>
               }
-              height={32}
-              width={64}
+              height={64}
+              width={140}
               disabled={disabled}
               aria-label={completionValue.boolean ? `Mark ${habit.name} as incomplete` : `Complete ${habit.name}`}
             />
@@ -533,11 +533,6 @@ function HabitCard({
         {renderInput()}
       </div>
 
-      {isCompleted && (
-        <div className={styles.completionIndicator}>
-          ✓
-        </div>
-      )}
     </article>
   );
 }

@@ -241,12 +241,13 @@
 }
 
 .habitName {
-  font-size: 1.2rem; /* Clean, readable title */
-  font-weight: 600;
+  font-size: 2.6rem; /* Larger title for full-screen impact */
+  font-weight: 700; /* Bolder for prominence */
   color: var(--text-primary, #fff);
   margin: 0;
-  line-height: 1.3;
+  line-height: 1.2; /* Tighter line height for impact */
   width: 100%;
+  letter-spacing: -0.01em; /* Subtle tracking for premium feel */
 }
 
 /* Hero Emoji Container - Enhanced for Full-Screen Cards */
@@ -258,11 +259,11 @@
 }
 
 .habitEmoji {
-  font-size: 4rem; /* EXTRA LARGE hero emoji for full-screen impact */
+  font-size: 5rem; /* MASSIVE hero emoji for full-screen impact */
   font-style: normal;
   line-height: 1;
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3)); /* Stronger shadow for prominence */
-  transition: transform 0.2s ease;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.4)); /* Strong shadow for depth */
+  transition: transform 0.3s ease;
 }
 
 .habitCard:hover .habitEmoji {
@@ -270,11 +271,13 @@
 }
 
 .habitPrompt {
-  color: var(--text-secondary, #888);
+  color: var(--text-secondary, #cccccc); /* Lighter for better contrast */
   margin: 0;
-  line-height: 1.4;
-  font-size: 0.9rem; /* Smaller so emoji is the star */
+  line-height: 1.5; /* More relaxed line height */
+  font-size: 1.1rem; /* Larger for full-screen readability */
   width: 100%;
+  font-weight: 400; /* Normal weight for balance */
+  opacity: 0.9; /* Subtle transparency for hierarchy */
 }
 
 /* Habit Inputs */
@@ -285,67 +288,81 @@
 .booleanInput {
   display: flex;
   align-items: center;
-  gap: 0.5rem; /* Reduced gap for compact layout */
-  min-height: 44px; /* Slightly reduced but still accessible */
+  justify-content: center; /* Center the toggle button */
+  gap: 0; /* Remove gap since we're hiding the label */
+  min-height: 120px; /* Large area for the big toggle */
+  margin: 1rem 0; /* Extra breathing space */
 }
 
 .booleanInput .switchLabel {
-  color: var(--text-primary, #fff);
-  font-weight: 500;
-  font-size: 0.95rem; /* Slightly smaller label text */
-  order: 2; /* Position label after switch */
+  display: none; /* Hide the text label completely */
 }
 
 .numericInput label {
   display: block;
   color: var(--text-primary, #fff);
-  margin-bottom: 0.25rem; /* Reduced from 0.5rem */
-  font-weight: 500;
-  font-size: 0.95rem; /* Slightly smaller label */
+  margin-bottom: 0.75rem; /* More space for full-screen layout */
+  font-weight: 600; /* Bolder for prominence */
+  font-size: 1.1rem; /* Larger for better readability */
+  text-align: center; /* Center align for better layout */
 }
 
 .numericControls {
   display: flex;
   align-items: center;
-  gap: 0.4rem; /* Reduced gap for tighter layout */
+  justify-content: center; /* Center the controls */
+  gap: 1rem; /* Generous spacing for full-screen layout */
+  margin: 1rem 0; /* Extra breathing space */
 }
 
 .numericControls button {
   background: var(--primary-color, #3b82f6);
   color: white;
   border: none;
-  width: 44px; /* Reduced from 48px but still accessible */
-  height: 44px; /* Reduced from 48px but still accessible */
-  border-radius: 0.4rem; /* Slightly smaller radius */
+  width: 56px; /* Larger buttons for better touch targets */
+  height: 56px; /* Larger buttons for better touch targets */
+  border-radius: 50%; /* Circular buttons for modern feel */
   cursor: pointer;
-  font-size: 1.2rem; /* Slightly smaller font */
-  font-weight: 600;
+  font-size: 1.5rem; /* Larger font for visibility */
+  font-weight: 700; /* Bolder for prominence */
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3); /* Subtle glow */
+  transition: all 0.2s ease; /* Smooth transitions */
 }
 
 .numericControls button:hover:not(:disabled) {
   background: var(--primary-hover, #2563eb);
+  transform: scale(1.05); /* Subtle scale on hover */
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4); /* Enhanced glow */
+}
+
+.numericControls button:active {
+  transform: scale(0.95); /* Press feedback */
 }
 
 .numericControls button:disabled {
   background: var(--background-tertiary, #1f2937);
   color: var(--text-disabled, #6b7280);
   cursor: not-allowed;
+  box-shadow: none; /* Remove glow when disabled */
 }
 
 .numericControls input[type="number"] {
   background: var(--background-primary, #111827);
   color: var(--text-primary, #fff);
   border: 2px solid var(--border-color, #4b5563);
-  border-radius: 0.4rem; /* Match button radius */
-  padding: 0.5rem; /* Reduced padding for compact layout */
+  border-radius: 0.75rem; /* More rounded to match modern design */
+  padding: 1rem; /* Generous padding for full-screen */
   text-align: center;
-  font-size: 1rem; /* Slightly smaller font */
-  width: 70px; /* Reduced width for compact layout */
-  min-height: 44px; /* Match button height */
+  font-size: 1.3rem; /* Larger font for prominence */
+  font-weight: 600; /* Bolder for better visibility */
+  width: 90px; /* Wider for better usability */
+  min-height: 56px; /* Match button height */
   -moz-appearance: textfield; /* Remove spinner for Firefox */
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle inner shadow */
+  transition: all 0.2s ease; /* Smooth transitions */
 }
 
 /* Remove spinner for Webkit browsers (Chrome, Safari, Edge) */
@@ -358,6 +375,7 @@
 .numericControls input[type="number"]:focus {
   outline: none;
   border-color: var(--primary-color, #3b82f6);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2), inset 0 2px 4px rgba(0, 0, 0, 0.1); /* Focus ring + inner shadow */
 }
 
 .choiceInput {
@@ -365,23 +383,6 @@
   font-style: italic;
 }
 
-/* Completion Indicator */
-.completionIndicator {
-  position: absolute;
-  top: 1rem; /* Adjusted for new padding */
-  right: 1rem; /* Adjusted for new padding */
-  width: 32px; /* Restored size for better visibility */
-  height: 32px; /* Restored size for better visibility */
-  background: var(--success-color, #10b981);
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 1.1rem; /* Restored size */
-  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3); /* Beautiful glow effect */
-}
 
 /* Saving Indicator */
 .savingIndicator {
@@ -444,15 +445,15 @@
   }
 
   .habitName {
-    font-size: 1.3rem; /* Larger for full-screen mobile experience */
+    font-size: 1.8rem; /* Larger for full-screen mobile experience */
   }
 
   .habitPrompt {
-    font-size: 1rem; /* Larger and more readable on full-screen mobile */
+    font-size: 1.2rem; /* Larger and more readable on full-screen mobile */
   }
 
   .habitEmoji {
-    font-size: 3.5rem; /* Large impactful emoji on mobile full-screen */
+    font-size: 4.5rem; /* Large impactful emoji on mobile full-screen */
   }
 
   .numericControls {
@@ -460,13 +461,15 @@
   }
 
   .numericControls button {
-    width: 44px; /* Larger buttons for better touch targets */
-    height: 44px;
+    width: 52px; /* Larger buttons for better touch targets */
+    height: 52px;
+    font-size: 1.4rem; /* Larger font on mobile */
   }
 
   .numericControls input[type="number"] {
-    width: 70px; /* Larger input for better usability */
-    min-height: 44px;
+    width: 80px; /* Larger input for better usability */
+    min-height: 52px;
+    font-size: 1.2rem; /* Appropriate size for mobile */
   }
 }
 
@@ -490,25 +493,27 @@
   }
 
   .habitEmoji {
-    font-size: 5rem; /* MASSIVE hero emoji on desktop for impact */
+    font-size: 6rem; /* MASSIVE hero emoji on desktop for impact */
   }
 
   .habitName {
-    font-size: 1.5rem; /* Larger title on desktop */
+    font-size: 1.8rem; /* Larger title on desktop */
   }
 
   .habitPrompt {
-    font-size: 1.1rem; /* Larger prompt text on desktop */
+    font-size: 1.2rem; /* Larger prompt text on desktop */
   }
 
   .numericControls button {
-    width: 48px; /* Larger buttons on desktop */
-    height: 48px;
+    width: 60px; /* Larger buttons on desktop */
+    height: 60px;
+    font-size: 1.6rem; /* Larger font on desktop */
   }
 
   .numericControls input[type="number"] {
-    width: 80px; /* Larger input on desktop */
-    min-height: 48px;
+    width: 100px; /* Larger input on desktop */
+    min-height: 60px;
+    font-size: 1.4rem; /* Larger font on desktop */
   }
 }
 
@@ -519,14 +524,22 @@
     gap: 1.5rem;
     padding: 1.5rem 3rem; /* Extra generous padding on large screens */
   }
-  
+
   .habitCard {
     max-width: 600px; /* Limit card width for better readability */
     margin: 0 auto; /* Center cards on large screens */
     padding: 2.5rem; /* Maximum luxury padding */
   }
-  
+
   .habitEmoji {
-    font-size: 6rem; /* ENORMOUS emoji for large screens */
+    font-size: 7rem; /* ENORMOUS emoji for large screens */
+  }
+
+  .habitName {
+    font-size: 2rem; /* Maximum impact on large screens */
+  }
+
+  .habitPrompt {
+    font-size: 1.3rem; /* Generous size for large screens */
   }
 }
